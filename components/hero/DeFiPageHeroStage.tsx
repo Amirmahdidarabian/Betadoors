@@ -15,6 +15,7 @@ import {
   Pencil,
   X,
   Check,
+  Crosshair,
 } from 'lucide-react';
 import { useBetaDoors } from '@/components/providers/BetaDoorsProvider';
 
@@ -197,11 +198,18 @@ export function DeFiPageHeroStage({
     if (!isPlaying) return;
     const timer = window.setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % Math.max(1, horizonSlides.length));
-    }, 3500);
+    }, 3800);
     return () => window.clearInterval(timer);
   }, [isPlaying, horizonSlides.length]);
 
   const cleanHref = (h: string) => (h.length > 1 && h.endsWith('/') ? h.slice(0, -1) : h);
+
+  const cornerNodes = [
+    { idx: '01', node: topLeftNode, slideIdx: 0, Icon: Triangle },
+    { idx: '02', node: bottomLeftNode, slideIdx: 1, Icon: Shield },
+    { idx: '03', node: topRightNode, slideIdx: 2, Icon: Cpu },
+    { idx: '04', node: bottomRightNode, slideIdx: 3, Icon: Hexagon },
+  ];
 
   return (
     <section
@@ -209,388 +217,367 @@ export function DeFiPageHeroStage({
       aria-label={ariaLabel}
       className="group/hero relative w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 pt-2 pb-8"
     >
-      {/* Admin Hover Quick-Edit Button on Page Header */}
-      {isStaffEditor && (
-        <div className="absolute top-5 right-8 lg:right-12 z-40 opacity-90 sm:opacity-0 group-hover/hero:opacity-100 focus-within:opacity-100 transition-opacity duration-200">
-          <button
-            type="button"
-            onClick={openHeaderEditor}
-            data-testid="admin-edit-page-header-btn"
-            className="keep-white-text inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs font-semibold shadow-[0_6px_24px_rgba(236,0,140,0.55)] border border-white/25 cursor-pointer transition-all"
-          >
-            <Pencil className="w-3.5 h-3.5" />
-            <span>Edit Page Header</span>
-          </button>
-        </div>
-      )}
-
-      {/* Main 16:9 Architectural HUD Container in Light & Dark Mode */}
+      {/* Main Architectural HUD Stage (0px Sharp Geometry) */}
       <div
-        className="hud-corner-brackets relative w-full lg:aspect-video min-h-[480px] sm:min-h-[520px] rounded-xl overflow-hidden brand-animated-border border border-slate-200/90 dark:border-white/[0.09] bg-gradient-to-br from-white via-[#F4F8F7] to-[#E6F0EC] dark:from-[#060709] dark:via-[#060709] dark:to-[#060709] shadow-[0_24px_70px_rgba(15,23,42,0.08)] dark:shadow-[0_30px_100px_rgba(0,0,0,0.85)] transition-colors"
+        className="hud-corner-brackets hud-technical-grid relative w-full min-h-[440px] sm:min-h-[480px] rounded-none overflow-hidden brand-animated-border border border-slate-300 dark:border-white/[0.12] bg-[#0B0C10] shadow-[0_20px_60px_rgba(15,23,42,0.08)] dark:shadow-[0_30px_100px_rgba(0,0,0,0.85)] flex flex-col justify-between transition-colors"
       >
-        {/* 1. Volumetric Atmospheric Light Blooms */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-24 -right-20 w-[65%] h-[78%] rounded-full blur-[95px] opacity-85"
-          style={{
-            background:
-              'radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.16) 0%, rgba(236, 0, 140, 0.08) 38%, transparent 72%)',
-          }}
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-28 -left-20 w-[58%] h-[68%] rounded-full blur-[90px] opacity-70"
-          style={{
-            background:
-              'radial-gradient(circle at 30% 75%, rgba(56, 189, 248, 0.14) 0%, rgba(236, 0, 140, 0.06) 45%, transparent 75%)',
-          }}
-        />
-
-        {/* Subtle Architectural Grid Points & Connector Lines */}
+        {/* 1. Animated HUD Vector Circuit Traces */}
         <svg
           aria-hidden="true"
-          viewBox="0 0 1920 1080"
+          viewBox="0 0 1920 820"
           preserveAspectRatio="xMidYMid slice"
-          className="pointer-events-none absolute inset-0 w-full h-full text-slate-400/45 dark:text-white/20"
+          className="pointer-events-none absolute inset-0 w-full h-full"
         >
-          {/* Top-Left Connector */}
+          {/* Top-Left HUD Trace */}
           <path
-            d="M 0 310 L 310 310 Q 345 310 370 280 L 455 180"
+            d="M 0 210 L 380 210 L 450 140"
             fill="none"
-            stroke="currentColor"
-            strokeWidth="1.4"
+            stroke="rgba(236,0,140,0.28)"
+            strokeWidth="1.5"
+            className="hud-rail-dashed"
           />
-          {/* Top-Right Connector */}
           <path
-            d="M 1920 310 L 1600 310 Q 1565 310 1540 280 L 1455 180"
+            d="M 0 210 L 380 210 L 450 140"
             fill="none"
-            stroke="currentColor"
-            strokeWidth="1.4"
-          />
-          {/* Bottom-Left Connector */}
-          <path
-            d="M 0 740 L 310 740 Q 345 740 370 770 L 455 865"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.4"
-          />
-          {/* Bottom-Right Connector */}
-          <path
-            d="M 1920 740 L 1600 740 Q 1565 740 1540 770 L 1455 865"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.4"
-          />
-
-          {/* Vertical Center Light Beams Below CTA Buttons */}
-          <line x1="875" y1="640" x2="875" y2="1080" stroke="currentColor" strokeOpacity="0.4" strokeWidth="1" />
-          <line x1="920" y1="640" x2="920" y2="1080" stroke="currentColor" strokeOpacity="0.45" strokeWidth="1" />
-          <line x1="960" y1="640" x2="960" y2="1080" stroke="currentColor" strokeOpacity="0.55" strokeWidth="1" />
-          <line x1="1005" y1="640" x2="1005" y2="1080" stroke="currentColor" strokeOpacity="0.45" strokeWidth="1" />
-          <line x1="1050" y1="640" x2="1050" y2="1080" stroke="currentColor" strokeOpacity="0.4" strokeWidth="1" />
-
-          {/* Glowing Vertical Shooting Streaks on the Center Lines */}
-          <line
-            x1="875"
-            y1={isPlaying ? '700' : '740'}
-            x2="875"
-            y2={isPlaying ? '840' : '860'}
             stroke="#EC008C"
-            strokeOpacity="0.7"
-            strokeWidth="2.2"
+            strokeWidth="2"
+            className="hud-animated-trace"
           />
+          <rect x="446" y="136" width="8" height="8" fill="#EC008C" />
+
+          {/* Top-Right HUD Trace */}
+          <path
+            d="M 1920 210 L 1540 210 L 1470 140"
+            fill="none"
+            stroke="rgba(236,0,140,0.28)"
+            strokeWidth="1.5"
+            className="hud-rail-dashed"
+          />
+          <path
+            d="M 1920 210 L 1540 210 L 1470 140"
+            fill="none"
+            stroke="#EC008C"
+            strokeWidth="2"
+            className="hud-animated-trace"
+          />
+          <rect x="1466" y="136" width="8" height="8" fill="#EC008C" />
+
+          {/* Bottom-Left HUD Trace */}
+          <path
+            d="M 0 610 L 380 610 L 450 680"
+            fill="none"
+            stroke="rgba(56,189,248,0.28)"
+            strokeWidth="1.5"
+            className="hud-rail-dashed"
+          />
+          <rect x="446" y="676" width="8" height="8" fill="#38BDF8" />
+
+          {/* Bottom-Right HUD Trace */}
+          <path
+            d="M 1920 610 L 1540 610 L 1470 680"
+            fill="none"
+            stroke="rgba(56,189,248,0.28)"
+            strokeWidth="1.5"
+            className="hud-rail-dashed"
+          />
+          <rect x="1466" y="676" width="8" height="8" fill="#38BDF8" />
+
+          {/* Center Vertical Calibration Axis */}
           <line
             x1="960"
-            y1={isPlaying ? '790' : '810'}
+            y1="520"
             x2="960"
-            y2={isPlaying ? '920' : '930'}
-            stroke="#0F172A"
-            strokeOpacity="0.55"
-            strokeWidth="2.2"
+            y2="820"
+            stroke="rgba(236,0,140,0.24)"
+            strokeWidth="1"
+            strokeDasharray="4 4"
           />
-          <line
-            x1="1050"
-            y1={isPlaying ? '850' : '870'}
-            x2="1050"
-            y2={isPlaying ? '980' : '990'}
-            stroke="#EC008C"
-            strokeOpacity="0.7"
-            strokeWidth="2.2"
-          />
-
-          {/* Subtle ambient particles */}
-          <circle cx="420" cy="240" r="1.8" fill="currentColor" />
-          <circle cx="680" cy="190" r="1.4" fill="currentColor" />
-          <circle cx="1220" cy="270" r="1.8" fill="currentColor" />
-          <circle cx="1390" cy="490" r="1.8" fill="currentColor" />
-          <circle cx="530" cy="720" r="1.5" fill="currentColor" />
-          <circle cx="1190" cy="790" r="1.8" fill="currentColor" />
         </svg>
 
-        {/* 2. Floating 4-Corner Node Callouts (Click to select slide 0..3) */}
-        {/* Top-Left Node (Slide 0) */}
-        <button
-          type="button"
-          onClick={() => {
-            setActiveSlide(0);
-            setIsPlaying(false);
-          }}
-          className="hidden md:flex flex-col items-start gap-2 absolute left-[8%] lg:left-[11%] top-[23%] z-30 text-left group cursor-pointer"
-        >
-          <div
-            className={`w-10 h-10 rounded-full border backdrop-blur-md flex items-center justify-center transition-all shadow-sm ${
-              activeSlide === 0
-                ? 'bg-[#EC008C] border-[#EC008C] text-white scale-110 shadow-[0_0_25px_rgba(236,0,140,0.45)]'
-                : 'bg-white/90 dark:bg-white/[0.04] border-slate-200 dark:border-white/15 text-slate-900 dark:text-white group-hover:border-[#EC008C]/60'
-            }`}
-          >
-            <Triangle className="w-4 h-4" />
+        {/* 2. Top Architectural HUD Telemetry Bar */}
+        <div className="relative z-20 px-4 sm:px-7 py-3 border-b border-white/[0.08] bg-[#08090C] flex flex-wrap items-center justify-between gap-3 text-[10px] font-mono uppercase tracking-widest">
+          <div className="flex items-center gap-2.5">
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-[#EC008C]/15 border border-[#EC008C]/45 text-[#ff7ac6] font-bold">
+              <span className="w-1.5 h-1.5 bg-[#EC008C] animate-pulse" />
+              <span>HUD.STAGE</span>
+            </span>
+            <span className="text-slate-400">
+              ROUTE // <strong className="text-white">{cleanPath === '/' ? '/HOME' : cleanPath.toUpperCase()}</strong>
+            </span>
           </div>
-          <div className="pl-1 pt-1">
-            <div className="text-xs font-semibold text-slate-900 dark:text-white flex items-center gap-1.5 group-hover:text-[#EC008C] transition-colors">
-              <span className={`w-1.5 h-1.5 rounded-full ${activeSlide === 0 ? 'bg-[#EC008C] animate-pulse' : 'bg-slate-400'}`} />
-              <span>{topLeftNode.label}</span>
-            </div>
-            <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 pl-3 tabular-nums">
-              {topLeftNode.metric}
-            </div>
-          </div>
-        </button>
 
-        {/* Top-Right Node (Slide 2) */}
-        <button
-          type="button"
-          onClick={() => {
-            setActiveSlide(Math.min(2, horizonSlides.length - 1));
-            setIsPlaying(false);
-          }}
-          className="hidden md:flex flex-col items-end gap-2 absolute right-[8%] lg:right-[11%] top-[23%] z-30 text-right group cursor-pointer"
-        >
-          <div
-            className={`w-10 h-10 rounded-full border backdrop-blur-md flex items-center justify-center transition-all shadow-sm ${
-              activeSlide === 2
-                ? 'bg-[#EC008C] border-[#EC008C] text-white scale-110 shadow-[0_0_25px_rgba(236,0,140,0.45)]'
-                : 'bg-white/90 dark:bg-white/[0.08] border-slate-200 dark:border-white/20 text-slate-900 dark:text-white group-hover:border-[#EC008C]/60'
-            }`}
-          >
-            <Cpu className="w-4 h-4" />
-          </div>
-          <div className="pr-1 pt-1 text-right">
-            <div className="text-xs font-semibold text-slate-900 dark:text-white flex items-center justify-end gap-1.5 group-hover:text-[#EC008C] transition-colors">
-              <span className={`w-1.5 h-1.5 rounded-full ${activeSlide === 2 ? 'bg-[#EC008C] animate-pulse' : 'bg-slate-400'}`} />
-              <span>{topRightNode.label}</span>
-            </div>
-            <div className="text-[11px] font-mono text-slate-500 dark:text-slate-300 tabular-nums">
-              {topRightNode.metric}
-            </div>
-          </div>
-        </button>
-
-        {/* Bottom-Left Node (Slide 1) */}
-        <button
-          type="button"
-          onClick={() => {
-            setActiveSlide(Math.min(1, horizonSlides.length - 1));
-            setIsPlaying(false);
-          }}
-          className="hidden md:flex flex-col items-start gap-2 absolute left-[8%] lg:left-[11%] bottom-[21%] z-30 text-left group cursor-pointer"
-        >
-          <div className="pl-1 pb-1">
-            <div className="text-xs font-semibold text-slate-900 dark:text-white flex items-center gap-1.5 group-hover:text-[#EC008C] transition-colors">
-              <span className={`w-1.5 h-1.5 rounded-full ${activeSlide === 1 ? 'bg-[#EC008C] animate-pulse' : 'bg-slate-400'}`} />
-              <span>{bottomLeftNode.label}</span>
-            </div>
-            <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 pl-3 tabular-nums">
-              {bottomLeftNode.metric}
-            </div>
-          </div>
-          <div
-            className={`w-10 h-10 rounded-full border backdrop-blur-md flex items-center justify-center transition-all shadow-sm ${
-              activeSlide === 1
-                ? 'bg-[#EC008C] border-[#EC008C] text-white scale-110 shadow-[0_0_25px_rgba(236,0,140,0.45)]'
-                : 'bg-white/90 dark:bg-white/[0.04] border-slate-200 dark:border-white/15 text-slate-900 dark:text-white group-hover:border-[#EC008C]/60'
-            }`}
-          >
-            <Shield className="w-4 h-4" />
-          </div>
-        </button>
-
-        {/* Bottom-Right Node (Slide 3) */}
-        <button
-          type="button"
-          onClick={() => {
-            setActiveSlide(Math.min(3, horizonSlides.length - 1));
-            setIsPlaying(false);
-          }}
-          className="hidden md:flex flex-col items-end gap-2 absolute right-[8%] lg:right-[11%] bottom-[21%] z-30 text-right group cursor-pointer"
-        >
-          <div className="pr-1 pb-1 text-right">
-            <div className="text-xs font-semibold text-slate-900 dark:text-white flex items-center justify-end gap-1.5 group-hover:text-[#EC008C] transition-colors">
-              <span className={`w-1.5 h-1.5 rounded-full ${activeSlide === 3 ? 'bg-[#EC008C] animate-pulse' : 'bg-slate-400'}`} />
-              <span>{bottomRightNode.label}</span>
-            </div>
-            <div className="text-[11px] font-mono text-slate-500 dark:text-slate-300 tabular-nums">
-              {bottomRightNode.metric}
-            </div>
-          </div>
-          <div
-            className={`w-10 h-10 rounded-full border backdrop-blur-md flex items-center justify-center transition-all shadow-sm ${
-              activeSlide === 3
-                ? 'bg-[#EC008C] border-[#EC008C] text-white scale-110 shadow-[0_0_25px_rgba(236,0,140,0.45)]'
-                : 'bg-white/90 dark:bg-white/[0.08] border-slate-200 dark:border-white/20 text-slate-900 dark:text-white group-hover:border-[#EC008C]/60'
-            }`}
-          >
-            <Hexagon className="w-4 h-4" />
-          </div>
-        </button>
-
-        {/* 3. Foreground Content Layer */}
-        <div className="relative z-20 flex flex-col justify-between h-full p-6 sm:p-10 lg:p-14">
-          {/* Top-Center Play/Pause Circular Button */}
-          <div className="flex justify-center pt-2 sm:pt-4">
+          <div className="flex items-center gap-3">
+            <span className="hidden sm:inline text-slate-400">
+              CAMPBELLFIELD VIC 3061 // 1300 238 243
+            </span>
             <button
               type="button"
               onClick={() => setIsPlaying((prev) => !prev)}
-              aria-label={isPlaying ? 'Pause stage animation' : 'Play stage animation'}
+              aria-label={isPlaying ? 'Pause stage telemetry' : 'Resume stage telemetry'}
               aria-pressed={isPlaying}
-              className="w-11 h-11 rounded-full bg-white/90 hover:bg-white dark:bg-white/[0.07] dark:hover:bg-white/[0.15] border border-slate-200/90 dark:border-white/15 backdrop-blur-md flex items-center justify-center text-slate-900 dark:text-white transition-all shadow-md"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none bg-[#0B0C10] hover:bg-white/[0.08] border border-white/15 text-[10px] font-mono font-semibold text-white cursor-pointer transition-colors"
             >
               {isPlaying ? (
-                <Pause className="w-4 h-4" />
+                <>
+                  <Pause className="w-3 h-3 text-[#EC008C]" />
+                  <span>TELEMETRY: LIVE</span>
+                </>
               ) : (
-                <Play className="w-4 h-4 translate-x-0.5 fill-current" />
+                <>
+                  <Play className="w-3 h-3 text-slate-400" />
+                  <span>TELEMETRY: PAUSED</span>
+                </>
               )}
             </button>
           </div>
+        </div>
+
+        {/* 3. Main Center Grid: 2 Left HUD Nodes + Center Editorial Stack + 2 Right HUD Nodes */}
+        <div className="relative z-20 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center px-4 sm:px-8 lg:px-10 py-8 sm:py-10 my-auto">
+          {/* Left Column: 2 Sharp HUD Telemetry Modules ([01] & [02]) */}
+          <div className="hidden lg:flex lg:col-span-3 flex-col gap-3">
+            {[cornerNodes[0], cornerNodes[1]].map(({ idx, node, slideIdx, Icon }) => {
+              const isSelected = activeSlide === slideIdx;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setActiveSlide(Math.min(slideIdx, horizonSlides.length - 1));
+                    setIsPlaying(false);
+                  }}
+                  className={`hud-corner-brackets text-left p-3.5 rounded-none border transition-all cursor-pointer flex items-center gap-3 ${
+                    isSelected
+                      ? 'bg-[#EC008C]/15 border-[#EC008C] shadow-[0_0_24px_rgba(236,0,140,0.2)]'
+                      : 'bg-[#08090C] hover:bg-white/[0.05] border-white/[0.1]'
+                  }`}
+                >
+                  <div
+                    className={`w-9 h-9 rounded-none border flex items-center justify-center shrink-0 transition-colors ${
+                      isSelected
+                        ? 'bg-[#EC008C] border-[#EC008C] text-white keep-white-text'
+                        : 'bg-[#0B0C10] border-white/15 text-[#EC008C]'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
+                      NODE // [{idx}]
+                    </div>
+                    <div className="text-xs font-semibold text-white truncate">
+                      {node.label}
+                    </div>
+                    <div className="text-[11px] font-mono text-[#ff7ac6] font-semibold tabular-nums truncate">
+                      {node.metric}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
 
           {/* Center Hero Copy Stack */}
-          <div className="max-w-3xl mx-auto text-center space-y-5 my-auto py-6">
-            {/* Pill Badge */}
+          <div className="lg:col-span-6 text-center space-y-5">
+            {/* Sharp 0px HUD Specification Badge */}
             <div className="flex justify-center">
               <a
                 href={cleanHref(badgeHref)}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/85 hover:bg-white dark:bg-white/[0.06] dark:hover:bg-white/[0.11] border border-slate-200/90 dark:border-white/15 backdrop-blur-md text-xs font-medium text-slate-700 dark:text-slate-200 shadow-xs transition-colors"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-[#08090C] hover:bg-white/[0.08] border border-[#EC008C]/45 text-[11px] font-mono font-semibold text-white transition-colors"
               >
-                <span className="keep-white-text w-4 h-4 rounded-full bg-[#EC008C] text-white flex items-center justify-center text-[10px] font-bold">
-                  B
+                <span className="keep-white-text px-1.5 py-0.5 rounded-none bg-[#EC008C] text-white text-[9px] font-mono font-bold">
+                  BETA
                 </span>
                 <span>{resolvedBadge}</span>
-                <ArrowRight className="w-3 h-3 text-slate-400" />
+                <ArrowRight className="w-3 h-3 text-[#EC008C]" />
               </a>
             </div>
 
-            {/* Display H1 with subtle metallic fade on right words */}
-            <h1 className="text-3xl sm:text-5xl lg:text-[62px] font-semibold tracking-[-0.03em] leading-[1.08]">
-              <span className="text-slate-950 dark:text-white">
-                {resolvedHeadlinePrimary}{' '}
-              </span>
+            {/* Display H1 with High-Contrast Sharp Typography */}
+            <h1
+              style={{ textWrap: 'balance' }}
+              className="text-3xl sm:text-5xl lg:text-[54px] font-semibold tracking-[-0.03em] leading-[1.08]"
+            >
+              <span className="text-white">{resolvedHeadlinePrimary} </span>
               {resolvedHeadlineGradient ? (
-                <span className="bg-gradient-to-r from-[#EC008C] via-slate-800 to-slate-500 dark:from-white dark:via-slate-200 dark:to-slate-400/70 bg-clip-text text-transparent">
-                  {resolvedHeadlineGradient}
-                </span>
+                <span className="text-[#EC008C]">{resolvedHeadlineGradient}</span>
               ) : null}
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xs sm:text-sm lg:text-base text-slate-600 dark:text-slate-300/85 max-w-xl mx-auto leading-relaxed font-normal">
+            <p className="text-xs sm:text-sm lg:text-base text-slate-300 max-w-xl mx-auto leading-relaxed font-normal">
               {resolvedSubheadline}
             </p>
 
-            {/* Dual Pill CTAs */}
-            <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
+            {/* Dual Sharp 0px HUD CTAs */}
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <a
                 href={cleanHref(resolvedPrimaryCtaHref)}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-slate-50 dark:bg-[#111216]/90 dark:hover:bg-white/10 border border-slate-300 dark:border-white/15 text-xs sm:text-sm font-semibold text-slate-900 dark:text-white shadow-sm transition-colors whitespace-nowrap"
+                className="keep-white-text inline-flex items-center gap-2 px-6 py-3 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-xs sm:text-sm font-mono font-bold text-white shadow-[0_0_24px_rgba(236,0,140,0.4)] transition-colors whitespace-nowrap"
               >
                 <span>{resolvedPrimaryCtaLabel}</span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-[#EC008C]" />
+                <ArrowUpRight className="w-4 h-4" />
               </a>
 
               <a
                 href={cleanHref(resolvedSecondaryCtaHref)}
-                className="keep-white-text inline-flex items-center justify-center px-7 py-3 rounded-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-xs sm:text-sm font-semibold text-white dark:text-slate-950 shadow-md transition-colors whitespace-nowrap"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-none bg-[#08090C] hover:bg-white/[0.08] border border-white/20 text-xs sm:text-sm font-mono font-semibold text-white transition-colors whitespace-nowrap"
               >
                 {resolvedSecondaryCtaLabel}
               </a>
             </div>
+
+            {/* Mobile/Tablet 4-Node Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 lg:hidden text-left">
+              {cornerNodes.map(({ idx, node, slideIdx }) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setActiveSlide(Math.min(slideIdx, horizonSlides.length - 1))}
+                  className={`p-2.5 rounded-none border text-xs cursor-pointer ${
+                    activeSlide === slideIdx
+                      ? 'bg-[#EC008C]/15 border-[#EC008C]'
+                      : 'bg-[#08090C] border-white/10'
+                  }`}
+                >
+                  <div className="text-[10px] font-mono text-[#ff7ac6] font-bold">
+                    [{idx}] {node.label}
+                  </div>
+                  <div className="text-[10px] font-mono text-slate-300 truncate">
+                    {node.metric}
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Bottom-Left Scroll Indicator & Bottom-Right Horizon Progress Bar */}
-          <div className="relative z-20 flex items-end justify-between gap-4 pt-4">
-            <div className="flex items-center gap-2.5">
-              <a
-                href={`#${scrollTargetId}`}
-                aria-label="Scroll down to page content"
-                className="keep-white-text w-8 h-8 rounded-full bg-slate-900 dark:bg-white text-white dark:text-black flex items-center justify-center hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors shrink-0 shadow-xs"
-              >
-                <ArrowDown className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href={`#${scrollTargetId}`}
-                className="px-3.5 py-1.5 rounded-full bg-white/85 dark:bg-white/[0.06] border border-slate-200/90 dark:border-white/10 text-[11px] font-mono text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white transition-colors whitespace-nowrap shadow-2xs"
-              >
-                {horizonSlides[activeSlide]?.label || '01/04 . Scroll down'}
-              </a>
-            </div>
-
-            <div className="text-right space-y-2 shrink-0">
-              <div className="flex items-center justify-end gap-2">
-                <a
-                  href={`#${scrollTargetId}`}
-                  className="text-xs font-semibold text-slate-800 dark:text-slate-200 hover:text-[#EC008C] transition-colors whitespace-nowrap"
+          {/* Right Column: 2 Sharp HUD Telemetry Modules ([03] & [04]) */}
+          <div className="hidden lg:flex lg:col-span-3 flex-col gap-3">
+            {[cornerNodes[2], cornerNodes[3]].map(({ idx, node, slideIdx, Icon }) => {
+              const isSelected = activeSlide === slideIdx;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setActiveSlide(Math.min(slideIdx, horizonSlides.length - 1));
+                    setIsPlaying(false);
+                  }}
+                  className={`hud-corner-brackets text-right p-3.5 rounded-none border transition-all cursor-pointer flex items-center justify-end gap-3 ${
+                    isSelected
+                      ? 'bg-[#EC008C]/15 border-[#EC008C] shadow-[0_0_24px_rgba(236,0,140,0.2)]'
+                      : 'bg-[#08090C] hover:bg-white/[0.05] border-white/[0.1]'
+                  }`}
                 >
-                  BETA horizons{' '}
-                  <span className="text-slate-500 dark:text-slate-400 font-normal hidden sm:inline">
-                    · {horizonSlides[activeSlide]?.tag}
-                  </span>
-                </a>
-              </div>
-              <div className="flex items-center justify-end gap-1.5">
-                {horizonSlides.map((slide, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => {
-                      setActiveSlide(idx);
-                      setIsPlaying(false);
-                    }}
-                    aria-label={`Select horizon slide ${idx + 1}: ${slide.tag}`}
-                    title={slide.tag}
-                    className="py-1.5 cursor-pointer group"
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
+                      NODE // [{idx}]
+                    </div>
+                    <div className="text-xs font-semibold text-white truncate">
+                      {node.label}
+                    </div>
+                    <div className="text-[11px] font-mono text-[#ff7ac6] font-semibold tabular-nums truncate">
+                      {node.metric}
+                    </div>
+                  </div>
+                  <div
+                    className={`w-9 h-9 rounded-none border flex items-center justify-center shrink-0 transition-colors ${
+                      isSelected
+                        ? 'bg-[#EC008C] border-[#EC008C] text-white keep-white-text'
+                        : 'bg-[#0B0C10] border-white/15 text-[#EC008C]'
+                    }`}
                   >
-                    <span
-                      className={`block h-1.5 rounded-full transition-all ${
-                        activeSlide === idx
-                          ? 'w-8 bg-[#EC008C] dark:bg-white'
-                          : 'w-5 bg-slate-300 group-hover:bg-slate-400 dark:bg-white/25 dark:group-hover:bg-white/50'
-                      }`}
-                    />
-                  </button>
-                ))}
-              </div>
+                    <Icon className="w-4 h-4" />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 4. Bottom HUD Scroll & Horizon Progress Bar */}
+        <div className="relative z-20 px-4 sm:px-7 py-3 border-t border-white/[0.08] bg-[#08090C] flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5">
+            <a
+              href={`#${scrollTargetId}`}
+              aria-label="Scroll down to page content"
+              className="keep-white-text w-7 h-7 rounded-none bg-[#EC008C] text-white flex items-center justify-center hover:bg-[#d4007d] transition-colors shrink-0"
+            >
+              <ArrowDown className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href={`#${scrollTargetId}`}
+              className="px-3 py-1 rounded-none bg-[#0B0C10] border border-white/10 text-[11px] font-mono text-slate-300 hover:text-white transition-colors whitespace-nowrap"
+            >
+              {horizonSlides[activeSlide]?.label || '01/04 · Scroll down'}
+            </a>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <a
+              href={`#${scrollTargetId}`}
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-white hover:text-[#EC008C] transition-colors whitespace-nowrap"
+            >
+              <Crosshair className="w-3.5 h-3.5 text-[#EC008C]" />
+              <span>HORIZON</span>
+              <span className="text-slate-400 font-sans font-normal hidden sm:inline">
+                · {horizonSlides[activeSlide]?.tag}
+              </span>
+            </a>
+
+            <div className="flex items-center gap-1.5">
+              {horizonSlides.map((slide, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setActiveSlide(idx);
+                    setIsPlaying(false);
+                  }}
+                  aria-label={`Select horizon slide ${idx + 1}: ${slide.tag}`}
+                  title={slide.tag}
+                  className="py-1 cursor-pointer group"
+                >
+                  <span
+                    className={`block h-1.5 rounded-none transition-all ${
+                      activeSlide === idx
+                        ? 'w-8 bg-[#EC008C]'
+                        : 'w-4 bg-slate-500/35 group-hover:bg-slate-400/70'
+                    }`}
+                  />
+                </button>
+              ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Partner & Compatible Hardware Strip Below Hero Frame */}
-      <div className="mt-7 pt-2 px-4 flex flex-wrap items-center justify-center sm:justify-between gap-6 sm:gap-8 text-slate-700 dark:text-slate-200 border-b border-slate-200 dark:border-white/10 pb-8">
+      {/* Partner & Compatible Hardware Strip Below Hero Frame (0px Sharp HUD Boxes) */}
+      <div className="mt-3.5 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
         {[
-          { name: 'ARIA 121', symbol: '▲', href: '/sectional-and-tilt-door-opener-range' },
-          { name: 'ASTERION PDO', symbol: '✺', href: '/beta-doors-manuals' },
-          { name: 'BETA B600', symbol: '▣', href: '/beta-gate-opener-range' },
-          { name: 'RDO 1000N–1800N', symbol: '◎', href: '/roller-door-opener-range' },
-          { name: '_STEEL LINE', symbol: '', href: '/hardware' },
-          { name: 'B&D HINGES', symbol: '↗', href: '/hardware' },
-          { name: 'LIFE GATE HP4', symbol: '❖', href: '/life-gate-opener-range' },
+          { idx: '01', name: 'ARIA 121', detail: 'Sectional Drive', href: '/sectional-and-tilt-door-opener-range' },
+          { idx: '02', name: 'ASTERION PDO', detail: 'Panel Opener', href: '/beta-doors-manuals' },
+          { idx: '03', name: 'BETA B600', detail: 'Sliding Gate', href: '/beta-gate-opener-range' },
+          { idx: '04', name: 'RDO 1000–1800N', detail: 'Roller Drive', href: '/roller-door-opener-range' },
+          { idx: '05', name: 'STEEL LINE', detail: 'Hinge Spec', href: '/hardware' },
+          { idx: '06', name: 'B&D HINGES', detail: 'Trade Hardware', href: '/hardware' },
+          { idx: '07', name: 'LIFE GATE HP4', detail: 'Italian Gate', href: '/life-gate-opener-range' },
         ].map((item) => (
           <a
             key={item.name}
             href={item.href}
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-wider text-slate-700 dark:text-slate-200 hover:text-[#EC008C] dark:hover:text-white transition-colors"
+            className="group hud-corner-brackets px-3 py-2 rounded-none bg-[#0B0C10] border border-white/[0.09] hover:border-[#EC008C]/50 flex items-center justify-between gap-2 transition-all"
           >
-            {item.symbol && <span className="text-[#EC008C]">{item.symbol}</span>}
-            <span>{item.name}</span>
+            <div className="min-w-0">
+              <div className="text-[10px] font-mono font-bold text-white group-hover:text-[#EC008C] transition-colors truncate">
+                <span className="text-slate-500 mr-1">[{item.idx}]</span>
+                {item.name}
+              </div>
+              <div className="text-[10px] text-slate-400 truncate">
+                {item.detail}
+              </div>
+            </div>
+            <ArrowUpRight className="w-3 h-3 text-slate-400 group-hover:text-[#EC008C] shrink-0" />
           </a>
         ))}
       </div>
@@ -603,7 +590,7 @@ export function DeFiPageHeroStage({
           aria-label={`Edit Page Header for ${cleanPath}`}
           className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-md flex items-center justify-center p-4"
         >
-          <div className="w-full max-w-2xl rounded-2xl bg-[#0F1117] border border-white/15 p-6 sm:p-8 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+          <div className="hud-corner-brackets w-full max-w-2xl rounded-none bg-[#0F1117] border border-white/15 p-6 sm:p-8 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
               <div>
                 <div className="text-[11px] font-mono text-[#EC008C] uppercase tracking-wider">
@@ -616,7 +603,7 @@ export function DeFiPageHeroStage({
               <button
                 type="button"
                 onClick={() => setEditModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer"
+                className="w-8 h-8 rounded-none bg-[#181B24] hover:bg-[#232836] border border-white/15 flex items-center justify-center text-white cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -625,13 +612,13 @@ export function DeFiPageHeroStage({
             <form onSubmit={handleSaveHeader} className="space-y-4 text-xs">
               <div>
                 <label className="block text-slate-300 font-medium mb-1">
-                  Top Pill Badge Text
+                  Top HUD Badge Text
                 </label>
                 <input
                   type="text"
                   value={formBadge}
                   onChange={(e) => setFormBadge(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#08090C] border border-white/15 text-white"
+                  className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white"
                 />
               </div>
 
@@ -644,18 +631,18 @@ export function DeFiPageHeroStage({
                     type="text"
                     value={formHeadlinePrimary}
                     onChange={(e) => setFormHeadlinePrimary(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#08090C] border border-white/15 text-white"
+                    className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white"
                   />
                 </div>
                 <div>
                   <label className="block text-slate-300 font-medium mb-1">
-                    Headline Gradient Accent Words
+                    Headline Accent Words
                   </label>
                   <input
                     type="text"
                     value={formHeadlineGradient}
                     onChange={(e) => setFormHeadlineGradient(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#08090C] border border-white/15 text-white"
+                    className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white"
                   />
                 </div>
               </div>
@@ -668,7 +655,7 @@ export function DeFiPageHeroStage({
                   rows={3}
                   value={formSubheadline}
                   onChange={(e) => setFormSubheadline(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#08090C] border border-white/15 text-white"
+                  className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white"
                 />
               </div>
 
@@ -681,7 +668,7 @@ export function DeFiPageHeroStage({
                     type="text"
                     value={formPrimaryCtaLabel}
                     onChange={(e) => setFormPrimaryCtaLabel(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#08090C] border border-white/15 text-white"
+                    className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white"
                   />
                 </div>
                 <div>
@@ -692,7 +679,7 @@ export function DeFiPageHeroStage({
                     type="text"
                     value={formPrimaryCtaHref}
                     onChange={(e) => setFormPrimaryCtaHref(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#08090C] border border-white/15 text-white font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white font-mono"
                   />
                 </div>
                 <div>
@@ -703,7 +690,7 @@ export function DeFiPageHeroStage({
                     type="text"
                     value={formSecondaryCtaLabel}
                     onChange={(e) => setFormSecondaryCtaLabel(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#08090C] border border-white/15 text-white"
+                    className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white"
                   />
                 </div>
                 <div>
@@ -714,7 +701,7 @@ export function DeFiPageHeroStage({
                     type="text"
                     value={formSecondaryCtaHref}
                     onChange={(e) => setFormSecondaryCtaHref(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#08090C] border border-white/15 text-white font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white font-mono"
                   />
                 </div>
               </div>
@@ -723,14 +710,14 @@ export function DeFiPageHeroStage({
                 <button
                   type="button"
                   onClick={() => setEditModalOpen(false)}
-                  className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-white font-medium cursor-pointer"
+                  className="px-4 py-2 rounded-none bg-[#181B24] hover:bg-[#232836] border border-white/15 text-white font-medium cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSavingHeader}
-                  className="keep-white-text inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-[#EC008C] hover:bg-[#d4007d] text-white font-semibold shadow-lg cursor-pointer"
+                  className="keep-white-text inline-flex items-center gap-1.5 px-6 py-2.5 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-white font-semibold shadow-lg cursor-pointer"
                 >
                   <Check className="w-4 h-4" />
                   <span>

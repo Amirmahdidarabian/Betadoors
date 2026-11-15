@@ -173,18 +173,18 @@ export function Hero16By9Showcase() {
     },
     {
       label: '04/04 · Scroll down',
-      seriesCode: '11 MELBOURNE HUBS',
-      coord: 'SYS.04 // SLA-98.2%',
-      tag: 'Same-Day Melbourne Repairs',
-      href: '/services',
-      headline: 'Same-Day Garage Door & Gate Repairs',
+      seriesCode: 'BETA & LIFE GATES',
+      coord: 'SYS.04 // B600-HP4',
+      tag: 'Sliding & Swing Gate Automation',
+      href: '/gate-opener-brands',
+      headline: 'BETA & Italian LIFE Gate Automation',
       subheadline:
-        'Rapid technician dispatch from Campbellfield across 11 Melbourne corridors for springs, cables & shutters.',
-      primaryCtaLabel: 'Book Same-Day Repair',
-      primaryCtaHref: '/services',
+        'Heavy-duty sliding and swing gate drives (B600, B550, LIFE HP4, OP2, HP6) with photocell safety integration.',
+      primaryCtaLabel: 'Explore Gate Range',
+      primaryCtaHref: '/gate-opener-brands',
       secondaryCtaLabel: 'Spring Estimator',
       secondaryCtaHref: '/garage-door-spring-estimator',
-      specs: ['Campbellfield 3061', '11 Metro Corridors', '1300 238 243'],
+      specs: ['600kg–1500kg Drives', 'Sliding & Swing', '1300 238 243'],
     },
   ];
 
@@ -239,10 +239,10 @@ export function Hero16By9Showcase() {
       aria-label="Homepage 1920 by 1080 16:9 hero stage"
       className="group/hero relative w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 pt-2 pb-6"
     >
-      {/* Wide 16:9 Landscape Stage with Precision Architectural Radius (rounded-xl) */}
+      {/* Wide 16:9 Landscape Stage with Pure 0px Sharp HUD Geometry */}
       <div
         data-testid="hero-16x9-container"
-        className="hud-corner-brackets relative w-full lg:aspect-video min-h-[480px] sm:min-h-[540px] rounded-xl overflow-hidden brand-animated-border border border-white/[0.14] bg-[#040406] shadow-[0_24px_80px_rgba(0,0,0,0.88)] flex flex-col justify-between p-4 sm:p-6 lg:p-7 transition-colors"
+        className="hud-corner-brackets relative w-full lg:aspect-video min-h-[480px] sm:min-h-[540px] rounded-none overflow-hidden brand-animated-border border border-white/[0.14] bg-[#040406] shadow-[0_24px_80px_rgba(0,0,0,0.88)] flex flex-col justify-between p-4 sm:p-6 lg:p-7 transition-colors"
       >
         {/* 1. Primary Full-Bleed 16:9 Motion Video (/assets/aistudio/logo_motion_ec8a3dd9.mp4 + .webm) */}
         <video
@@ -273,37 +273,22 @@ export function Hero16By9Showcase() {
           }}
         />
 
-        {/* 3. Admin Hover-Only Edit Trigger (top-right when logged in as staff) */}
-        <div className="relative z-20 flex items-center justify-end min-h-[28px]">
-          {isStaffEditor && (
-            <button
-              type="button"
-              onClick={openHeroEditor}
-              data-testid="admin-edit-hero-btn"
-              className="keep-white-text opacity-90 sm:opacity-0 group-hover/hero:opacity-100 focus:opacity-100 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs font-semibold shadow-[0_6px_24px_rgba(236,0,140,0.55)] border border-white/25 cursor-pointer transition-all"
-            >
-              <Pencil className="w-3.5 h-3.5" />
-              <span>Edit Hero Header</span>
-            </button>
-          )}
-        </div>
-
-        {/* 4. Unobstructed Center Showcase Window — keeps the entire top & middle of the 16:9 stage open for the 3D Logo & Door Animation */}
+        {/* 3. Unobstructed Center Showcase Window — keeps the entire top & middle of the 16:9 stage open for the 3D Logo & Door Animation */}
         <div
           aria-hidden="true"
-          className="flex-1 min-h-[220px] sm:min-h-[280px] pointer-events-none"
+          className="flex-1 min-h-[240px] sm:min-h-[300px] pointer-events-none"
         />
 
-        {/* 5. Bottom Precision HUD Split Dock (rounded-lg) with Animated Slide Transitions & Clean Unboxed Telemetry Specs */}
+        {/* 5. Bottom Precision HUD Split Dock (0px Sharp) with Animated Slide Transitions & Clean Unboxed Telemetry Specs */}
         <div className="relative z-20 flex flex-col lg:flex-row lg:items-end justify-between gap-4 pt-2">
-          {/* Bottom-Left HUD Panel: Animated Slide Content + Clean Inline Telemetry Spec Strip (No bloated pills!) */}
-          <div className="hud-corner-brackets crystal-glass-panel rounded-lg p-4 sm:p-5 w-full lg:max-w-[430px] xl:max-w-[460px] text-left transition-all overflow-hidden">
+          {/* Bottom-Left HUD Panel: Animated Slide Content + Clean Inline Telemetry Spec Strip */}
+          <div className="hud-corner-brackets crystal-glass-panel rounded-none p-4 sm:p-5 w-full lg:max-w-[430px] xl:max-w-[460px] text-left transition-all overflow-hidden">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
               <div className="flex items-center gap-2">
                 <a
                   href="#bento-insights-heading"
                   aria-label="Scroll down to engineering insights"
-                  className="keep-white-text w-5 h-5 rounded bg-[#EC008C] text-white flex items-center justify-center hover:bg-[#d4007d] transition-colors shrink-0 shadow-[0_0_12px_rgba(236,0,140,0.55)]"
+                  className="keep-white-text w-5 h-5 rounded-none bg-[#EC008C] text-white flex items-center justify-center hover:bg-[#d4007d] transition-colors shrink-0 shadow-[0_0_12px_rgba(236,0,140,0.55)]"
                 >
                   <ArrowDown className="w-3 h-3" />
                 </a>
@@ -341,7 +326,7 @@ export function Hero16By9Showcase() {
                   {currentSlide.subheadline}
                 </p>
 
-                {/* Clean Inline HUD Telemetry Spec Bar — replaces the oversized pill bubbles */}
+                {/* Clean Inline HUD Telemetry Spec Bar */}
                 <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 pt-2 border-t border-white/15 text-[10px] font-mono uppercase tracking-[0.06em] text-slate-100">
                   {currentSlide.specs.map((spec, idx) => (
                     <React.Fragment key={spec}>
@@ -364,8 +349,8 @@ export function Hero16By9Showcase() {
             </AnimatePresence>
           </div>
 
-          {/* Bottom-Right HUD Panel: Precision CTAs (rounded-md) + Interactive BETA Horizons Switcher */}
-          <div className="hud-corner-brackets crystal-glass-panel rounded-lg p-4 sm:p-5 flex flex-col sm:items-end justify-end gap-3 w-full lg:max-w-[390px] xl:max-w-[420px] shrink-0 transition-all">
+          {/* Bottom-Right HUD Panel: Precision CTAs (0px Sharp) + Interactive BETA Horizons Switcher */}
+          <div className="hud-corner-brackets crystal-glass-panel rounded-none p-4 sm:p-5 flex flex-col sm:items-end justify-end gap-3 w-full lg:max-w-[390px] xl:max-w-[420px] shrink-0 transition-all">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`cta-${activeSlide}`}
@@ -377,7 +362,7 @@ export function Hero16By9Showcase() {
               >
                 <a
                   href={currentSlide.primaryCtaHref}
-                  className="keep-white-text inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md crystal-glass-pill text-xs font-semibold text-white transition-all whitespace-nowrap"
+                  className="keep-white-text inline-flex items-center gap-1.5 px-3.5 py-2 rounded-none crystal-glass-pill text-xs font-mono font-semibold text-white transition-all whitespace-nowrap"
                 >
                   <span>{currentSlide.primaryCtaLabel}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-[#EC008C]" />
@@ -385,7 +370,7 @@ export function Hero16By9Showcase() {
 
                 <a
                   href={currentSlide.secondaryCtaHref}
-                  className="keep-white-text inline-flex items-center justify-center px-4 py-2 rounded-md bg-gradient-to-r from-[#EC008C] to-[#c40074] hover:brightness-110 text-xs font-semibold text-white shadow-[0_0_20px_rgba(236,0,140,0.45)] transition-all whitespace-nowrap"
+                  className="keep-white-text inline-flex items-center justify-center px-4 py-2 rounded-none bg-gradient-to-r from-[#EC008C] to-[#c40074] hover:brightness-110 text-xs font-mono font-bold text-white shadow-[0_0_20px_rgba(236,0,140,0.45)] transition-all whitespace-nowrap"
                 >
                   {currentSlide.secondaryCtaLabel}
                 </a>
@@ -399,9 +384,9 @@ export function Hero16By9Showcase() {
                   href={currentSlide.href}
                   className="keep-white-text text-[11px] font-mono font-semibold text-white hover:text-[#ff7ac6] transition-colors inline-flex items-center gap-1.5 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
                 >
-                  <span className="text-[#EC008C]">●</span>
-                  <span className="text-white">HORIZON</span>
-                  <span className="text-slate-200 font-sans font-normal">
+                  <span className="text-[#EC008C]">■</span>
+                  <span className="keep-white-text text-white">HORIZON</span>
+                  <span className="keep-white-text text-slate-200 font-sans font-normal">
                     · {currentSlide.tag}
                   </span>
                   <ArrowUpRight className="w-3 h-3 text-[#EC008C] shrink-0" />
@@ -412,17 +397,17 @@ export function Hero16By9Showcase() {
                     type="button"
                     onClick={() => selectSlide((activeSlide + 3) % 4)}
                     aria-label="Previous horizon slide"
-                    className="keep-white-text w-6 h-6 rounded bg-white/[0.08] hover:bg-white/20 border border-white/20 flex items-center justify-center text-white cursor-pointer transition-colors"
+                    className="keep-white-text crystal-glass-pill w-6 h-6 rounded-none flex items-center justify-center text-white cursor-pointer transition-colors"
                   >
-                    <ChevronLeft className="w-3 h-3" />
+                    <ChevronLeft className="w-3 h-3 text-white keep-white-text" />
                   </button>
                   <button
                     type="button"
                     onClick={() => selectSlide((activeSlide + 1) % 4)}
                     aria-label="Next horizon slide"
-                    className="keep-white-text w-6 h-6 rounded bg-white/[0.08] hover:bg-white/20 border border-white/20 flex items-center justify-center text-white cursor-pointer transition-colors"
+                    className="keep-white-text crystal-glass-pill w-6 h-6 rounded-none flex items-center justify-center text-white cursor-pointer transition-colors"
                   >
-                    <ChevronRight className="w-3 h-3" />
+                    <ChevronRight className="w-3 h-3 text-white keep-white-text" />
                   </button>
                 </div>
               </div>
@@ -438,7 +423,7 @@ export function Hero16By9Showcase() {
                     className="py-0.5 cursor-pointer group"
                   >
                     <span
-                      className={`block h-1 rounded-xs transition-all duration-300 ${
+                      className={`block h-1.5 rounded-none transition-all duration-300 ${
                         activeSlide === idx
                           ? 'w-9 bg-[#EC008C] shadow-[0_0_12px_rgba(236,0,140,0.85)]'
                           : 'w-4 bg-white/30 group-hover:bg-white/70'
@@ -452,13 +437,13 @@ export function Hero16By9Showcase() {
         </div>
       </div>
 
-      {/* 8. Architectural HUD Hardware & Dispatch Telemetry Dock Below Hero Stage (rounded-lg) */}
+      {/* 8. Architectural HUD Hardware Specification Dock Below Hero Stage (0px Sharp) */}
       <div className="mt-3.5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
         {hardwareStripItems.map((item) => (
           <a
             key={item.code}
             href={item.href}
-            className="group hud-corner-brackets rounded-lg bg-[#0B0C10] hover:bg-[#12151E] border border-white/[0.09] hover:border-[#EC008C]/50 px-3.5 py-2.5 flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5"
+            className="group hud-corner-brackets rounded-none bg-[#0B0C10] hover:bg-[#12151E] border border-white/[0.09] hover:border-[#EC008C]/50 px-3.5 py-2.5 flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5"
           >
             <div className="flex items-center justify-between gap-1">
               <span className="text-[11px] font-mono font-semibold tracking-wider text-white group-hover:text-[#EC008C] transition-colors">
@@ -475,7 +460,7 @@ export function Hero16By9Showcase() {
 
         <a
           href="tel:1300238243"
-          className="col-span-2 sm:col-span-3 lg:col-span-1 hud-corner-brackets rounded-lg bg-gradient-to-br from-[#EC008C]/20 via-[#EC008C]/10 to-[#0B0C10] hover:from-[#EC008C]/30 border border-[#EC008C]/45 px-3.5 py-2.5 flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5"
+          className="col-span-2 sm:col-span-3 lg:col-span-1 hud-corner-brackets rounded-none bg-gradient-to-br from-[#EC008C]/20 via-[#EC008C]/10 to-[#0B0C10] hover:from-[#EC008C]/30 border border-[#EC008C]/45 px-3.5 py-2.5 flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5"
         >
           <div className="flex items-center justify-between gap-1">
             <span className="text-[11px] font-mono font-semibold text-white flex items-center gap-1.5">
@@ -484,7 +469,7 @@ export function Hero16By9Showcase() {
             </span>
           </div>
           <span className="text-[11px] text-slate-300 truncate mt-1">
-            Campbellfield Dispatch
+            Direct Sales &amp; Tech Desk
           </span>
         </a>
       </div>
@@ -497,7 +482,7 @@ export function Hero16By9Showcase() {
           aria-label="Edit Homepage 16:9 Hero Header"
           className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-md flex items-center justify-center p-4"
         >
-          <div className="w-full max-w-2xl rounded-xl bg-[#0F1117] border border-white/15 p-6 sm:p-8 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+          <div className="hud-corner-brackets w-full max-w-2xl rounded-none bg-[#0F1117] border border-white/15 p-6 sm:p-8 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
               <div>
                 <div className="text-[11px] font-mono text-[#EC008C] uppercase tracking-wider">
@@ -510,7 +495,7 @@ export function Hero16By9Showcase() {
               <button
                 type="button"
                 onClick={() => setHeroModalOpen(false)}
-                className="w-8 h-8 rounded-md bg-[#181B24] hover:bg-[#232836] border border-white/15 flex items-center justify-center text-white cursor-pointer"
+                className="w-8 h-8 rounded-none bg-[#181B24] hover:bg-[#232836] border border-white/15 flex items-center justify-center text-white cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -525,7 +510,7 @@ export function Hero16By9Showcase() {
                   type="text"
                   value={formHeadline}
                   onChange={(e) => setFormHeadline(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-lg bg-[#08090C] border border-white/15 text-white"
+                  className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white"
                 />
               </div>
 
@@ -537,7 +522,7 @@ export function Hero16By9Showcase() {
                   rows={2}
                   value={formSubheadline}
                   onChange={(e) => setFormSubheadline(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-lg bg-[#08090C] border border-white/15 text-white"
+                  className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white"
                 />
               </div>
 
@@ -550,7 +535,7 @@ export function Hero16By9Showcase() {
                     type="text"
                     value={formPrimaryLabel}
                     onChange={(e) => setFormPrimaryLabel(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#08090C] border border-white/15 text-white"
+                    className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white"
                   />
                 </div>
                 <div>
@@ -561,7 +546,7 @@ export function Hero16By9Showcase() {
                     type="text"
                     value={formPrimaryHref}
                     onChange={(e) => setFormPrimaryHref(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#08090C] border border-white/15 text-white font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white font-mono"
                   />
                 </div>
                 <div>
@@ -572,7 +557,7 @@ export function Hero16By9Showcase() {
                     type="text"
                     value={formSecondaryLabel}
                     onChange={(e) => setFormSecondaryLabel(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#08090C] border border-white/15 text-white"
+                    className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white"
                   />
                 </div>
                 <div>
@@ -583,7 +568,7 @@ export function Hero16By9Showcase() {
                     type="text"
                     value={formSecondaryHref}
                     onChange={(e) => setFormSecondaryHref(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#08090C] border border-white/15 text-white font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white font-mono"
                   />
                 </div>
               </div>
@@ -596,7 +581,7 @@ export function Hero16By9Showcase() {
                   type="text"
                   value={formVideoUrl}
                   onChange={(e) => setFormVideoUrl(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-lg bg-[#08090C] border border-white/15 text-white font-mono"
+                  className="w-full px-3.5 py-2.5 rounded-none bg-[#08090C] border border-white/15 text-white font-mono"
                 />
               </div>
 
@@ -604,14 +589,14 @@ export function Hero16By9Showcase() {
                 <button
                   type="button"
                   onClick={() => setHeroModalOpen(false)}
-                  className="px-4 py-2 rounded-md bg-[#181B24] hover:bg-[#232836] border border-white/15 text-white font-medium cursor-pointer"
+                  className="px-4 py-2 rounded-none bg-[#181B24] hover:bg-[#232836] border border-white/15 text-white font-medium cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSavingHero}
-                  className="keep-white-text inline-flex items-center gap-1.5 px-6 py-2.5 rounded-md bg-[#EC008C] hover:bg-[#d4007d] text-white font-semibold shadow-lg cursor-pointer"
+                  className="keep-white-text inline-flex items-center gap-1.5 px-6 py-2.5 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-white font-semibold shadow-lg cursor-pointer"
                 >
                   <Check className="w-4 h-4" />
                   <span>

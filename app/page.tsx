@@ -7,7 +7,6 @@ import { Hero16By9Showcase } from '@/components/hero/Hero16By9Showcase';
 import {
   DefiBentoInsightsSection,
   FeaturedAriaAndShopSection,
-  OrbitalWorkflowSection,
   ProductFamilyGridSection,
 } from '@/components/sections/HomeSections';
 import { EnquiryForm } from '@/components/forms/EnquiryForm';
@@ -46,7 +45,6 @@ function HomeContent() {
           <DefiBentoInsightsSection />
           <ProductFamilyGridSection />
           <FeaturedAriaAndShopSection />
-          <OrbitalWorkflowSection />
           <div className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-12">
             <EnquiryForm sourcePagePath="/" />
           </div>
@@ -63,7 +61,7 @@ function HomeContent() {
             case 'featured_aria_121':
               return <FeaturedAriaAndShopSection key={sec.id} />;
             case 'orbital_workflow':
-              return <OrbitalWorkflowSection key={sec.id} />;
+              return null;
             case 'enquiry_section':
               return (
                 <div

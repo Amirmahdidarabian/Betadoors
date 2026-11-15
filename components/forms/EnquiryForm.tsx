@@ -25,7 +25,7 @@ export function EnquiryForm({
   const [company, setCompany] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [serviceType, setServiceType] = useState(''); // Unselected placeholder by default per Section 10
+  const [serviceType, setServiceType] = useState('');
   const [message, setMessage] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -82,9 +82,9 @@ export function EnquiryForm({
   return (
     <section
       aria-labelledby={`${formUid}-heading`}
-      className="hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/10 rounded-xl p-5 sm:p-8 lg:p-10"
+      className="hud-corner-brackets brand-animated-border hud-technical-grid bg-[#0B0C10] border border-white/10 rounded-none p-5 sm:p-8 lg:p-10"
     >
-      <div className="max-w-3xl space-y-2">
+      <div className="max-w-3xl space-y-2 pb-4 border-b border-white/[0.08]">
         <div className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-[#ff7ac6]">
           <span className="w-1.5 h-1.5 bg-[#EC008C]" />
           <span>CAMPBELLFIELD VIC 3061 // DIRECT OPERATIONS DESK</span>
@@ -98,7 +98,7 @@ export function EnquiryForm({
         <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">{subheading}</p>
 
         {(productContext || calculatorContext) && (
-          <div className="mt-4 text-xs text-slate-300 bg-white/5 border border-white/10 rounded-md px-4 py-2.5">
+          <div className="mt-4 text-xs text-slate-300 bg-[#08090C] border border-white/10 rounded-none px-4 py-2.5 font-mono">
             {productContext && <span>Product Context: {productContext}</span>}
             {productContext && calculatorContext && <span aria-hidden="true"> · </span>}
             {calculatorContext && <span>Spring Context: {calculatorContext}</span>}
@@ -110,7 +110,7 @@ export function EnquiryForm({
         <div
           role="status"
           aria-live="polite"
-          className="mt-6 bg-emerald-950/50 border border-emerald-500/40 rounded-xl p-6 text-emerald-100 space-y-2"
+          className="keep-white-text mt-6 bg-emerald-950 border border-emerald-500/40 rounded-none p-6 text-emerald-100 space-y-2"
         >
           <p className="text-base font-semibold">
             Enquiry Persisted · Reference {submittedRef}
@@ -121,9 +121,9 @@ export function EnquiryForm({
           <button
             type="button"
             onClick={() => setSubmittedRef(null)}
-            className="mt-2 px-4 py-2 text-xs font-medium bg-emerald-500 text-slate-950 rounded-lg hover:bg-emerald-400 transition-colors"
+            className="mt-2 px-4 py-2 text-xs font-mono font-bold bg-emerald-500 text-slate-950 rounded-none hover:bg-emerald-400 transition-colors cursor-pointer"
           >
-            Submit Another Enquiry
+            SUBMIT ANOTHER ENQUIRY
           </button>
         </div>
       ) : (
@@ -131,7 +131,7 @@ export function EnquiryForm({
           {serverError && (
             <div
               role="alert"
-              className="p-3.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-xs text-rose-200"
+              className="keep-white-text p-3.5 rounded-none bg-rose-950 border border-rose-500/40 text-xs text-rose-200"
             >
               {serverError}
             </div>
@@ -141,7 +141,7 @@ export function EnquiryForm({
             <div>
               <label
                 htmlFor={`${formUid}-name`}
-                className="block text-xs font-medium text-slate-300 mb-1.5"
+                className="block text-xs font-mono uppercase tracking-wider text-slate-300 mb-1.5"
               >
                 Your Name *
               </label>
@@ -152,7 +152,7 @@ export function EnquiryForm({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Liam Carter"
-                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-lg text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
+                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-none text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
               />
               {fieldErrors.name && (
                 <p role="alert" className="mt-1 text-xs text-rose-400">
@@ -164,7 +164,7 @@ export function EnquiryForm({
             <div>
               <label
                 htmlFor={`${formUid}-suburb`}
-                className="block text-xs font-medium text-slate-300 mb-1.5"
+                className="block text-xs font-mono uppercase tracking-wider text-slate-300 mb-1.5"
               >
                 Suburb *
               </label>
@@ -175,7 +175,7 @@ export function EnquiryForm({
                 value={suburb}
                 onChange={(e) => setSuburb(e.target.value)}
                 placeholder="e.g. Campbellfield 3061"
-                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-lg text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
+                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-none text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
               />
               {fieldErrors.suburb && (
                 <p role="alert" className="mt-1 text-xs text-rose-400">
@@ -187,7 +187,7 @@ export function EnquiryForm({
             <div>
               <label
                 htmlFor={`${formUid}-email`}
-                className="block text-xs font-medium text-slate-300 mb-1.5"
+                className="block text-xs font-mono uppercase tracking-wider text-slate-300 mb-1.5"
               >
                 Email *
               </label>
@@ -198,7 +198,7 @@ export function EnquiryForm({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com.au"
-                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-lg text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
+                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-none text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
               />
               {fieldErrors.email && (
                 <p role="alert" className="mt-1 text-xs text-rose-400">
@@ -210,7 +210,7 @@ export function EnquiryForm({
             <div>
               <label
                 htmlFor={`${formUid}-phone`}
-                className="block text-xs font-medium text-slate-300 mb-1.5"
+                className="block text-xs font-mono uppercase tracking-wider text-slate-300 mb-1.5"
               >
                 Phone *
               </label>
@@ -221,7 +221,7 @@ export function EnquiryForm({
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="0412 345 678 or 03 9000 0000"
-                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-lg text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
+                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-none text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
               />
               {fieldErrors.phone && (
                 <p role="alert" className="mt-1 text-xs text-rose-400">
@@ -233,7 +233,7 @@ export function EnquiryForm({
             <div>
               <label
                 htmlFor={`${formUid}-company`}
-                className="block text-xs font-medium text-slate-300 mb-1.5"
+                className="block text-xs font-mono uppercase tracking-wider text-slate-300 mb-1.5"
               >
                 Company (Optional)
               </label>
@@ -243,14 +243,14 @@ export function EnquiryForm({
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
                 placeholder="Trade / Commercial entity name"
-                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-lg text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
+                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-none text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
               />
             </div>
 
             <div>
               <label
                 htmlFor={`${formUid}-service`}
-                className="block text-xs font-medium text-slate-300 mb-1.5"
+                className="block text-xs font-mono uppercase tracking-wider text-slate-300 mb-1.5"
               >
                 Type Of Service *
               </label>
@@ -259,7 +259,7 @@ export function EnquiryForm({
                 required
                 value={serviceType}
                 onChange={(e) => setServiceType(e.target.value)}
-                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-lg text-white focus:outline-none focus:border-[#EC008C]"
+                className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-none text-white focus:outline-none focus:border-[#EC008C]"
               >
                 <option value="">Select required service or enquiry topic...</option>
                 {ALLOWED_ENQUIRY_SERVICES.map((opt) => (
@@ -279,7 +279,7 @@ export function EnquiryForm({
           <div>
             <label
               htmlFor={`${formUid}-message`}
-              className="block text-xs font-medium text-slate-300 mb-1.5"
+              className="block text-xs font-mono uppercase tracking-wider text-slate-300 mb-1.5"
             >
               Message / Door Details
             </label>
@@ -289,18 +289,18 @@ export function EnquiryForm({
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Include door type (sectional, roller, tilt, gate), approximate dimensions, or symptoms..."
-              className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-lg text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
+              className="w-full px-3.5 py-2.5 text-sm bg-[#08090C] border border-white/15 rounded-none text-white placeholder:text-slate-600 focus:outline-none focus:border-[#EC008C]"
             />
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-white/[0.08]">
             <p className="text-xs text-slate-400">
               Submitted enquiries are stored durably in local sandbox storage before notification dispatch.
             </p>
             <button
               type="submit"
               disabled={submitting}
-              className="keep-white-text px-6 py-2.5 text-xs font-mono font-semibold uppercase tracking-wider text-white bg-[#EC008C] rounded-md hover:bg-[#d4007d] transition-colors disabled:opacity-50 whitespace-nowrap cursor-pointer"
+              className="keep-white-text px-6 py-2.5 text-xs font-mono font-bold uppercase tracking-wider text-white bg-[#EC008C] rounded-none hover:bg-[#d4007d] transition-colors disabled:opacity-50 whitespace-nowrap cursor-pointer shadow-[0_0_20px_rgba(236,0,140,0.35)]"
             >
               {submitting ? 'SUBMITTING...' : 'SUBMIT ENQUIRY'}
             </button>

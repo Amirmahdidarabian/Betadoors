@@ -6,25 +6,21 @@ import { AnimatePresence, motion } from 'motion/react';
 import {
   ArrowRight,
   ArrowUpRight,
-  ChevronUp,
-  ChevronDown,
-  Zap,
   CheckCircle2,
-  MapPin,
   ShieldCheck,
   Crosshair,
   Activity,
-  SlidersHorizontal,
   ShoppingCart,
+  Layers,
 } from 'lucide-react';
 import { useBetaDoors } from '@/components/providers/BetaDoorsProvider';
 import { formatAudCents } from '@/lib/domain-logic';
 import { ProductTechnicalArtwork } from '@/components/brand/ProductTechnicalArtwork';
 
 /**
- * Reusable Animated HUD Schematic Section Rail
+ * Reusable Sharp Art-Director HUD Schematic Section Rail (0px Geometry)
  */
-function HudSectionRail({
+export function HudSectionRail({
   code,
   sector,
   status = 'ONLINE // CALIBRATED',
@@ -34,13 +30,16 @@ function HudSectionRail({
   status?: string;
 }) {
   return (
-    <div className="mb-6 flex items-center gap-3 select-none" aria-hidden="true">
-      <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#EC008C]/15 border border-[#EC008C]/40 text-[10px] font-mono font-semibold tracking-widest text-[#ff7ac6] shrink-0">
+    <div
+      className="mb-6 flex items-center gap-3 select-none border-b border-white/[0.08] pb-2.5"
+      aria-hidden="true"
+    >
+      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none bg-[#EC008C]/15 border border-[#EC008C]/50 text-[10px] font-mono font-bold tracking-widest text-[#ff7ac6] shrink-0">
         <span className="w-1.5 h-1.5 bg-[#EC008C] animate-pulse" />
         <span>{code}</span>
       </div>
 
-      <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 shrink-0 hidden sm:inline">
+      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-400 shrink-0 hidden sm:inline">
         {sector}
       </span>
 
@@ -55,7 +54,7 @@ function HudSectionRail({
             y1="8"
             x2="800"
             y2="8"
-            stroke="rgba(255,255,255,0.1)"
+            stroke="rgba(236,0,140,0.22)"
             strokeWidth="1"
             className="hud-rail-dashed"
           />
@@ -68,13 +67,16 @@ function HudSectionRail({
             strokeWidth="1.5"
             className="hud-animated-trace"
           />
-          <rect x="120" y="5" width="6" height="6" fill="rgba(236,0,140,0.6)" />
-          <rect x="420" y="6" width="4" height="4" fill="rgba(255,255,255,0.3)" />
-          <rect x="680" y="5" width="6" height="6" fill="rgba(56,189,248,0.6)" />
+          {/* Precision CAD Tick Marks */}
+          <line x1="80" y1="3" x2="80" y2="13" stroke="rgba(236,0,140,0.5)" strokeWidth="1" />
+          <rect x="220" y="5" width="6" height="6" fill="rgba(236,0,140,0.75)" />
+          <line x1="380" y1="4" x2="380" y2="12" stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
+          <rect x="540" y="5" width="5" height="5" fill="rgba(56,189,248,0.65)" />
+          <line x1="700" y1="3" x2="700" y2="13" stroke="rgba(236,0,140,0.5)" strokeWidth="1" />
         </svg>
       </div>
 
-      <span className="text-[10px] font-mono uppercase tracking-widest text-slate-500 shrink-0 hidden md:inline">
+      <span className="px-2 py-0.5 border border-white/[0.08] bg-[#08090C] text-[10px] font-mono uppercase tracking-widest text-slate-400 shrink-0 hidden md:inline">
         [{status}]
       </span>
     </div>
@@ -83,102 +85,166 @@ function HudSectionRail({
 
 /**
  * Interactive 4-Card Architectural HUD Bento Grid ("Meet Marvellous Engineering")
- * with live Melbourne Hub Radar, Interactive Lifting Force Cylinders, Automation Pack Tabs, and Storefront Matrix.
+ * Pure 0px Sharp HUD Geometry — High-Precision Engineering Visualizers & Infographics
  */
 export function DefiBentoInsightsSection() {
-  const [activeHubIdx, setActiveHubIdx] = useState(0);
+  const [activeBlueprintIdx, setActiveBlueprintIdx] = useState(0);
   const [activeCylinderIdx, setActiveCylinderIdx] = useState(2); // Default 1200N
   const [activePackTab, setActivePackTab] = useState<number>(0);
-  const [activeBarPage, setActiveBarPage] = useState(1); // Default Motor 1200N
+  const [activeBarPage, setActiveBarPage] = useState(0);
 
-  const melbourneHubs = [
+  const architecturalBlueprints = [
     {
-      name: 'Campbellfield HQ',
-      postcode: 'VIC 3061',
-      coord: '37.6690° S, 144.9567° E',
-      corridor: 'Northern Operations Desk · 5/1730 Hume Hwy',
-      sla: 'IMMEDIATE DISPATCH',
-      nodeX: 225,
-      nodeY: 46,
-      href: '/garage-door-repairs-campbellfield-3061-beta-doors/',
+      code: 'CAD.01',
+      tabLabel: '01 · Insulated Sectional',
+      name: 'Insulated Overhead Sectional Doors',
+      metric: '40mm PU',
+      unit: 'THERMAL CORE',
+      specCode: 'AS/NZS 4505 // ACOUSTIC & THERMAL RATED',
+      artType: 'sectional_door' as const,
+      cycle: '35,000+ Cycle Torsion Assembly',
+      href: '/insulated-sectional-garage-doors',
+      meters: [
+        { label: 'Thermal & Acoustic Insulation', value: 'R-2.2 / 40mm PU', pct: 96 },
+        { label: 'Wind-Lock Structural Integrity', value: 'AS/NZS 4505 Rated', pct: 94 },
+        { label: 'Torsion Cycle Endurance', value: '35,000+ Cycles', pct: 92 },
+      ],
+      specs: [
+        { code: '01', label: 'PANEL SKIN', val: '0.60mm Dual-Skin Colorbond Steel' },
+        { code: '02', label: 'BAY WIDTH', val: '2,100mm – 6,400mm Custom Span' },
+        { code: '03', label: 'DRIVE MATCH', val: 'Aria 121 / Motor Pack (800N–1500N)' },
+      ],
     },
     {
-      name: 'Craigieburn',
-      postcode: 'VIC 3064',
-      coord: '37.5960° S, 144.9400° E',
-      corridor: 'Hume Growth Corridor · Residential & Trade',
-      sla: '< 90 MIN RESPONSE',
-      nodeX: 265,
-      nodeY: 28,
-      href: '/garage-door-repairs-craigieburn-3064-beta-doors/',
+      code: 'CAD.02',
+      tabLabel: '02 · Continuous Roller',
+      name: 'Continuous Curtain Steel Roller Doors',
+      metric: '1000–1800N',
+      unit: 'DRUM DRIVE',
+      specCode: 'HEAVY DUTY // NYLON FELT RUNNING STRIPS',
+      artType: 'roller_opener' as const,
+      cycle: 'Precision Helical Drum Springs',
+      href: '/roller-garage-doors',
+      meters: [
+        { label: 'Curtain Tensile Rigidity', value: 'Deep-Ribbed Steel', pct: 95 },
+        { label: 'Low-Friction Acoustic Glide', value: 'Nylon Felt Strips', pct: 90 },
+        { label: 'Side-Drum Torque Capacity', value: 'Up to 1800N Drive', pct: 96 },
+      ],
+      specs: [
+        { code: '01', label: 'CURTAIN', val: 'Roll-Formed High-Tensile Steel' },
+        { code: '02', label: 'GUIDE RAILS', val: 'Heavy Extruded Aluminium Tracks' },
+        { code: '03', label: 'DRIVE MATCH', val: 'BETA RDO-1000N / 1500N / 1800N' },
+      ],
     },
     {
-      name: 'Epping',
-      postcode: 'VIC 3076',
-      coord: '37.6530° S, 145.0140° E',
-      corridor: 'North-East Industrial & Domestic Bays',
-      sla: 'SAME-DAY SERVICE',
-      nodeX: 295,
-      nodeY: 56,
-      href: '/garage-door-repairs-epping-3076-beta-doors/',
+      code: 'CAD.03',
+      tabLabel: '03 · BETA & LIFE Gates',
+      name: 'BETA & LIFE Sliding & Swing Gates',
+      metric: '600–1500KG',
+      unit: 'GATE TORQUE',
+      specCode: 'IP44 / IP55 // ITALIAN & BETA PERIMETER DRIVES',
+      artType: 'gate_opener' as const,
+      cycle: 'Continuous Commercial & Residential Duty',
+      href: '/gate-opener-brands',
+      meters: [
+        { label: 'Sliding & Swing Mass Rating', value: '600kg – 1,500kg', pct: 98 },
+        { label: 'Weather & Ingress Protection', value: 'IP44 / IP55 Sealed', pct: 94 },
+        { label: 'Obstacle Reversal Precision', value: 'Dual Photocell Sync', pct: 97 },
+      ],
+      specs: [
+        { code: '01', label: 'GEARBOX', val: 'Die-Cast Alloy + Hardened Steel Pinion' },
+        { code: '02', label: 'SPAN RATING', val: 'Up to 12m Sliding / 5m Dual Swing' },
+        { code: '03', label: 'DRIVE MATCH', val: 'BETA B600/B550 · LIFE HP4/OP2/HP6' },
+      ],
     },
     {
-      name: 'Essendon',
-      postcode: 'VIC 3040',
-      coord: '37.7490° S, 144.9140° E',
-      corridor: 'Inner North-West Architectural Doors',
-      sla: 'SAME-DAY SERVICE',
-      nodeX: 165,
-      nodeY: 78,
-      href: '/garage-door-repairs-essendon-3040-beta-doors/',
-    },
-    {
-      name: 'Narre Warren',
-      postcode: 'VIC 3805',
-      coord: '38.0260° S, 145.3020° E',
-      corridor: 'South-East Metro Dispatch Corridor',
-      sla: 'SAME-DAY SERVICE',
-      nodeX: 312,
-      nodeY: 88,
-      href: '/garage-door-repairs-narre-warren-3805-beta-doors/',
+      code: 'CAD.04',
+      tabLabel: '04 · Springs & Hardware',
+      name: 'Calibrated Torsion Springs & Hinges',
+      metric: '25,000+',
+      unit: 'HIGH-CYCLE',
+      specCode: 'OIL-TEMPERED // HIGH-TENSILE SPRING WIRE',
+      artType: 'hardware_kit' as const,
+      cycle: 'Precision Matched to Exact Door Weight',
+      href: '/garage-door-spring-estimator',
+      meters: [
+        { label: 'Oil-Tempered Wire Fatigue Rating', value: '25,000+ Cycles', pct: 96 },
+        { label: 'Crimp & Cable Breaking Strain', value: '7×19 Aircraft Wire', pct: 98 },
+        { label: 'Brand Hinge Compatibility', value: 'Steel Line · B&D · Gliderol', pct: 100 },
+      ],
+      specs: [
+        { code: '01', label: 'TORSION WIRE', val: 'High-Carbon Oil-Tempered Spring Steel' },
+        { code: '02', label: 'HINGE MATRIX', val: 'Numbered #1–#6 Galv & Nylon Rollers' },
+        { code: '03', label: 'CALIBRATION', val: 'Interactive Online Spring Estimator' },
+      ],
     },
   ];
 
-  const cylinders = [
+  const torqueSpecs = [
     {
-      label: '1800N',
-      pct: 95,
-      cycleRating: 'Heavy Industrial · Continuous Duty',
-      application: 'Heavy Commercial Roller Shutters & High-Cycle Warehouses',
-      model: 'RDO-1800N PRO',
-    },
-    {
-      label: '1500N',
-      pct: 82,
-      cycleRating: 'Oversized Double Bay · Soft-Start',
-      application: 'Custom Timber, Clad & Oversized Double Sectional Doors',
-      model: 'BD-MP-1500N ($730)',
-    },
-    {
-      label: '1200N',
-      pct: 68,
-      cycleRating: 'Standard Double Bay · WiFi Ready',
-      application: 'Standard Double Insulated Sectional & Panel Lift Doors',
-      model: 'BD-MP-1200N ($690)',
+      label: '800N',
+      forceNum: 800,
+      pct: 48,
+      maxWeight: '110 kg',
+      maxWidth: '3,400 mm',
+      driveType: 'Whisper Belt Drive',
+      cycleRating: 'Single Bay Sectional · Soft-Start',
+      application: 'Single residential sectional & tilt garage doors',
+      model: 'BD-MP-800N',
+      price: '$650 AUD',
+      href: '/product/motor-pack',
     },
     {
       label: '1000N',
-      pct: 54,
-      cycleRating: 'Residential Drum Drive · Dual Remote',
-      application: 'Single & Double Residential Continuous Steel Roller Doors',
-      model: 'BD-RDO-1000N ($590)',
+      forceNum: 1000,
+      pct: 60,
+      maxWeight: '140 kg',
+      maxWidth: '5,000 mm',
+      driveType: 'Side Drum Opener',
+      cycleRating: 'Residential Roller · Dual Remote',
+      application: 'Single & double continuous steel roller doors',
+      model: 'BD-RDO-1000N',
+      price: '$590 AUD',
+      href: '/product/roller-door-opener',
     },
     {
-      label: '800N',
-      pct: 40,
-      cycleRating: 'Single Bay Sectional · Whisper Belt',
-      application: 'Single Bay Residential Sectional & Tilt Garage Doors',
-      model: 'BD-MP-800N ($650)',
+      label: '1200N',
+      forceNum: 1200,
+      pct: 74,
+      maxWeight: '175 kg',
+      maxWidth: '5,600 mm',
+      driveType: 'Smart WiFi Belt Drive',
+      cycleRating: 'Standard Double Bay · WiFi Ready',
+      application: 'Double insulated sectional & architectural doors',
+      model: 'BD-MP-1200N',
+      price: '$690 AUD',
+      href: '/product/motor-pack',
+    },
+    {
+      label: '1500N',
+      forceNum: 1500,
+      pct: 88,
+      maxWeight: '220 kg',
+      maxWidth: '6,200 mm',
+      driveType: 'Heavy-Duty Belt/Chain',
+      cycleRating: 'Oversized Double Bay · High Torque',
+      application: 'Custom timber, clad & oversized double sectional doors',
+      model: 'BD-MP-1500N',
+      price: '$730 AUD',
+      href: '/product/motor-pack',
+    },
+    {
+      label: '1800N',
+      forceNum: 1800,
+      pct: 100,
+      maxWeight: '280 kg',
+      maxWidth: '6,800 mm',
+      driveType: 'Industrial Side Drum',
+      cycleRating: 'Heavy Industrial · Continuous Duty',
+      application: 'Commercial roller shutters & high-cycle warehouses',
+      model: 'RDO-1800N PRO',
+      price: 'Trade Spec',
+      href: '/roller-door-opener-range',
     },
   ];
 
@@ -190,8 +256,13 @@ export function DefiBentoInsightsSection() {
       force: '800N – 1500N',
       price: '$650 – $730 AUD',
       warranty: '7-Year Motor Warranty',
-      highlights: ['Built-in Smart WiFi', 'Infrared Safety Beams', '3 × P2011 + Wall Switch'],
-      href: '/product/motor-pack/',
+      href: '/product/motor-pack',
+      modules: [
+        { code: '01', title: 'Smart WiFi Drive Head', detail: '800N, 1200N or 1500N + Optional Camera' },
+        { code: '02', title: '3 × Handsets + Wall Switch', detail: '3 × Hopping-Code Remotes + Wireless Button' },
+        { code: '03', title: 'Infrared Safety Beams', detail: 'Auto-Reverse Optical Obstacle Protection' },
+        { code: '04', title: '7-Year Warranty', detail: 'Backed by Campbellfield VIC 3061 HQ' },
+      ],
     },
     {
       id: 'roller-kit',
@@ -200,78 +271,96 @@ export function DefiBentoInsightsSection() {
       force: '1000N – 1800N',
       price: '$590 AUD Complete',
       warranty: '5-Year Drive Warranty',
-      highlights: ['Whisper Drum Drive', '2 × P2011 Remotes', 'Wireless Wall Button'],
-      href: '/product/roller-door-opener/',
+      href: '/product/roller-door-opener',
+      modules: [
+        { code: '01', title: 'High-Torque Drum Drive', detail: 'Slim Side-Room Fitment + LED Courtesy Light' },
+        { code: '02', title: '2 × Genuine P2011 Remotes', detail: 'Encrypted Rolling-Code RF Handsets' },
+        { code: '03', title: 'Wireless Wall Button', detail: 'Interior Garage Mount Push-Button Control' },
+        { code: '04', title: 'Soft-Start / Soft-Stop', detail: 'Reduced Curtain Wear & Whisper Operation' },
+      ],
     },
     {
       id: 'gate-kit',
       tabLabel: '03 · BETA & LIFE Gates',
       sku: 'B600 / LIFE-HP4',
       force: '600kg – 1500kg',
-      price: 'Custom Trade Quote',
+      price: 'Custom Trade Spec',
       warranty: 'Commercial Perimeter Rated',
-      highlights: ['Sliding & Swing Drives', 'Italian LIFE & BETA', 'Photocell Integration'],
-      href: '/gate-opener-brands/',
+      href: '/gate-opener-brands',
+      modules: [
+        { code: '01', title: 'BETA & Italian LIFE Drives', detail: 'B600, B550, LIFE HP4, OP2, OP3–OP5, HP6' },
+        { code: '02', title: 'Sliding & Swing Configurations', detail: 'Heavy Rack & Pinion or Linear Articulated Arms' },
+        { code: '03', title: 'Dual Photocell Safety', detail: 'Perimeter Infrared Beam & Crush Prevention' },
+        { code: '04', title: 'Multi-User RF & Keypad', detail: 'Compatible with MINI2-RELAY-03 & P2011' },
+      ],
     },
   ];
 
-  const spaceColumns = [
+  const storefrontMatrixRows = [
     {
-      value: '650',
-      label: 'Motor 800N',
-      fullName: 'Panel Door Motor Pack (800N)',
-      sku: 'BD-MP-800N',
-      href: '/product/motor-pack/',
-      heightPct: 54,
-      gradient: 'from-amber-200/75 via-amber-500/20 to-transparent',
-      capColor: 'bg-amber-300',
+      idx: '01',
+      sku: 'BD-MP-800/1200/1500',
+      name: 'Panel Door Motor Pack (WiFi + Beams + 3 Remotes)',
+      spec: '800N · 1200N · 1500N Variants',
+      stock: '15 IN STOCK',
+      price: '$650 – $730 AUD',
+      pct: 96,
+      href: '/product/motor-pack',
     },
     {
-      value: '690',
-      label: 'Motor 1200N',
-      fullName: 'Panel Door Motor Pack (1200N)',
-      sku: 'BD-MP-1200N',
-      href: '/product/motor-pack/',
-      heightPct: 76,
-      gradient: 'from-[#EC008C]/85 via-rose-500/25 to-transparent',
-      capColor: 'bg-[#EC008C]',
-    },
-    {
-      value: '730',
-      label: 'Motor 1500N',
-      fullName: 'Panel Door Motor Pack (1500N)',
-      sku: 'BD-MP-1500N',
-      href: '/product/motor-pack/',
-      heightPct: 96,
-      gradient: 'from-emerald-200/85 via-teal-400/25 to-transparent',
-      capColor: 'bg-emerald-300',
-    },
-    {
-      value: '590',
-      label: 'Roller RDO',
-      fullName: 'Roller Door Opener (1000N Kit)',
+      idx: '02',
       sku: 'BD-RDO-1000N',
-      href: '/product/roller-door-opener/',
-      heightPct: 50,
-      gradient: 'from-sky-200/75 via-sky-400/20 to-transparent',
-      capColor: 'bg-sky-300',
+      name: 'Roller Door Opener Kit (2 × P2011 + Wall Switch)',
+      spec: '1000N–1800N Drum Drive',
+      stock: '22 IN STOCK',
+      price: '$590 AUD',
+      pct: 84,
+      href: '/product/roller-door-opener',
     },
     {
-      value: '240',
-      label: 'Remote Pack',
-      fullName: 'Receiver & 3 × P2011 Remote Pack',
+      idx: '03',
       sku: 'BD-REM-PACK4',
-      href: '/product/receiver-and-remote-pack/',
-      heightPct: 62,
-      gradient: 'from-slate-200/80 via-slate-400/25 to-transparent',
-      capColor: 'bg-slate-200',
+      name: 'Universal Receiver & 3 × P2011 Remote Upgrade Pack',
+      spec: 'Plug-and-Play Multi-Brand Kit',
+      stock: '30 IN STOCK',
+      price: '$240 AUD',
+      pct: 64,
+      href: '/product/receiver-and-remote-pack',
+    },
+    {
+      idx: '04',
+      sku: 'MINI2-RELAY-03',
+      name: 'External 2-Channel Receiver (12–24V AC/DC)',
+      spec: 'Dual Independent Relay Channels',
+      stock: '40 IN STOCK',
+      price: '$85 AUD',
+      pct: 48,
+      href: '/product/external-2-channel-receiver-mini2-relay-03',
+    },
+    {
+      idx: '05',
+      sku: 'BD-REM-P2011',
+      name: 'Genuine BETA DOORS P2011 Remote Control',
+      spec: '4-Button Encrypted Hopping-Code',
+      stock: '85 IN STOCK',
+      price: '$60 AUD',
+      pct: 38,
+      href: '/product/remote',
     },
   ];
 
-  const selectedHub = melbourneHubs[activeHubIdx] || melbourneHubs[0];
-  const selectedCylinder = cylinders[activeCylinderIdx] || cylinders[2];
+  const selectedBlueprint =
+    architecturalBlueprints[activeBlueprintIdx] || architecturalBlueprints[0];
+  const selectedTorque = torqueSpecs[activeCylinderIdx] || torqueSpecs[2];
   const selectedPack = driveComparisonTabs[activePackTab] || driveComparisonTabs[0];
-  const selectedSpaceCol = spaceColumns[activeBarPage] || spaceColumns[1];
+  const selectedStoreRow = storefrontMatrixRows[activeBarPage] || storefrontMatrixRows[0];
+
+  // Radial gauge circumference calculation (radius = 48 -> C = ~301.6)
+  const gaugeRadius = 48;
+  const gaugeCircumference = 2 * Math.PI * gaugeRadius;
+  const gaugeArcLength = gaugeCircumference * 0.75; // 270 degree sweep
+  const gaugeStrokeOffset =
+    gaugeArcLength - (gaugeArcLength * selectedTorque.pct) / 100;
 
   return (
     <section
@@ -282,8 +371,8 @@ export function DefiBentoInsightsSection() {
     >
       <HudSectionRail
         code="HUD.01"
-        sector="ARCHITECTURAL TELEMETRY // MELBOURNE OPERATIONS"
-        status="11 HUBS ACTIVE"
+        sector="ARCHITECTURAL ENGINEERING // CAD SPECIFICATION MATRIX"
+        status="04 CORE SYSTEMS"
       />
 
       {/* Section Header */}
@@ -302,336 +391,325 @@ export function DefiBentoInsightsSection() {
           </h2>
         </div>
         <p className="text-xs sm:text-sm text-slate-400 max-w-xl leading-relaxed">
-          BETA DOORS replaces fragmented sourcing with integrated doors, whisper-quiet motors, and same-day Melbourne field servicing from our Campbellfield headquarters.
+          BETA DOORS engineers insulated sectional doors, continuous steel roller doors, and whisper-quiet automation drives calibrated for Australian residential and commercial bays.
         </p>
       </div>
 
-      {/* 4-Card Asymmetric HUD Bento Grid (rounded-xl + hud-corner-brackets) */}
+      {/* 4-Card Asymmetric Professional HUD Bento Grid (0px Sharp Geometry) */}
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
-        {/* TOP-LEFT CARD (Col Span 7): Interactive Melbourne 11-Hub Dispatch Radar */}
-        <div className="lg:col-span-7 hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-xl p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden min-h-[360px]">
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(circle at 86% 36%, rgba(236, 0, 140, 0.11) 0%, transparent 55%)',
-            }}
-          />
-
-          {/* Top Visual Area: 98.2% On-Time SLA + Animated HUD Radar Trajectory */}
-          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center min-h-[150px]">
-            <div className="sm:col-span-5 space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#EC008C]/15 border border-[#EC008C]/40 text-[10px] font-mono text-[#ff7ac6]">
-                <span className="w-1.5 h-1.5 bg-[#EC008C] animate-pulse" />
-                <span>{selectedHub.sla}</span>
-              </div>
-              <div className="text-4xl sm:text-5xl font-light text-white tracking-tight tabular-nums">
-                98.2% <span className="text-[#EC008C]">.</span>
-              </div>
-              <div className="text-[11px] font-mono text-slate-400">
-                {selectedHub.coord}
-              </div>
+        {/* ===================================================================
+            CARD 01 (Col Span 7): Interactive Architectural System Visualizer
+           =================================================================== */}
+        <div className="lg:col-span-7 hud-corner-brackets brand-animated-border hud-technical-grid bg-[#0B0C10] border border-white/[0.09] rounded-none p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden">
+          {/* Top HUD Header Strip */}
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-white/[0.08] text-[10px] font-mono uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 text-[#ff7ac6] font-bold">
+              <Layers className="w-3.5 h-3.5 text-[#EC008C]" />
+              <span>ARCH.BLUEPRINT // {selectedBlueprint.code}</span>
             </div>
-
-            {/* Animated HUD Orbital Radar SVG */}
-            <div className="sm:col-span-7 relative h-40">
-              <svg viewBox="0 0 360 140" className="w-full h-full">
-                {/* HUD Grid Crosshairs */}
-                <line
-                  x1="20"
-                  y1="70"
-                  x2="340"
-                  y2="70"
-                  stroke="rgba(255,255,255,0.06)"
-                  strokeWidth="1"
-                  className="hud-rail-dashed"
-                />
-                <line
-                  x1="200"
-                  y1="8"
-                  x2="200"
-                  y2="132"
-                  stroke="rgba(255,255,255,0.06)"
-                  strokeWidth="1"
-                  className="hud-rail-dashed"
-                />
-
-                <ellipse
-                  cx="200"
-                  cy="72"
-                  rx="138"
-                  ry="44"
-                  fill="none"
-                  stroke="rgba(255,255,255,0.14)"
-                  strokeWidth="1"
-                  transform="rotate(-12 200 72)"
-                  className="hud-rail-dashed"
-                />
-                <ellipse
-                  cx="200"
-                  cy="72"
-                  rx="138"
-                  ry="44"
-                  fill="none"
-                  stroke="#EC008C"
-                  strokeWidth="1.5"
-                  transform="rotate(-12 200 72)"
-                  className="hud-animated-trace"
-                />
-                <ellipse
-                  cx="205"
-                  cy="72"
-                  rx="92"
-                  ry="28"
-                  fill="none"
-                  stroke="rgba(236,0,140,0.32)"
-                  strokeWidth="1.2"
-                  transform="rotate(-12 205 72)"
-                />
-
-                {/* Animated HUD Vector Line from HQ (225,46) to Selected Suburb */}
-                <line
-                  x1="225"
-                  y1="46"
-                  x2={selectedHub.nodeX}
-                  y2={selectedHub.nodeY}
-                  stroke="#EC008C"
-                  strokeWidth="1.5"
-                  strokeDasharray="4 3"
-                />
-
-                {/* HQ Node */}
-                <circle cx="225" cy="46" r="4" fill="#EC008C" />
-                <rect
-                  x="188"
-                  y="18"
-                  width="72"
-                  height="18"
-                  rx="3"
-                  fill="#14161C"
-                  stroke="rgba(236,0,140,0.55)"
-                />
-                <text
-                  x="224"
-                  y="30"
-                  textAnchor="middle"
-                  fill="#F8FAFC"
-                  fontSize="8"
-                  fontFamily="monospace"
-                >
-                  HQ VIC-3061
-                </text>
-
-                {/* Dynamic Active Target Reticle */}
-                <circle
-                  cx={selectedHub.nodeX}
-                  cy={selectedHub.nodeY}
-                  r="4.5"
-                  fill="#38BDF8"
-                />
-                <circle
-                  cx={selectedHub.nodeX}
-                  cy={selectedHub.nodeY}
-                  r="11"
-                  fill="none"
-                  stroke="#38BDF8"
-                  strokeWidth="1"
-                  strokeDasharray="5 3"
-                  className="hud-reticle-ring"
-                />
-                <rect
-                  x={Math.min(280, Math.max(10, selectedHub.nodeX - 34))}
-                  y={Math.max(4, selectedHub.nodeY - 26)}
-                  width="68"
-                  height="17"
-                  rx="3"
-                  fill="#181A20"
-                  stroke="rgba(56,189,248,0.55)"
-                />
-                <text
-                  x={Math.min(314, Math.max(44, selectedHub.nodeX))}
-                  y={Math.max(15, selectedHub.nodeY - 15)}
-                  textAnchor="middle"
-                  fill="#F8FAFC"
-                  fontSize="7.5"
-                  fontFamily="monospace"
-                >
-                  {selectedHub.postcode}
-                </text>
-              </svg>
-            </div>
+            <span className="text-slate-400">{selectedBlueprint.specCode}</span>
           </div>
 
-          {/* Interactive Hub Switcher Tabs (rounded-md with smooth motion indicator) */}
-          <div className="relative z-10 my-3 space-y-2.5">
-            <div className="flex flex-wrap items-center gap-1.5">
-              {melbourneHubs.map((hub, idx) => {
-                const isActive = activeHubIdx === idx;
-                return (
-                  <button
-                    key={hub.postcode}
-                    type="button"
-                    onClick={() => setActiveHubIdx(idx)}
-                    className={`relative px-2.5 py-1.5 rounded-md text-[11px] font-mono transition-all cursor-pointer ${
-                      isActive
-                        ? 'bg-[#EC008C] text-white font-semibold shadow-[0_0_16px_rgba(236,0,140,0.4)] keep-white-text'
-                        : 'bg-white/[0.04] hover:bg-white/[0.09] border border-white/[0.08] text-slate-300'
-                    }`}
-                  >
-                    {hub.name} · {hub.postcode.replace('VIC ', '')}
-                  </button>
-                );
-              })}
-            </div>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedHub.postcode}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.18 }}
-                className="flex flex-wrap items-center justify-between gap-2 py-2 px-3 rounded-lg bg-[#08090C] border border-white/[0.08] text-xs"
-              >
-                <div className="flex items-center gap-2 text-slate-200">
-                  <MapPin className="w-3.5 h-3.5 text-[#EC008C] shrink-0" />
-                  <span className="font-semibold text-white">
-                    {selectedHub.name}
-                  </span>
-                  <span className="text-slate-400 hidden sm:inline">
-                    — {selectedHub.corridor}
-                  </span>
-                </div>
-                <Link
-                  href={selectedHub.href}
-                  className="inline-flex items-center gap-1 text-[11px] font-mono font-semibold text-[#ff7ac6] hover:text-white transition-colors"
-                >
-                  <span>DISPATCH PAGE</span>
-                  <ArrowUpRight className="w-3 h-3" />
-                </Link>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Bottom Title & Description */}
-          <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-3 pt-2.5 border-t border-white/[0.06]">
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-white">
-                Same-Day Melbourne Dispatch
-              </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Rapid garage door, spring, cable, and commercial shutter repairs across 11 Melbourne corridors.
-              </p>
-            </div>
-            <Link
-              href="/services/"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-xs font-mono font-medium text-white shrink-0 transition-colors"
-            >
-              <span>ALL 11 HUBS</span>
-              <ArrowRight className="w-3 h-3 text-[#EC008C]" />
-            </Link>
-          </div>
-        </div>
-
-        {/* TOP-RIGHT CARD (Col Span 5): Interactive 5 Vertical Telemetry Force Bars */}
-        <div className="lg:col-span-5 hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-xl p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden min-h-[360px]">
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(circle at 20% 40%, rgba(236, 0, 140, 0.1) 0%, transparent 55%)',
-            }}
-          />
-
-          <div className="relative z-10 flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-slate-400">
-            <span>TORQUE.CALIBRATION // N-METRIC</span>
-            <span className="text-[#ff7ac6]">{selectedCylinder.cycleRating}</span>
-          </div>
-
-          {/* 5 Interactive HUD Force Columns (rounded-md instead of bubbly pills) */}
-          <div className="relative z-10 flex items-end justify-center gap-3 sm:gap-5 h-44 pt-4 px-2">
-            {cylinders.map((cyl, idx) => {
-              const isSelected = activeCylinderIdx === idx;
+          {/* Interactive 4-System Blueprint Selector Tabs with Smooth Framer Motion Highlight */}
+          <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-1.5 my-3.5">
+            {architecturalBlueprints.map((bp, idx) => {
+              const isActive = activeBlueprintIdx === idx;
               return (
                 <button
-                  key={cyl.label}
+                  key={bp.code}
                   type="button"
-                  onClick={() => setActiveCylinderIdx(idx)}
-                  onMouseEnter={() => setActiveCylinderIdx(idx)}
-                  aria-label={`Inspect ${cyl.label} lifting force`}
-                  className="flex flex-col items-center justify-end h-full w-12 group cursor-pointer focus:outline-none"
+                  onClick={() => setActiveBlueprintIdx(idx)}
+                  className={`relative px-3 py-2.5 rounded-none text-[10px] font-mono font-semibold text-left transition-colors cursor-pointer border overflow-hidden ${
+                    isActive
+                      ? 'border-[#EC008C] text-white keep-white-text'
+                      : 'bg-[#08090C] hover:bg-white/[0.05] border-white/[0.1] text-slate-300'
+                  }`}
                 >
-                  <motion.div
-                    initial={false}
-                    animate={{ height: `${cyl.pct}%` }}
-                    transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-                    className={`w-full rounded-t-md border-x border-t relative flex flex-col items-center pt-2 transition-colors duration-200 ${
-                      isSelected
-                        ? 'bg-gradient-to-b from-[#EC008C]/65 via-[#EC008C]/20 to-transparent border-[#EC008C] shadow-[0_0_20px_rgba(236,0,140,0.35)]'
-                        : 'bg-gradient-to-b from-white/25 via-white/10 to-transparent border-white/20 group-hover:border-white/40'
-                    }`}
-                  >
-                    <span
-                      className={`w-5 h-1 rounded-xs transition-all ${
-                        isSelected
-                          ? 'bg-white shadow-[0_0_8px_#fff]'
-                          : 'bg-white/60'
-                      }`}
+                  {isActive && (
+                    <motion.span
+                      layoutId="eng-blueprint-active-pill"
+                      transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                      className="pointer-events-none absolute inset-0 bg-[#EC008C] z-0"
                     />
-                  </motion.div>
-                  <span
-                    className={`mt-2 text-[11px] font-mono tabular-nums transition-colors ${
-                      isSelected
-                        ? 'text-[#ff7ac6] font-bold'
-                        : 'text-slate-400 group-hover:text-slate-200'
-                    }`}
-                  >
-                    {cyl.label}
-                  </span>
+                  )}
+                  <span className="relative z-10 block truncate">{bp.tabLabel}</span>
                 </button>
               );
             })}
           </div>
 
-          {/* Selected Force Spec Readout Panel */}
+          {/* Center 16:9 Studio Visual + Calibrated Engineering Capacity Meters */}
           <AnimatePresence mode="wait">
             <motion.div
-              key={selectedCylinder.label}
-              initial={{ opacity: 0, y: 4 }}
+              key={selectedBlueprint.code}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.18 }}
-              className="relative z-10 my-2.5 p-3 rounded-lg bg-[#08090C] border border-white/[0.08] flex items-center justify-between gap-3"
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className="relative z-10 grid grid-cols-1 sm:grid-cols-12 gap-4 items-stretch my-1"
             >
-              <div className="space-y-0.5">
-                <div className="text-[11px] font-mono text-[#ff7ac6] font-semibold">
-                  [{selectedCylinder.label}] · {selectedCylinder.model}
+              {/* Left Column (5 Cols): Real 16:9 Studio Hardware Visual + Metric Callout */}
+              <div className="sm:col-span-5 flex flex-col justify-between bg-[#08090C] border border-white/[0.09] p-2.5 space-y-2.5">
+                <div className="relative aspect-video w-full overflow-hidden border border-white/[0.08] bg-[#12141A]">
+                  <ProductTechnicalArtwork
+                    type={selectedBlueprint.artType}
+                    title={selectedBlueprint.name}
+                    className="w-full h-full"
+                  />
                 </div>
-                <div className="text-xs text-slate-300">
-                  {selectedCylinder.application}
+
+                <div className="flex items-center justify-between gap-2 px-1 pt-0.5">
+                  <div>
+                    <div className="text-[9px] font-mono text-slate-400 uppercase tracking-wider">
+                      PRIMARY RATING
+                    </div>
+                    <div className="text-xl sm:text-2xl font-bold font-mono text-white tabular-nums leading-tight">
+                      {selectedBlueprint.metric}
+                    </div>
+                  </div>
+                  <span className="px-2 py-1 bg-[#EC008C]/15 border border-[#EC008C]/45 text-[9.5px] font-mono font-bold text-[#ff7ac6] shrink-0">
+                    {selectedBlueprint.unit}
+                  </span>
+                </div>
+              </div>
+
+              {/* Right Column (7 Cols): 3 Animated Engineering Meters + 3 Clean Spec Rows */}
+              <div className="sm:col-span-7 flex flex-col justify-between gap-2.5">
+                {/* 3 Horizontal Telemetry Meters */}
+                <div className="p-3 bg-[#08090C] border border-white/[0.09] space-y-2.5">
+                  {selectedBlueprint.meters.map((meter) => (
+                    <div key={meter.label} className="space-y-1">
+                      <div className="flex items-center justify-between text-[10px] font-mono">
+                        <span className="text-slate-300">{meter.label}</span>
+                        <span className="text-[#ff7ac6] font-bold tabular-nums">
+                          {meter.value}
+                        </span>
+                      </div>
+                      <div className="h-1.5 w-full bg-white/[0.07] overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${meter.pct}%` }}
+                          transition={{ duration: 0.45, ease: 'easeOut' }}
+                          className="h-full bg-gradient-to-r from-[#EC008C] to-[#ff7ac6]"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* 3 Non-Wrapping Specification Rows */}
+                <div className="grid grid-cols-1 gap-1.5">
+                  {selectedBlueprint.specs.map((row) => (
+                    <div
+                      key={row.code}
+                      className="flex items-center justify-between gap-3 px-3 py-1.5 bg-[#08090C] border border-white/[0.08] text-xs"
+                    >
+                      <span className="text-[10px] font-mono font-bold text-[#ff7ac6] shrink-0">
+                        [{row.code}] {row.label}
+                      </span>
+                      <span className="text-[11px] text-slate-200 font-medium text-right truncate">
+                        {row.val}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
 
-          <div className="relative z-10 text-left pt-2 border-t border-white/[0.06] space-y-1">
-            <h3 className="text-base sm:text-lg font-semibold text-white">
-              Lifting Force Spectrum
-            </h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Select a torque rating above to match residential panel doors up to 1800N commercial shutters.
-            </p>
+          {/* Bottom Title & Action */}
+          <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3.5 mt-3 border-t border-white/[0.08]">
+            <div>
+              <h3 className="text-base sm:text-lg font-semibold text-white">
+                {selectedBlueprint.name}
+              </h3>
+              <p className="text-xs text-slate-400">
+                {selectedBlueprint.cycle} — engineered for smooth, low-noise architectural operation.
+              </p>
+            </div>
+            <Link
+              href={selectedBlueprint.href}
+              className="keep-white-text inline-flex items-center gap-1.5 px-4 py-2 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-xs font-mono font-bold text-white shrink-0 transition-colors"
+            >
+              <span>FULL TECHNICAL SHEET</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
 
-        {/* BOTTOM-LEFT CARD (Col Span 5): Interactive 3-Tab Drive Comparison Module */}
-        <div className="lg:col-span-5 hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-xl p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden min-h-[340px]">
-          <div className="space-y-3">
-            {/* Interactive 3-Tab Segmented Switcher */}
+        {/* ===================================================================
+            CARD 02 (Col Span 5): Interactive Motor Torque & Bay Calibrator
+           =================================================================== */}
+        <div className="lg:col-span-5 hud-corner-brackets brand-animated-border hud-technical-grid bg-[#0B0C10] border border-white/[0.09] rounded-none p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden">
+          <div className="relative z-10 flex items-center justify-between pb-3 border-b border-white/[0.08] text-[10px] font-mono uppercase tracking-wider text-slate-400">
+            <span>TORQUE.CALIBRATOR // N-METRIC</span>
+            <span className="text-[#ff7ac6] font-bold">{selectedTorque.cycleRating}</span>
+          </div>
+
+          {/* 5 Interactive Torque Selector Tabs with Smooth Sliding Indicator */}
+          <div className="relative z-10 grid grid-cols-5 gap-1.5 my-3.5">
+            {torqueSpecs.map((item, idx) => {
+              const isSelected = activeCylinderIdx === idx;
+              return (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => setActiveCylinderIdx(idx)}
+                  aria-label={`Inspect ${item.label} lifting force`}
+                  className={`relative py-2 rounded-none text-[11px] font-mono font-bold tabular-nums transition-colors cursor-pointer border overflow-hidden ${
+                    isSelected
+                      ? 'border-[#EC008C] text-white keep-white-text'
+                      : 'bg-[#08090C] hover:bg-white/[0.05] border-white/[0.1] text-slate-300'
+                  }`}
+                >
+                  {isSelected && (
+                    <motion.span
+                      layoutId="torque-selector-pill"
+                      transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                      className="pointer-events-none absolute inset-0 bg-[#EC008C] z-0"
+                    />
+                  )}
+                  <span className="relative z-10">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Center Precision SVG Radial Torque Gauge + 4-Cell Engineering Spec Readout */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedTorque.label}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              transition={{ duration: 0.18 }}
+              className="relative z-10 grid grid-cols-1 sm:grid-cols-12 gap-3.5 items-center my-1"
+            >
+              {/* Radial Tachometer SVG Gauge */}
+              <div className="sm:col-span-5 bg-[#08090C] border border-white/[0.09] p-3 flex flex-col items-center justify-center">
+                <div className="relative w-32 h-32 flex items-center justify-center">
+                  <svg viewBox="0 0 120 120" className="w-full h-full -rotate-[225deg]">
+                    {/* Background Track Arc (270 deg) */}
+                    <circle
+                      cx="60"
+                      cy="60"
+                      r={gaugeRadius}
+                      fill="none"
+                      stroke="rgba(148, 163, 184, 0.18)"
+                      strokeWidth="8"
+                      strokeDasharray={`${gaugeArcLength} ${gaugeCircumference}`}
+                      strokeLinecap="butt"
+                    />
+                    {/* Active Torque Arc */}
+                    <motion.circle
+                      cx="60"
+                      cy="60"
+                      r={gaugeRadius}
+                      fill="none"
+                      stroke="#EC008C"
+                      strokeWidth="8"
+                      strokeDasharray={`${gaugeArcLength} ${gaugeCircumference}`}
+                      initial={{ strokeDashoffset: gaugeArcLength }}
+                      animate={{ strokeDashoffset: gaugeStrokeOffset }}
+                      transition={{ duration: 0.45, ease: 'easeOut' }}
+                      strokeLinecap="butt"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <span className="text-[9px] font-mono uppercase tracking-widest text-slate-400">
+                      FORCE
+                    </span>
+                    <span className="text-xl font-bold font-mono text-white tabular-nums">
+                      {selectedTorque.label}
+                    </span>
+                    <span className="text-[9.5px] font-mono text-[#ff7ac6] font-semibold">
+                      {selectedTorque.pct}% LOAD
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 4-Cell Calibrated Readout Grid */}
+              <div className="sm:col-span-7 grid grid-cols-2 gap-2">
+                <div className="p-2.5 bg-[#08090C] border border-white/[0.08]">
+                  <div className="text-[9px] font-mono text-slate-400 uppercase">
+                    MAX DOOR MASS
+                  </div>
+                  <div className="text-sm font-bold font-mono text-white tabular-nums mt-0.5">
+                    {selectedTorque.maxWeight}
+                  </div>
+                </div>
+                <div className="p-2.5 bg-[#08090C] border border-white/[0.08]">
+                  <div className="text-[9px] font-mono text-slate-400 uppercase">
+                    MAX BAY WIDTH
+                  </div>
+                  <div className="text-sm font-bold font-mono text-white tabular-nums mt-0.5">
+                    {selectedTorque.maxWidth}
+                  </div>
+                </div>
+                <div className="p-2.5 bg-[#08090C] border border-white/[0.08]">
+                  <div className="text-[9px] font-mono text-slate-400 uppercase">
+                    DRIVE SYSTEM
+                  </div>
+                  <div className="text-xs font-semibold text-white truncate mt-0.5">
+                    {selectedTorque.driveType}
+                  </div>
+                </div>
+                <div className="p-2.5 bg-[#08090C] border border-white/[0.08]">
+                  <div className="text-[9px] font-mono text-slate-400 uppercase">
+                    MODEL &amp; PRICE
+                  </div>
+                  <div className="text-xs font-bold font-mono text-[#ff7ac6] truncate mt-0.5">
+                    {selectedTorque.price}
+                  </div>
+                </div>
+
+                <div className="col-span-2 px-3 py-2 bg-[#08090C] border border-white/[0.08] flex items-center justify-between gap-2 text-[11px]">
+                  <span className="text-slate-300 truncate">
+                    {selectedTorque.application}
+                  </span>
+                  <Link
+                    href={selectedTorque.href}
+                    className="text-[#ff7ac6] hover:text-white font-mono font-bold shrink-0 inline-flex items-center gap-0.5"
+                  >
+                    <span>SPEC</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="relative z-10 text-left pt-3.5 mt-3 border-t border-white/[0.08] flex items-center justify-between gap-3">
+            <div>
+              <h3 className="text-base sm:text-lg font-semibold text-white">
+                Lifting Force &amp; Torque Calibrator
+              </h3>
+              <p className="text-xs text-slate-400">
+                Select a Newton rating above to match door weight and bay width.
+              </p>
+            </div>
+            <span className="px-2.5 py-1 bg-[#08090C] border border-white/15 text-[10px] font-mono font-bold text-[#ff7ac6] shrink-0">
+              {selectedTorque.model}
+            </span>
+          </div>
+        </div>
+
+        {/* ===================================================================
+            CARD 03 (Col Span 5): Complete Automation Kit Architecture
+           =================================================================== */}
+        <div className="lg:col-span-5 hud-corner-brackets brand-animated-border hud-technical-grid bg-[#0B0C10] border border-white/[0.09] rounded-none p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden">
+          <div className="space-y-3.5">
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08] text-[10px] font-mono uppercase tracking-wider text-slate-400">
+              <span>KIT.ARCHITECTURE // INCLUSIONS</span>
+              <span className="text-emerald-400 font-bold">{selectedPack.warranty}</span>
+            </div>
+
+            {/* Interactive 3-Tab Segmented Switcher with Sliding Pill */}
             <div
               role="tablist"
               aria-label="Automation drive comparison tabs"
-              className="grid grid-cols-3 gap-1 p-1 rounded-lg bg-[#08090C] border border-white/[0.08]"
+              className="grid grid-cols-3 gap-1.5"
             >
               {driveComparisonTabs.map((tab, idx) => {
                 const isActive = activePackTab === idx;
@@ -642,169 +720,182 @@ export function DefiBentoInsightsSection() {
                     role="tab"
                     aria-selected={isActive}
                     onClick={() => setActivePackTab(idx)}
-                    className={`py-1.5 px-2 rounded-md text-[10px] font-mono font-semibold transition-all cursor-pointer truncate ${
+                    className={`relative py-2 px-2 rounded-none text-[10px] font-mono font-semibold transition-colors cursor-pointer border overflow-hidden truncate ${
                       isActive
-                        ? 'bg-[#EC008C] text-white shadow-sm keep-white-text'
-                        : 'text-slate-400 hover:text-white'
+                        ? 'border-[#EC008C] text-white keep-white-text'
+                        : 'bg-[#08090C] hover:bg-white/[0.05] border-white/[0.1] text-slate-300'
                     }`}
                   >
-                    {tab.tabLabel}
+                    {isActive && (
+                      <motion.span
+                        layoutId="kit-selector-pill"
+                        transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                        className="pointer-events-none absolute inset-0 bg-[#EC008C] z-0"
+                      />
+                    )}
+                    <span className="relative z-10">{tab.tabLabel}</span>
                   </button>
                 );
               })}
             </div>
 
-            {/* Animated Active Drive Tab Detail Card */}
+            {/* Animated 2x2 Hardware Inclusion Matrix */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedPack.id}
-                initial={{ opacity: 0, y: 6 }}
+                initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.2 }}
-                className="p-4 rounded-lg bg-[#08090C] border border-white/[0.08] space-y-3"
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ duration: 0.18 }}
+                className="space-y-3"
               >
-                <div className="flex items-center justify-between gap-2 border-b border-white/[0.06] pb-2 text-[10px] font-mono">
-                  <span className="text-slate-400">SKU // {selectedPack.sku}</span>
-                  <span className="text-emerald-400">{selectedPack.warranty}</span>
-                </div>
-
-                <div className="flex items-baseline justify-between gap-2">
+                <div className="p-3.5 bg-[#08090C] border border-white/[0.09] flex items-center justify-between gap-3">
                   <div>
-                    <div className="text-2xl sm:text-3xl font-semibold text-white tabular-nums">
+                    <div className="text-[10px] font-mono text-slate-400">
+                      SKU // {selectedPack.sku}
+                    </div>
+                    <div className="text-xl sm:text-2xl font-bold font-mono text-white tabular-nums">
                       {selectedPack.force}
                     </div>
-                    <div className="text-xs font-mono text-[#ff7ac6] tabular-nums mt-0.5">
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs font-mono font-bold text-[#ff7ac6] tabular-nums">
                       {selectedPack.price}
                     </div>
+                    <Link
+                      href={selectedPack.href}
+                      className="keep-white-text mt-1 inline-flex items-center gap-1 px-3 py-1 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-white text-[10px] font-mono font-bold transition-colors"
+                    >
+                      <span>INSPECT KIT</span>
+                      <ArrowUpRight className="w-3 h-3" />
+                    </Link>
                   </div>
-                  <Link
-                    href={selectedPack.href}
-                    className="keep-white-text inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs font-semibold transition-colors"
-                  >
-                    <span>Inspect</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </Link>
                 </div>
 
-                {/* Clean Inline Unboxed Spec Bar */}
-                <div className="pt-2 border-t border-white/[0.06] flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[10px] font-mono text-slate-300">
-                  {selectedPack.highlights.map((h, i) => (
-                    <React.Fragment key={h}>
-                      {i > 0 && <span className="text-[#EC008C]">/</span>}
-                      <span>{h}</span>
-                    </React.Fragment>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {selectedPack.modules.map((mod) => (
+                    <div
+                      key={mod.code}
+                      className="p-2.5 bg-[#08090C] border border-white/[0.08] space-y-0.5"
+                    >
+                      <div className="text-[10px] font-mono font-bold text-[#ff7ac6]">
+                        [{mod.code}] {mod.title}
+                      </div>
+                      <div className="text-[11px] text-slate-300 leading-snug">
+                        {mod.detail}
+                      </div>
+                    </div>
                   ))}
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="text-left pt-4 border-t border-white/[0.06] space-y-1">
+          <div className="text-left pt-3.5 mt-3 border-t border-white/[0.08] space-y-0.5">
             <h3 className="text-base sm:text-lg font-semibold text-white">
-              Your Automation Drive Options
+              Complete Automation Kit Architecture
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Switch tabs above to compare sectional WiFi motor packs, roller door openers, and commercial gate systems.
+            <p className="text-xs text-slate-400">
+              Every BETA DOORS drive kit includes matched remotes, safety protection, and Australian warranty support.
             </p>
           </div>
         </div>
 
-        {/* BOTTOM-RIGHT CARD (Col Span 7): Interactive 5-Column Storefront Matrix */}
-        <div className="lg:col-span-7 hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-xl p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden min-h-[340px]">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-white">
-                BETA Space · Storefront Matrix
-              </h3>
-              <p className="text-xs text-slate-400">
-                Select any telemetry column below to inspect server-validated AUD pricing and live inventory.
-              </p>
-            </div>
-            <Link
-              href={selectedSpaceCol.href}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-xs font-mono font-medium text-white shrink-0 transition-colors"
-            >
-              <span>
-                {selectedSpaceCol.label}: ${selectedSpaceCol.value} AUD
-              </span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#EC008C]" />
-            </Link>
+        {/* ===================================================================
+            CARD 04 (Col Span 7): Direct Storefront 5-SKU Specification Matrix
+           =================================================================== */}
+        <div className="lg:col-span-7 hud-corner-brackets brand-animated-border hud-technical-grid bg-[#0B0C10] border border-white/[0.09] rounded-none p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden">
+          <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-white/[0.08] text-[10px] font-mono uppercase tracking-wider">
+            <span className="text-[#ff7ac6] font-bold">
+              STOREFRONT.MATRIX // 05 VERIFIED SKUS
+            </span>
+            <span className="text-slate-400">
+              SERVER-VALIDATED AUD PRICING · GST INCLUSIVE
+            </span>
           </div>
 
-          {/* 5 Interactive Vertical Columns with Spring Animation (rounded-t-md) */}
-          <div className="flex items-end justify-center gap-3.5 sm:gap-7 h-38 my-4 px-2">
-            {spaceColumns.map((col, idx) => {
+          {/* 5-Row Interactive Storefront Telemetry Table */}
+          <div className="my-3 space-y-1.5">
+            {storefrontMatrixRows.map((row, idx) => {
               const isSelected = activeBarPage === idx;
               return (
-                <button
-                  key={col.label}
-                  type="button"
-                  onClick={() => setActiveBarPage(idx)}
+                <div
+                  key={row.sku}
                   onMouseEnter={() => setActiveBarPage(idx)}
-                  className="flex flex-col items-center justify-end h-full w-13 sm:w-16 group cursor-pointer focus:outline-none"
+                  onClick={() => setActiveBarPage(idx)}
+                  className={`relative p-2.5 sm:px-3.5 sm:py-2.5 border transition-colors cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 overflow-hidden ${
+                    isSelected
+                      ? 'border-[#EC008C] bg-[#08090C]'
+                      : 'border-white/[0.08] bg-[#08090C]/80 hover:border-white/20'
+                  }`}
                 >
-                  <span
-                    className={`text-[11px] font-mono tabular-nums mb-1.5 transition-colors ${
-                      isSelected
-                        ? 'text-white font-semibold'
-                        : 'text-slate-400 group-hover:text-slate-200'
-                    }`}
-                  >
-                    ${col.value}
-                  </span>
-                  <motion.div
-                    initial={false}
-                    animate={{ height: `${col.heightPct}%` }}
-                    transition={{ type: 'spring', stiffness: 250, damping: 22 }}
-                    className={`w-full rounded-t-md bg-gradient-to-b ${col.gradient} border-x border-t relative transition-colors duration-200 ${
-                      isSelected
-                        ? 'border-white/50 shadow-[0_0_20px_rgba(236,0,140,0.28)]'
-                        : 'border-white/15 opacity-80 group-hover:opacity-100'
-                    }`}
-                  >
-                    <div
-                      className={`w-full h-1 rounded-t-md ${col.capColor}`}
+                  {isSelected && (
+                    <motion.span
+                      layoutId="storefront-row-highlight"
+                      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                      className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-[#EC008C]"
                     />
-                  </motion.div>
-                  <span
-                    className={`mt-2 text-[10px] font-mono truncate max-w-full transition-colors ${
-                      isSelected
-                        ? 'text-[#ff7ac6] font-semibold'
-                        : 'text-slate-400 group-hover:text-slate-200'
-                    }`}
-                  >
-                    {col.label}
-                  </span>
-                </button>
+                  )}
+
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <div className="flex items-center gap-2 text-xs">
+                      <span className="text-[10px] font-mono font-bold text-[#ff7ac6] shrink-0">
+                        [{row.idx}] {row.sku}
+                      </span>
+                      <span className="font-semibold text-white truncate">
+                        {row.name}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <div className="w-28 sm:w-36 h-1 bg-white/[0.08] overflow-hidden shrink-0">
+                        <div
+                          style={{ width: `${row.pct}%` }}
+                          className="h-full bg-[#EC008C]"
+                        />
+                      </div>
+                      <span className="text-[10px] font-mono text-slate-400 truncate">
+                        {row.spec}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                    <span className="px-2 py-0.5 bg-emerald-950/60 border border-emerald-500/40 text-[9.5px] font-mono font-bold text-emerald-300">
+                      {row.stock}
+                    </span>
+                    <span className="text-xs sm:text-sm font-mono font-bold text-white tabular-nums min-w-[105px] text-right">
+                      {row.price}
+                    </span>
+                    <Link
+                      href={row.href}
+                      className="keep-white-text w-7 h-7 bg-[#EC008C] hover:bg-[#d4007d] text-white flex items-center justify-center transition-colors shrink-0"
+                      aria-label={`Inspect ${row.name}`}
+                    >
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
               );
             })}
           </div>
 
-          {/* 5-Segment Pager Indicator + Selected SKU Readout */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-white/[0.06]">
-            <div className="text-xs text-slate-300 font-mono">
-              <span className="text-[#EC008C]">●</span> {selectedSpaceCol.sku} —{' '}
-              <span className="text-white font-sans font-medium">
-                {selectedSpaceCol.fullName}
-              </span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-white/[0.08]">
+            <div>
+              <h3 className="text-base sm:text-lg font-semibold text-white">
+                Direct Storefront Hardware Matrix
+              </h3>
+              <p className="text-xs text-slate-400">
+                Active selection: <strong className="text-white">{selectedStoreRow.name}</strong> ({selectedStoreRow.price})
+              </p>
             </div>
-
-            <div className="flex items-center gap-1.5">
-              {spaceColumns.map((col, idx) => (
-                <button
-                  key={col.sku}
-                  type="button"
-                  onClick={() => setActiveBarPage(idx)}
-                  aria-label={`Select storefront bar ${idx + 1}`}
-                  className={`h-1 rounded-xs transition-all cursor-pointer ${
-                    activeBarPage === idx
-                      ? 'w-7 bg-[#EC008C]'
-                      : 'w-4 bg-white/20 hover:bg-white/40'
-                  }`}
-                />
-              ))}
-            </div>
+            <Link
+              href={selectedStoreRow.href}
+              className="keep-white-text inline-flex items-center gap-1.5 px-4 py-2 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-xs font-mono font-bold text-white shrink-0 transition-colors"
+            >
+              <span>BUY / INSPECT SKU</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
       </div>
@@ -814,7 +905,7 @@ export function DefiBentoInsightsSection() {
 
 /**
  * Product-Family Navigation Grid (6 Core Categories) with Interactive HUD Filter Tabs,
- * Wide Viewport Layout, Precision Radii (rounded-xl), and Clean Technical Headers (Zero Bloated Pills)
+ * Wide Viewport Layout, Pure 0px Sharp HUD Geometry, and Clean Technical Headers
  */
 export function ProductFamilyGridSection() {
   const { brand } = useBetaDoors();
@@ -957,12 +1048,12 @@ export function ProductFamilyGridSection() {
           </p>
         </div>
 
-        {/* Interactive HUD Category Filter Bar with Animated Tab Highlight */}
+        {/* Interactive HUD Category Filter Bar (0px Sharp) */}
         <div className="flex flex-wrap items-center gap-2">
           <div
             role="tablist"
             aria-label="Filter product families"
-            className="inline-flex flex-wrap items-center gap-1 p-1 rounded-lg bg-[#0B0C10] border border-white/[0.09]"
+            className="inline-flex flex-wrap items-center gap-1 p-1 rounded-none bg-[#0B0C10] border border-white/[0.09]"
           >
             {filterTabs.map((tab) => {
               const isActive = activeCategoryFilter === tab.id;
@@ -973,7 +1064,7 @@ export function ProductFamilyGridSection() {
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => setActiveCategoryFilter(tab.id)}
-                  className={`relative px-3 py-1.5 rounded-md text-[10px] font-mono font-semibold tracking-wider transition-colors cursor-pointer ${
+                  className={`relative px-3 py-1.5 rounded-none text-[10px] font-mono font-semibold tracking-wider transition-colors cursor-pointer ${
                     isActive
                       ? 'bg-[#EC008C] text-white shadow-sm keep-white-text'
                       : 'text-slate-400 hover:text-white'
@@ -988,7 +1079,7 @@ export function ProductFamilyGridSection() {
 
           <Link
             href="/products/"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-white/[0.05] hover:bg-white/[0.12] border border-white/15 text-xs font-mono font-semibold text-white transition-all whitespace-nowrap"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-none bg-[#0B0C10] hover:bg-white/[0.08] border border-white/15 text-xs font-mono font-semibold text-white transition-all whitespace-nowrap"
           >
             <span>ALL CATEGORIES</span>
             <ArrowRight className="w-3.5 h-3.5 text-[#EC008C]" />
@@ -996,7 +1087,7 @@ export function ProductFamilyGridSection() {
         </div>
       </div>
 
-      {/* Responsive Architectural Card Grid (rounded-xl outer, rounded-lg inner image, zero bulky pills) */}
+      {/* Responsive Architectural Card Grid (0px Sharp HUD Geometry) */}
       <motion.div
         layout
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
@@ -1013,11 +1104,22 @@ export function ProductFamilyGridSection() {
             >
               <Link
                 href={fam.href}
-                className="group hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-xl overflow-hidden flex flex-col h-full transition-all duration-300 hover:-translate-y-1"
+                className="group hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-none overflow-hidden flex flex-col h-full transition-all duration-300 hover:-translate-y-1"
               >
-                {/* 16:9 Studio Artwork Frame with Sleek Micro-Index Corner Tag Only */}
-                <div className="p-2 pb-0">
-                  <div className="relative aspect-video w-full rounded-lg border border-white/[0.08] overflow-hidden bg-[#12141A]">
+                {/* Top HUD Telemetry Bar */}
+                <div className="px-3.5 py-2 border-b border-white/[0.07] bg-[#08090C] flex items-center justify-between text-[10px] font-mono tracking-wider uppercase">
+                  <span className="text-[#ff7ac6] font-bold">
+                    SYS.CAT // [{fam.index}]
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 text-slate-400">
+                    <span className="w-1.5 h-1.5 bg-[#EC008C]" />
+                    <span>{fam.badge}</span>
+                  </span>
+                </div>
+
+                {/* 16:9 Studio Artwork Frame (0px Sharp) */}
+                <div className="p-2.5 pb-0">
+                  <div className="relative aspect-video w-full rounded-none border border-white/[0.08] overflow-hidden bg-[#12141A]">
                     <div className="w-full h-full transition-transform duration-500 group-hover:scale-[1.04]">
                       <ProductTechnicalArtwork
                         type={fam.artType}
@@ -1026,30 +1128,14 @@ export function ProductFamilyGridSection() {
                         className="w-full h-full"
                       />
                     </div>
-
-                    {/* Ultra-Crisp Single-Line HUD Micro-Overlay in Top Corners */}
-                    <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
-                      <span className="studio-floating-badge keep-white-text px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider text-white">
-                        [{fam.index}]
-                      </span>
-                      <span className="studio-floating-badge keep-white-text inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[9.5px] font-mono font-medium tracking-wider uppercase text-white whitespace-nowrap">
-                        <span className="studio-badge-dot w-1.5 h-1.5 bg-[#EC008C] shrink-0" />
-                        <span>{fam.badge}</span>
-                      </span>
-                    </div>
                   </div>
                 </div>
 
                 {/* Structured Architectural Card Body */}
                 <div className="p-5 pt-4 flex-1 flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between gap-2 pb-2 border-b border-white/[0.06] text-[10px] font-mono tracking-wider uppercase">
-                      <span className="text-[#ff7ac6] font-medium truncate">
-                        {fam.subtitle}
-                      </span>
-                      <span className="text-slate-500 shrink-0">
-                        CAT // {fam.index}
-                      </span>
+                    <div className="text-[10px] font-mono tracking-wider uppercase text-[#ff7ac6] font-medium truncate">
+                      {fam.subtitle}
                     </div>
 
                     <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-[#EC008C] transition-colors">
@@ -1060,11 +1146,11 @@ export function ProductFamilyGridSection() {
                     </p>
                   </div>
 
-                  <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono font-semibold text-white">
+                  <div className="pt-3 border-t border-white/[0.07] flex items-center justify-between text-xs font-mono font-semibold text-white">
                     <span className="group-hover:text-[#EC008C] transition-colors">
                       INSPECT SPECIFICATION
                     </span>
-                    <span className="w-7 h-7 rounded-md bg-white/[0.06] group-hover:bg-[#EC008C] border border-white/10 flex items-center justify-center transition-colors">
+                    <span className="w-7 h-7 rounded-none bg-[#08090C] group-hover:bg-[#EC008C] border border-white/15 flex items-center justify-center transition-colors">
                       <ArrowUpRight className="w-3.5 h-3.5 text-white group-hover:keep-white-text" />
                     </span>
                   </div>
@@ -1080,7 +1166,7 @@ export function ProductFamilyGridSection() {
 
 /**
  * Direct Storefront — 5 Verified Shop Products with Unobstructed 16:9 Studio Images,
- * Clean Single-Line HUD Metadata Strip (Zero Ugly Image Overlay Pills!), and Interactive Filter Tabs
+ * Pure 0px Sharp HUD Geometry, and Interactive Filter Tabs
  */
 export function FeaturedAriaAndShopSection() {
   const { products, addToCart } = useBetaDoors();
@@ -1143,11 +1229,11 @@ export function FeaturedAriaAndShopSection() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {/* Interactive Storefront Filter Tabs */}
+          {/* Interactive Storefront Filter Tabs (0px Sharp) */}
           <div
             role="tablist"
             aria-label="Filter storefront products"
-            className="inline-flex items-center gap-1 p-1 rounded-lg bg-[#0B0C10] border border-white/[0.09]"
+            className="inline-flex items-center gap-1 p-1 rounded-none bg-[#0B0C10] border border-white/[0.09]"
           >
             {[
               { id: 'all' as const, label: 'ALL [05]' },
@@ -1160,7 +1246,7 @@ export function FeaturedAriaAndShopSection() {
                 role="tab"
                 aria-selected={shopFilter === tab.id}
                 onClick={() => setShopFilter(tab.id)}
-                className={`px-3 py-1.5 rounded-md text-[10px] font-mono font-semibold tracking-wider transition-colors cursor-pointer ${
+                className={`px-3 py-1.5 rounded-none text-[10px] font-mono font-semibold tracking-wider transition-colors cursor-pointer ${
                   shopFilter === tab.id
                     ? 'bg-[#EC008C] text-white shadow-sm keep-white-text'
                     : 'text-slate-400 hover:text-white'
@@ -1175,7 +1261,7 @@ export function FeaturedAriaAndShopSection() {
             <div
               role="status"
               aria-live="polite"
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-md bg-emerald-950 border border-emerald-500/40 text-xs text-emerald-200"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-none bg-emerald-950 border border-emerald-500/40 text-xs text-emerald-200 keep-white-text"
             >
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
               <span>{feedback}</span>
@@ -1183,7 +1269,7 @@ export function FeaturedAriaAndShopSection() {
           ) : (
             <Link
               href="/shop/"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-white/[0.05] hover:bg-white/[0.12] border border-white/15 text-xs font-mono font-semibold text-white transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-none bg-[#0B0C10] hover:bg-white/[0.08] border border-white/15 text-xs font-mono font-semibold text-white transition-all"
             >
               <span>OPEN FULL SHOP</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#EC008C]" />
@@ -1192,7 +1278,7 @@ export function FeaturedAriaAndShopSection() {
         </div>
       </div>
 
-      {/* 5-Column Responsive Architectural Product Grid — Unobstructed 16:9 Images + Clean Single-Line HUD Metadata Bar */}
+      {/* 5-Column Responsive Architectural Product Grid — Pure 0px Sharp HUD Cards */}
       <motion.div
         layout
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
@@ -1206,14 +1292,25 @@ export function FeaturedAriaAndShopSection() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96 }}
               transition={{ duration: 0.22, delay: idx * 0.03 }}
-              className="group hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1"
+              className="group hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-none overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1"
             >
               <div>
-                {/* Clean 16:9 Studio Artwork without bulky multi-line wrapped pills */}
+                {/* Top HUD SKU + Stock Telemetry Header */}
+                <div className="px-3 py-1.5 border-b border-white/[0.07] bg-[#08090C] flex items-center justify-between gap-1.5 text-[9.5px] font-mono uppercase tracking-wider">
+                  <span className="text-slate-400 truncate" title={prod.sku}>
+                    [0{idx + 1}] {prod.sku}
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-emerald-400 font-bold shrink-0 whitespace-nowrap">
+                    <span className="w-1.5 h-1.5 bg-emerald-400 animate-pulse" />
+                    <span>{prod.stockCount} IN STOCK</span>
+                  </span>
+                </div>
+
+                {/* Clean 16:9 Studio Artwork (0px Sharp) */}
                 <div className="p-2 pb-0">
                   <Link
                     href={prod.path}
-                    className="relative block aspect-video w-full rounded-lg border border-white/[0.08] overflow-hidden bg-[#12141A]"
+                    className="relative block aspect-video w-full rounded-none border border-white/[0.08] overflow-hidden bg-[#12141A]"
                   >
                     <div className="w-full h-full transition-transform duration-500 group-hover:scale-[1.05]">
                       <ProductTechnicalArtwork
@@ -1223,25 +1320,11 @@ export function FeaturedAriaAndShopSection() {
                         className="w-full h-full"
                       />
                     </div>
-                    {/* Subtle Corner Index Only — never wraps or blocks the product photo */}
-                    <span className="studio-floating-badge keep-white-text absolute top-2 left-2 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold tracking-wider text-white pointer-events-none">
-                      [0{idx + 1}]
-                    </span>
                   </Link>
                 </div>
 
-                {/* Structured HUD Technical Metadata Bar + Title + Price */}
+                {/* Title + Description + Price */}
                 <div className="p-4 pt-3 space-y-2">
-                  <div className="flex items-center justify-between gap-1.5 pb-2 border-b border-white/[0.06] text-[10px] font-mono uppercase tracking-wider">
-                    <span className="text-slate-400 truncate" title={prod.sku}>
-                      {prod.sku}
-                    </span>
-                    <span className="inline-flex items-center gap-1 text-emerald-400 font-semibold shrink-0 whitespace-nowrap">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>{prod.stockCount} IN STOCK</span>
-                    </span>
-                  </div>
-
                   <Link
                     href={prod.path}
                     className="block text-sm font-semibold text-white group-hover:text-[#EC008C] transition-colors line-clamp-1"
@@ -1253,7 +1336,7 @@ export function FeaturedAriaAndShopSection() {
                     {prod.shortDescription}
                   </p>
 
-                  <div className="pt-1 flex items-baseline justify-between gap-1.5">
+                  <div className="pt-2 border-t border-white/[0.06] flex items-baseline justify-between gap-1.5">
                     <span className="text-sm sm:text-[15px] font-bold text-white font-mono tabular-nums whitespace-nowrap">
                       {prod.maxPriceCents
                         ? `$${Math.round(prod.priceCents / 100)} – $${Math.round(prod.maxPriceCents / 100)} AUD`
@@ -1269,7 +1352,7 @@ export function FeaturedAriaAndShopSection() {
               <div className="p-4 pt-0 flex items-center gap-2">
                 <Link
                   href={prod.path}
-                  className="flex-1 text-center py-2 px-2.5 text-xs font-mono font-medium rounded-md bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-slate-200 transition-colors whitespace-nowrap"
+                  className="flex-1 text-center py-2 px-2.5 text-xs font-mono font-semibold rounded-none bg-[#08090C] hover:bg-white/[0.08] border border-white/15 text-slate-200 transition-colors whitespace-nowrap"
                 >
                   {prod.requiresVariant ? 'OPTIONS' : 'DETAILS'}
                 </Link>
@@ -1277,7 +1360,7 @@ export function FeaturedAriaAndShopSection() {
                   type="button"
                   onClick={() => handleQuickAdd(prod.slug)}
                   aria-label={`Quick add ${prod.name} to cart`}
-                  className="keep-white-text inline-flex items-center gap-1 py-2 px-3 text-xs font-mono font-semibold rounded-md bg-[#EC008C] hover:bg-[#d4007d] text-white shadow-[0_0_14px_rgba(236,0,140,0.35)] transition-colors whitespace-nowrap cursor-pointer"
+                  className="keep-white-text inline-flex items-center gap-1 py-2 px-3 text-xs font-mono font-bold rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-white shadow-[0_0_14px_rgba(236,0,140,0.35)] transition-colors whitespace-nowrap cursor-pointer"
                 >
                   <ShoppingCart className="w-3 h-3" />
                   <span>+ CART</span>
@@ -1287,327 +1370,6 @@ export function FeaturedAriaAndShopSection() {
           ))}
         </AnimatePresence>
       </motion.div>
-    </section>
-  );
-}
-
-/**
- * Interactive BETA Smart System Workflow & Animated HUD Orbital Telemetry Ring
- */
-export function OrbitalWorkflowSection() {
-  const [activeStep, setActiveStep] = useState(0);
-
-  const steps = [
-    {
-      stepLabel: 'STEP 01',
-      code: '+A3.7',
-      title: 'Dispatched from Campbellfield HQ',
-      subtitle: '5/1730 Hume Hwy · Same-Day Metro Fleet',
-      detail:
-        'Every sectional door, Aria 121 opener, and P2011 handset is quality-inspected and dispatched directly from our Campbellfield warehouse.',
-      metric: '1200N',
-      unit: 'MOTOR PACK',
-      dashArray: '140 440',
-      href: '/product/motor-pack/',
-    },
-    {
-      stepLabel: 'STEP 02',
-      code: '+B6.0',
-      title: 'Installed & Force-Calibrated On-Site',
-      subtitle: 'Across 11 Melbourne Service Corridors',
-      detail:
-        'Technicians calibrate torsion springs, travel limits, and infrared safety beams to match your exact residential or commercial bay weight.',
-      metric: '1000N',
-      unit: 'RDO OPENER',
-      dashArray: '280 440',
-      href: '/services/',
-    },
-    {
-      stepLabel: 'STEP 03',
-      code: '+S9.2',
-      title: 'Registered for 7-Year Digital Warranty',
-      subtitle: 'Verified Serial & Installation Record',
-      detail:
-        'Serial numbers and installation proofs are logged directly into the BETA DOORS warranty registry for rapid priority support.',
-      metric: 'ARIA 121',
-      unit: 'VERIFIED',
-      dashArray: '420 440',
-      href: '/warranty-registration/',
-    },
-  ];
-
-  const bottomLinks = [
-    { label: '01 // 5 Shop Products', href: '/shop/', active: false },
-    { label: '02 // Same-Day Repairs', href: '/services/', active: false },
-    { label: '03 // Campbellfield VIC 3061', href: '/contact-us/', active: true },
-    {
-      label: '04 // Spring Estimator',
-      href: '/garage-door-spring-estimator/',
-      active: false,
-    },
-    { label: '05 // 4 PDF Manuals', href: '/beta-doors-manuals/', active: false },
-    {
-      label: '06 // Warranty Portal',
-      href: '/warranty-registration/',
-      active: false,
-    },
-    { label: '07 // Staff Admin CMS', href: '/admin/', active: false },
-  ];
-
-  const currentStep = steps[activeStep] || steps[0];
-
-  return (
-    <section
-      data-cms-section="home-orbital-workflow"
-      data-cms-label="BETA Smart System Lifecycle"
-      aria-labelledby="orbital-workflow-heading"
-      className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-14"
-    >
-      <HudSectionRail
-        code="HUD.04"
-        sector="END-TO-END AUTOMATION LIFECYCLE // BETA SMART SYSTEM"
-        status="7-YR WARRANTY"
-      />
-
-      <div className="hud-corner-brackets brand-animated-border bg-[#08090D] border border-white/[0.09] rounded-xl p-5 sm:p-9 lg:p-12 relative overflow-hidden">
-        {/* Top Row Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 pb-6 border-b border-white/[0.07]">
-          <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-[#ff7ac6]">
-              <SlidersHorizontal className="w-3.5 h-3.5 text-[#EC008C]" />
-              <span>End-to-End Automation Lifecycle</span>
-            </div>
-            <h2
-              id="orbital-workflow-heading"
-              className="text-2xl sm:text-4xl font-semibold text-white tracking-tight"
-            >
-              BETA Smart System
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-              Seamless progression from Campbellfield warehouse dispatch to precision spring calibration and 7-year warranty registration.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2.5">
-            <Link
-              href="/garage-door-spring-estimator/"
-              className="inline-flex items-center justify-center px-4 py-2 rounded-md bg-white text-black text-xs font-mono font-semibold hover:bg-slate-200 transition-colors"
-            >
-              SPRING ESTIMATOR
-            </Link>
-            <Link
-              href={currentStep.href}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-xs font-mono font-semibold text-white transition-colors"
-            >
-              <span>INSPECT {currentStep.stepLabel}</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#EC008C]" />
-            </Link>
-          </div>
-        </div>
-
-        {/* Main 2-Column Trajectory & Concentric Step Orbital Ring */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Left: Metric + Animated HUD Trajectory Arcs + 3 Clickable Step Modules */}
-          <div className="lg:col-span-7 relative min-h-[320px] flex flex-col justify-between">
-            <svg
-              viewBox="0 0 600 320"
-              className="absolute inset-0 w-full h-full pointer-events-none"
-              aria-hidden="true"
-            >
-              <path
-                d="M 10 260 Q 260 240 490 40"
-                fill="none"
-                stroke="rgba(236,0,140,0.22)"
-                strokeWidth="1.2"
-                className="hud-rail-dashed"
-              />
-              <path
-                d="M 10 260 Q 260 240 490 40"
-                fill="none"
-                stroke="#EC008C"
-                strokeWidth="2"
-                className="hud-animated-trace"
-              />
-              <path
-                d="M 40 310 Q 300 280 550 90"
-                fill="none"
-                stroke="rgba(255,255,255,0.1)"
-                strokeWidth="1"
-              />
-            </svg>
-
-            <div className="relative z-10 flex flex-wrap items-baseline justify-between gap-4">
-              <div>
-                <div className="text-[11px] font-mono uppercase tracking-wider text-[#ff7ac6]">
-                  BETA DISPATCH TELEMETRY
-                </div>
-                <div className="text-3xl sm:text-4xl font-light text-white tracking-tight font-mono tabular-nums mt-0.5">
-                  {currentStep.code}
-                </div>
-              </div>
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={currentStep.stepLabel}
-                  initial={{ opacity: 0, x: 8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -8 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-xs text-slate-300 max-w-md leading-relaxed"
-                >
-                  {currentStep.detail}
-                </motion.p>
-              </AnimatePresence>
-            </div>
-
-            {/* 3 Interactive HUD Step Modules (rounded-lg) */}
-            <div className="relative z-10 my-5 space-y-2.5">
-              {steps.map((st, idx) => {
-                const isSelected = activeStep === idx;
-                return (
-                  <button
-                    key={st.stepLabel}
-                    type="button"
-                    onClick={() => setActiveStep(idx)}
-                    className={`w-full text-left p-3.5 sm:p-4 rounded-lg backdrop-blur-xl border transition-all flex items-center justify-between gap-4 cursor-pointer ${
-                      isSelected
-                        ? 'bg-white/[0.08] border-[#EC008C]/70 shadow-[0_8px_28px_rgba(236,0,140,0.18)]'
-                        : 'bg-[#111318]/85 hover:bg-white/[0.05] border-white/[0.08]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-8 h-8 rounded-md border flex items-center justify-center font-mono text-xs font-bold transition-colors ${
-                          isSelected
-                            ? 'bg-[#EC008C] border-[#EC008C] text-white keep-white-text'
-                            : 'bg-white/[0.06] border-white/10 text-slate-300'
-                        }`}
-                      >
-                        0{idx + 1}
-                      </div>
-                      <div>
-                        <div className="text-xs sm:text-sm font-semibold text-white">
-                          {st.stepLabel} · {st.title}
-                        </div>
-                        <div className="text-[11px] text-slate-400">
-                          {st.subtitle}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right font-mono shrink-0">
-                      <div className="text-xs font-semibold text-white tabular-nums">
-                        {st.metric}
-                      </div>
-                      <div className="text-[10px] text-[#ff7ac6]">{st.unit}</div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Bottom status readout & step controls */}
-            <div className="relative z-10 flex items-center justify-between pt-2">
-              <div className="flex items-center gap-2 text-[11px] font-mono text-slate-300">
-                <span className="px-2.5 py-1 rounded bg-white/[0.05] border border-white/[0.1]">
-                  {currentStep.stepLabel} / 03
-                </span>
-                <span className="px-2.5 py-1 rounded bg-[#EC008C]/15 border border-[#EC008C]/40 text-[#ff7ac6] font-semibold">
-                  ACTIVE STAGE
-                </span>
-              </div>
-
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => setActiveStep((p) => (p + 2) % 3)}
-                  aria-label="Previous workflow step"
-                  className="w-8 h-8 rounded-md bg-white/[0.06] hover:bg-white/[0.14] border border-white/15 flex items-center justify-center text-white cursor-pointer transition-colors"
-                >
-                  <ChevronUp className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveStep((p) => (p + 1) % 3)}
-                  aria-label="Next workflow step"
-                  className="w-8 h-8 rounded-md bg-white/[0.06] hover:bg-white/[0.14] border border-white/15 flex items-center justify-center text-white cursor-pointer transition-colors"
-                >
-                  <ChevronDown className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Concentric HUD Orbital Dial with Rotating Telemetry Reticle */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center">
-            <div className="relative w-60 h-60 sm:w-68 sm:h-68 rounded-full bg-gradient-to-b from-[#14161D] to-[#08090C] border border-white/10 flex items-center justify-center shadow-[0_20px_70px_rgba(0,0,0,0.9)]">
-              <svg
-                viewBox="0 0 240 240"
-                className="absolute inset-0 w-full h-full -rotate-90"
-              >
-                {/* Outer Rotating HUD Reticle Ring */}
-                <circle
-                  cx="120"
-                  cy="120"
-                  r="108"
-                  fill="none"
-                  stroke="rgba(236,0,140,0.28)"
-                  strokeWidth="1"
-                  strokeDasharray="8 6"
-                  className="hud-reticle-ring"
-                />
-                <circle
-                  cx="120"
-                  cy="120"
-                  r="86"
-                  fill="none"
-                  stroke="rgba(255,255,255,0.08)"
-                  strokeWidth="14"
-                />
-                <circle
-                  cx="120"
-                  cy="120"
-                  r="86"
-                  fill="none"
-                  stroke="#EC008C"
-                  strokeWidth="14"
-                  strokeDasharray={currentStep.dashArray}
-                  strokeLinecap="butt"
-                  className="transition-all duration-500"
-                />
-              </svg>
-
-              <div className="relative z-10 w-36 h-36 rounded-full bg-[#07080B] border border-white/15 flex flex-col items-center justify-center text-center p-4 shadow-inner">
-                <Zap className="w-4 h-4 text-[#EC008C] fill-[#EC008C] mb-1" />
-                <span className="text-[11px] font-mono font-semibold text-white">
-                  {currentStep.stepLabel}
-                </span>
-                <span className="text-sm font-mono font-bold text-[#ff7ac6] mt-0.5">
-                  {currentStep.metric}
-                </span>
-                <span className="text-[10px] font-mono text-slate-400">
-                  {currentStep.unit}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Architectural Quick-Jump Matrix (rounded-md instead of bloated pills) */}
-        <div className="mt-10 pt-6 border-t border-white/[0.06] flex flex-wrap items-center justify-center gap-2">
-          {bottomLinks.map((tag) => (
-            <Link
-              key={tag.label}
-              href={tag.href}
-              className={`px-3 py-1.5 rounded-md text-[11px] font-mono transition-all ${
-                tag.active
-                  ? 'bg-[#EC008C] text-white font-semibold shadow-[0_0_16px_rgba(236,0,140,0.4)] keep-white-text'
-                  : 'bg-white/[0.04] hover:bg-white/[0.1] border border-white/[0.08] text-slate-300'
-              }`}
-            >
-              {tag.label}
-            </Link>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }

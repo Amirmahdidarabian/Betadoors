@@ -631,6 +631,13 @@ export default function AdminWorkspacePage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/admin/page-editor"
+              className="keep-white-text inline-flex items-center gap-2 px-4 py-2 bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs font-mono font-bold shadow-[0_0_20px_rgba(236,0,140,0.4)] transition-colors"
+            >
+              <FileEdit className="w-3.5 h-3.5" />
+              <span>OPEN DEDICATED PAGE EDITOR</span>
+            </Link>
             <label
               htmlFor="admin-role-switcher"
               className="text-xs font-medium text-slate-300"

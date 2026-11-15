@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { motion } from 'motion/react';
 import {
   ShoppingBag,
   User,
@@ -80,6 +81,8 @@ export function SiteShell({
   const { brand, cartTotals, actorKey, setActorKey } = useBetaDoors();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [hoveredNavKey, setHoveredNavKey] = useState<string | null>(null);
+  const [hoveredUtilKey, setHoveredUtilKey] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -173,16 +176,16 @@ export function SiteShell({
           </span>
           <a
             href={previewBanner.pageSlug}
-            className="keep-white-text px-3 py-1 rounded-full bg-black/40 hover:bg-black/60 text-white transition-colors whitespace-nowrap shrink-0"
+            className="keep-white-text px-3 py-1 rounded-none bg-black/40 hover:bg-black/60 text-white transition-colors whitespace-nowrap shrink-0"
           >
             Exit Preview
           </a>
         </div>
       )}
 
-      {/* Top Navigation with true glassmorphic transparency, backdrop blur, and precision HUD radii */}
-      <header className="sticky top-0 z-50 w-full bg-white/35 dark:bg-[#040406]/45 supports-[backdrop-filter]:bg-white/20 dark:supports-[backdrop-filter]:bg-[#040406]/35 border-b border-slate-200/50 dark:border-white/[0.08] backdrop-blur-2xl transition-colors">
-        <div className="w-full max-w-[1760px] mx-auto flex items-center justify-between gap-3 px-3 sm:px-5 lg:px-7 py-3">
+      {/* Top Navigation with glassmorphic blur and 0px Art-Director HUD geometry */}
+      <header className="sticky top-0 z-50 w-full bg-white/85 dark:bg-[#040406]/85 supports-[backdrop-filter]:bg-white/75 dark:supports-[backdrop-filter]:bg-[#040406]/75 border-b border-slate-300/80 dark:border-white/[0.1] backdrop-blur-2xl transition-colors">
+        <div className="w-full max-w-[1760px] mx-auto flex items-center justify-between gap-3 px-3 sm:px-5 lg:px-7 py-2.5">
           {/* Zone 1: Brand Lockup */}
           <a
             href="/"
@@ -195,27 +198,38 @@ export function SiteShell({
             />
           </a>
 
-          {/* Zone 2: Floating Center HUD Command Dock with translucent blur & precision rounded-lg frame */}
+          {/* Zone 2: Sharp 0px Center HUD Command Dock with Smooth Cursor-Following Hover Animation */}
           <nav
             aria-label="Primary navigation"
-            className="hidden md:flex items-center gap-1 bg-white/60 dark:bg-[#0B0C10]/70 backdrop-blur-2xl border border-slate-300/60 dark:border-white/[0.12] rounded-lg p-1 shadow-[0_8px_32px_rgba(15,23,42,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.55)]"
+            onMouseLeave={() => setHoveredNavKey(null)}
+            className="hud-corner-brackets hidden md:flex items-stretch bg-white/95 dark:bg-[#0B0C10]/95 backdrop-blur-2xl border border-slate-300 dark:border-white/[0.14] shadow-[0_6px_24px_rgba(15,23,42,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.65)]"
           >
-            <div className="flex items-center gap-0.5 text-xs font-medium pr-1">
+            <div className="flex items-stretch text-xs font-medium">
               {PRIMARY_NAV_ITEMS.map((item) => {
                 const isActive = item.match(pathname);
+                const isHovered = hoveredNavKey === item.href;
                 const customNavLabel = brand.navLabels?.[item.href] || item.label;
                 return (
                   <a
                     key={item.href}
                     href={item.href}
+                    onMouseEnter={() => setHoveredNavKey(item.href)}
                     aria-current={isActive ? 'page' : undefined}
-                    className={`px-3 py-1.5 rounded-md transition-all whitespace-nowrap shrink-0 cursor-pointer ${
+                    className={`relative inline-flex items-center px-3.5 py-2 border-r border-slate-200/80 dark:border-white/[0.07] transition-colors whitespace-nowrap shrink-0 cursor-pointer overflow-hidden ${
                       isActive
-                        ? 'bg-slate-900 text-white font-semibold shadow-sm dark:bg-[#EC008C] dark:text-white keep-white-text'
-                        : 'text-slate-700 hover:text-slate-950 hover:bg-white/60 dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/[0.08]'
+                        ? 'bg-[#EC008C] text-white font-semibold keep-white-text'
+                        : 'text-slate-800 hover:text-slate-950 dark:text-slate-200 dark:hover:text-white'
                     }`}
                   >
-                    {customNavLabel}
+                    {/* Smooth Sliding Hover Highlight Box + Laser Underline */}
+                    {isHovered && !isActive && (
+                      <motion.span
+                        layoutId="primary-nav-hover-box"
+                        transition={{ type: 'spring', stiffness: 440, damping: 32 }}
+                        className="pointer-events-none absolute inset-0 bg-[#EC008C]/12 dark:bg-[#EC008C]/20 border-b-2 border-[#EC008C] z-0"
+                      />
+                    )}
+                    <span className="relative z-10">{customNavLabel}</span>
                   </a>
                 );
               })}
@@ -223,66 +237,114 @@ export function SiteShell({
 
             <a
               href="/contact-us"
-              className="keep-white-text inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-900/90 hover:bg-slate-900 dark:bg-white/[0.1] dark:hover:bg-white/[0.18] border border-slate-900/80 dark:border-white/[0.14] text-xs font-medium text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              onMouseEnter={() => setHoveredNavKey('/contact-us')}
+              className="keep-white-text relative inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 dark:bg-[#141720] border-r border-slate-800 dark:border-white/[0.12] text-[11px] font-mono font-semibold uppercase tracking-wider text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer overflow-hidden"
             >
-              <span>Enquire Now</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#EC008C]" />
+              {hoveredNavKey === '/contact-us' && (
+                <motion.span
+                  layoutId="primary-nav-hover-box"
+                  transition={{ type: 'spring', stiffness: 440, damping: 32 }}
+                  className="pointer-events-none absolute inset-0 bg-[#EC008C] z-0"
+                />
+              )}
+              <span className="relative z-10">ENQUIRE NOW</span>
+              <ArrowUpRight className="relative z-10 w-3.5 h-3.5 text-[#EC008C] group-hover:text-white" />
             </a>
+
             <a
               href="/admin"
               aria-label="Admin CMS Workspace"
               title="Admin CMS Workspace"
-              className="keep-white-text ml-0.5 w-7 h-7 rounded-md bg-[#EC008C] text-white flex items-center justify-center hover:bg-[#d4007d] transition-colors shrink-0 cursor-pointer shadow-sm"
+              onMouseEnter={() => setHoveredNavKey('/admin')}
+              className="keep-white-text relative w-9 bg-[#EC008C] text-white flex items-center justify-center hover:bg-[#d4007d] transition-colors shrink-0 cursor-pointer overflow-hidden"
             >
-              <Shield className="w-3.5 h-3.5 fill-white" />
+              <Shield className="relative z-10 w-3.5 h-3.5 fill-white" />
             </a>
           </nav>
 
-          {/* Zone 3: Theme Switcher + Login / Account & Cart */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
-              title={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/60 hover:bg-white/85 dark:bg-[#0B0C10]/70 dark:hover:bg-white/15 backdrop-blur-xl border border-slate-300/70 dark:border-white/12 text-xs font-mono font-medium text-slate-800 dark:text-slate-200 transition-colors cursor-pointer whitespace-nowrap"
+          {/* Zone 3: Icon-Only 0px Segmented HUD Utility Dock (Light/Dark | Login | Cart) */}
+          <div className="flex items-center gap-2 shrink-0">
+            <div
+              onMouseLeave={() => setHoveredUtilKey(null)}
+              className="hud-corner-brackets inline-flex items-stretch h-9 bg-white/95 dark:bg-[#0B0C10]/95 backdrop-blur-xl border border-slate-300 dark:border-white/[0.16] shadow-[0_4px_16px_rgba(15,23,42,0.06)] dark:shadow-[0_6px_24px_rgba(0,0,0,0.55)]"
             >
-              {theme === 'light' ? (
-                <>
-                  <Sun className="w-3.5 h-3.5 text-amber-500" />
-                  <span className="hidden lg:inline">LIGHT</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="w-3.5 h-3.5 text-sky-400" />
-                  <span className="hidden lg:inline">DARK</span>
-                </>
-              )}
-            </button>
+              {/* Icon 1: Theme Toggle (No Text Label) */}
+              <button
+                type="button"
+                onClick={toggleTheme}
+                onMouseEnter={() => setHoveredUtilKey('theme')}
+                aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
+                title={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
+                className="relative w-9 h-full flex items-center justify-center border-r border-slate-300 dark:border-white/[0.12] text-slate-900 dark:text-slate-100 transition-colors cursor-pointer overflow-hidden"
+              >
+                {hoveredUtilKey === 'theme' && (
+                  <motion.span
+                    layoutId="utility-nav-hover-box"
+                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    className="pointer-events-none absolute inset-0 bg-[#EC008C]/15 dark:bg-[#EC008C]/25 border-b-2 border-[#EC008C] z-0"
+                  />
+                )}
+                <span className="relative z-10">
+                  {theme === 'light' ? (
+                    <Sun className="w-4 h-4 text-[#EC008C]" />
+                  ) : (
+                    <Moon className="w-4 h-4 text-[#EC008C]" />
+                  )}
+                </span>
+              </button>
 
-            <a
-              href="/my-account"
-              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md hover:bg-white/[0.06] text-xs font-medium text-slate-800 hover:text-slate-950 dark:text-slate-200 dark:hover:text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              <User className="w-4 h-4 text-slate-600 dark:text-slate-300" />
-              <span>Login</span>
-            </a>
+              {/* Icon 2: Login / Account (No Text Label) */}
+              <a
+                href="/my-account"
+                onMouseEnter={() => setHoveredUtilKey('login')}
+                aria-label="Login or My Account"
+                title="Login / My Account"
+                className="relative w-9 h-full flex items-center justify-center border-r border-slate-300 dark:border-white/[0.12] text-slate-900 dark:text-slate-100 transition-colors cursor-pointer overflow-hidden"
+              >
+                {hoveredUtilKey === 'login' && (
+                  <motion.span
+                    layoutId="utility-nav-hover-box"
+                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    className="pointer-events-none absolute inset-0 bg-[#EC008C]/15 dark:bg-[#EC008C]/25 border-b-2 border-[#EC008C] z-0"
+                  />
+                )}
+                <span className="relative z-10">
+                  <User className="w-4 h-4 text-[#EC008C]" />
+                </span>
+              </a>
 
-            <a
-              href="/cart"
-              aria-label={`Shopping cart with ${cartTotals.itemCount} items`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white/65 hover:bg-white/90 dark:bg-[#0B0C10]/70 dark:hover:bg-white/15 backdrop-blur-xl border border-slate-300/70 dark:border-white/12 text-xs font-mono font-semibold text-slate-900 dark:text-white shadow-xs transition-colors whitespace-nowrap shrink-0 tabular-nums cursor-pointer"
-            >
-              <ShoppingBag className="w-3.5 h-3.5 text-[#EC008C]" />
-              <span>CART ({cartTotals.itemCount})</span>
-            </a>
+              {/* Icon 3: Shopping Cart (No Text Label — Icon + Corner Badge only if items > 0) */}
+              <a
+                href="/cart"
+                onMouseEnter={() => setHoveredUtilKey('cart')}
+                aria-label={`Shopping cart (${cartTotals.itemCount} items)`}
+                title={`Shopping Cart (${cartTotals.itemCount})`}
+                className="relative w-9 h-full flex items-center justify-center text-slate-900 dark:text-slate-100 transition-colors cursor-pointer overflow-hidden"
+              >
+                {hoveredUtilKey === 'cart' && (
+                  <motion.span
+                    layoutId="utility-nav-hover-box"
+                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    className="pointer-events-none absolute inset-0 bg-[#EC008C]/15 dark:bg-[#EC008C]/25 border-b-2 border-[#EC008C] z-0"
+                  />
+                )}
+                <span className="relative z-10 flex items-center justify-center">
+                  <ShoppingBag className="w-4 h-4 text-[#EC008C]" />
+                  {cartTotals.itemCount > 0 && (
+                    <span className="keep-white-text absolute -top-1.5 -right-2 min-w-[14px] h-[14px] px-0.5 bg-[#EC008C] text-white text-[9px] font-mono font-bold flex items-center justify-center leading-none">
+                      {cartTotals.itemCount}
+                    </span>
+                  )}
+                </span>
+              </a>
+            </div>
 
             <button
               type="button"
               onClick={() => setMobileMenuOpen((v) => !v)}
               aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={mobileMenuOpen}
-              className="md:hidden p-2 rounded-md border border-slate-300 dark:border-white/15 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10"
+              className="md:hidden h-9 w-9 flex items-center justify-center border border-slate-300 dark:border-white/15 bg-white dark:bg-[#0B0C10] text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/10"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
@@ -290,23 +352,23 @@ export function SiteShell({
         </div>
       </header>
 
-      {/* Mobile Navigation Drawer */}
+      {/* Mobile Navigation Drawer (0px sharp HUD grid) */}
       {mobileMenuOpen && (
         <nav
           aria-label="Mobile navigation"
-          className="md:hidden bg-white dark:bg-[#0B0C10] border-b border-slate-200 dark:border-white/10 px-6 py-4 space-y-3 text-xs z-50 shadow-lg"
+          className="md:hidden bg-white dark:bg-[#0B0C10] border-b border-slate-300 dark:border-white/15 px-4 py-4 space-y-3 text-xs z-50 shadow-lg"
         >
           <div className="grid grid-cols-2 gap-2">
-            <a href="/" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white font-medium">Home</a>
-            <a href="/about-us" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white font-medium">About us</a>
-            <a href="/products" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white font-medium">Products</a>
-            <a href="/shop" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white font-medium">Shop</a>
-            <a href="/services" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white font-medium">Services</a>
-            <a href="/beta-doors-manuals" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white font-medium">Manuals</a>
-            <a href="/warranty-registration" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white font-medium">Warranty Registration</a>
-            <a href="/contact-us" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white font-medium">Enquire Now</a>
-            <a href="/my-account" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white font-medium">Login / Account</a>
-            <a href="/admin" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 rounded-lg bg-[#EC008C]/15 border border-[#EC008C]/40 text-[#EC008C] dark:text-white font-semibold">Admin CMS</a>
+            <a href="/" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-3 border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white font-mono font-semibold uppercase">Home</a>
+            <a href="/about-us" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-3 border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white font-mono font-semibold uppercase">About us</a>
+            <a href="/products" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-3 border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white font-mono font-semibold uppercase">Products</a>
+            <a href="/shop" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-3 border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white font-mono font-semibold uppercase">Shop</a>
+            <a href="/services" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-3 border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white font-mono font-semibold uppercase">Services</a>
+            <a href="/beta-doors-manuals" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-3 border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white font-mono font-semibold uppercase">Manuals</a>
+            <a href="/warranty-registration" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-3 border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white font-mono font-semibold uppercase">Warranty</a>
+            <a href="/contact-us" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-3 border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white font-mono font-semibold uppercase">Enquire Now</a>
+            <a href="/my-account" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-3 border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white font-mono font-semibold uppercase">Login / Account</a>
+            <a href="/admin" onClick={() => setMobileMenuOpen(false)} className="keep-white-text py-2.5 px-3 bg-[#EC008C] text-white font-mono font-semibold uppercase">Admin CMS</a>
           </div>
         </nav>
       )}

@@ -98,8 +98,8 @@ function DynamicCmsPageContent() {
   if (isLoading || matchedRedirect) {
     return (
       <SiteShell>
-        <div className="mx-auto max-w-[1400px] px-4 py-20 sm:px-8">
-          <div className="h-[460px] animate-pulse rounded-[28px] border border-white/10 bg-[#0B0D11]" />
+        <div className="mx-auto max-w-[1760px] px-4 py-20 sm:px-8">
+          <div className="h-[460px] animate-pulse rounded-none border border-white/10 bg-[#0B0D11]" />
         </div>
       </SiteShell>
     );
@@ -109,7 +109,7 @@ function DynamicCmsPageContent() {
     return (
       <SiteShell>
         <div className="mx-auto max-w-[1000px] px-4 py-24 text-center sm:px-8">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 font-mono text-xs text-slate-300">
+          <div className="inline-flex items-center gap-2 rounded-none border border-white/10 bg-[#08090C] px-4 py-1.5 font-mono text-xs text-slate-300">
             404 • ROUTE NOT FOUND IN CMS REGISTRY
           </div>
           <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl">
@@ -121,21 +121,21 @@ function DynamicCmsPageContent() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-semibold text-black transition hover:bg-slate-200"
+              className="keep-white-text inline-flex items-center gap-2 rounded-none bg-[#EC008C] px-6 py-3 text-xs font-mono font-bold text-white transition hover:bg-[#d4007d]"
             >
-              Return Home
+              RETURN HOME
             </Link>
             <Link
-              href="/products/"
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-6 py-3 text-xs font-medium text-white transition hover:bg-white/[0.08]"
+              href="/products"
+              className="inline-flex items-center gap-2 rounded-none border border-white/15 bg-[#08090C] px-6 py-3 text-xs font-mono font-semibold text-white transition hover:bg-white/[0.08]"
             >
-              Browse Catalogue
+              BROWSE CATALOGUE
             </Link>
             <Link
-              href="/contact-us/"
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-6 py-3 text-xs font-medium text-white transition hover:bg-white/[0.08]"
+              href="/contact-us"
+              className="inline-flex items-center gap-2 rounded-none border border-white/15 bg-[#08090C] px-6 py-3 text-xs font-mono font-semibold text-white transition hover:bg-white/[0.08]"
             >
-              Contact 1300 238 243
+              CONTACT 1300 238 243
             </Link>
           </div>
         </div>
@@ -182,7 +182,7 @@ function DynamicCmsPageContent() {
   const activeSecondaryCtaHref =
     savedHdr?.secondaryCtaHref ||
     pageRecord.headerSecondaryCtaHref ||
-    '/shop/';
+    '/shop';
 
   const activeSections =
     isPreviewActive && pageRecord.draftSections
@@ -194,14 +194,14 @@ function DynamicCmsPageContent() {
     <SiteShell>
       {isPreviewActive && (
         <div className="border-b border-amber-400/30 bg-amber-500/10 px-4 py-2.5 text-xs text-amber-200">
-          <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-2">
+          <div className="mx-auto flex max-w-[1760px] flex-wrap items-center justify-between gap-2">
             <span className="inline-flex items-center gap-2 font-medium">
               <Eye className="h-4 w-4 text-amber-300" />
               Scoped Draft Preview Active ({pageRecord.slug}) — Changes shown here are isolated from public visitors until published.
             </span>
             <Link
-              href="/admin/"
-              className="rounded-full border border-amber-300/40 bg-amber-400/20 px-3 py-1 font-mono text-[11px] font-medium text-amber-100 hover:bg-amber-400/30"
+              href="/admin"
+              className="rounded-none border border-amber-300/40 bg-amber-400/20 px-3 py-1 font-mono text-[11px] font-medium text-amber-100 hover:bg-amber-400/30"
             >
               Return to Admin Studio
             </Link>
@@ -209,36 +209,18 @@ function DynamicCmsPageContent() {
         </div>
       )}
 
-      {/* DeFi Reference Atmospheric Stage Header */}
+      {/* Architectural HUD Stage Header (0px Sharp) */}
       <section
         data-cms-custom-header="true"
         data-cms-label={`Page Header (${pageRecord.slug})`}
-        className="mx-auto max-w-[1440px] px-3 pt-2 sm:px-6"
+        className="mx-auto max-w-[1760px] px-3 pt-2 sm:px-5 lg:px-7"
       >
-        <div className="relative overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#07080A] px-6 py-14 shadow-[0_32px_90px_rgba(0,0,0,0.85)] sm:px-12 sm:py-20">
-          {/* Volumetric Sage-Platinum Corner Glows */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[520px] rounded-full opacity-80 blur-[90px]"
-            style={{
-              background:
-                'radial-gradient(circle, rgba(216,230,221,0.34) 0%, rgba(154,178,165,0.14) 45%, rgba(7,8,10,0) 75%)',
-            }}
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -bottom-28 -left-24 h-[360px] w-[480px] rounded-full opacity-65 blur-[85px]"
-            style={{
-              background:
-                'radial-gradient(circle, rgba(203,218,211,0.24) 0%, rgba(236,0,140,0.08) 50%, rgba(7,8,10,0) 75%)',
-            }}
-          />
-
-          {/* Breadcrumb & Status Pill */}
-          <div className="relative z-10 flex flex-wrap items-center justify-between gap-4">
+        <div className="hud-corner-brackets brand-animated-border hud-technical-grid relative overflow-hidden rounded-none border border-white/[0.1] bg-[#0B0C10] px-6 py-10 sm:px-10 sm:py-14">
+          {/* Top Breadcrumb & Status Bar */}
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-white/[0.08]">
             <nav
               aria-label="Breadcrumb"
-              className="inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-white/[0.04] px-4 py-1.5 text-xs text-slate-300 backdrop-blur-md"
+              className="inline-flex items-center gap-2 rounded-none border border-white/[0.12] bg-[#08090C] px-3.5 py-1.5 text-xs text-slate-300"
             >
               <Link href="/" className="text-slate-400 transition hover:text-white">
                 Home
@@ -251,85 +233,83 @@ function DynamicCmsPageContent() {
               <span className="font-medium text-white">{activeTitle}</span>
             </nav>
 
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-black/50 px-3.5 py-1 font-mono text-[11px] text-slate-300">
+            <div className="inline-flex items-center gap-2 rounded-none border border-[#EC008C]/40 bg-[#EC008C]/15 px-3.5 py-1 font-mono text-[11px] text-[#ff7ac6]">
               <Sparkles className="h-3.5 w-3.5 text-[#EC008C]" />
               {suburbName
-                ? `MELBOURNE DISPATCH • ${suburbName.toUpperCase()}`
-                : `TEMPLATE • ${pageRecord.template.toUpperCase().replace(/_/g, ' ')}`}
+                ? `MELBOURNE SERVICE • ${suburbName.toUpperCase()}`
+                : `SPECIFICATION • ${pageRecord.template.toUpperCase().replace(/_/g, ' ')}`}
             </div>
           </div>
 
           {/* Headline & Subtitle */}
-          <div className="relative z-10 mt-8 max-w-3xl">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-slate-400">
+          <div className="relative z-10 mt-7 max-w-3xl">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#ff7ac6]">
               {activeBadge}
             </p>
-            <h1 className="mt-3 font-display text-3xl font-medium tracking-[-0.03em] text-white sm:text-5xl lg:text-[54px] lg:leading-[1.08]">
-              <span className="bg-gradient-to-r from-white via-white to-white/55 bg-clip-text text-transparent">
-                {activeTitle}
-              </span>
+            <h1 className="mt-2 font-display text-3xl font-semibold tracking-[-0.03em] text-white sm:text-5xl lg:text-[50px] lg:leading-[1.08]">
+              <span>{activeTitle}</span>
               {activeGradient ? (
                 <span className="text-[#EC008C]"> {activeGradient}</span>
               ) : null}
             </h1>
-            <p className="mt-5 max-w-2xl text-sm leading-relaxed text-slate-300/85 sm:text-base">
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
               {activeLead}
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3.5">
+            <div className="mt-7 flex flex-wrap items-center gap-3">
               <a
                 href={activePrimaryCtaHref}
-                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-semibold text-[#050608] shadow-[0_0_30px_rgba(255,255,255,0.28)] transition hover:bg-slate-100"
+                className="keep-white-text inline-flex items-center gap-2 rounded-none bg-[#EC008C] px-6 py-3 text-xs font-mono font-bold text-white shadow-[0_0_24px_rgba(236,0,140,0.35)] transition hover:bg-[#d4007d]"
               >
                 <span>{activePrimaryCtaLabel}</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
               <a
                 href="tel:1300238243"
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/65 px-5 py-3 text-xs font-medium text-white backdrop-blur-md transition hover:border-white/30 hover:bg-white/[0.08]"
+                className="inline-flex items-center gap-2 rounded-none border border-white/15 bg-[#08090C] px-5 py-3 text-xs font-mono font-semibold text-white transition hover:border-[#EC008C]/50"
               >
                 <Phone className="h-3.5 w-3.5 text-[#EC008C]" />
-                <span>Call 1300 238 243</span>
+                <span>CALL 1300 238 243</span>
               </a>
               <Link
                 href={activeSecondaryCtaHref}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-xs font-medium text-slate-200 transition hover:border-white/25 hover:text-white"
+                className="inline-flex items-center gap-2 rounded-none border border-white/15 bg-[#08090C] px-5 py-3 text-xs font-mono font-semibold text-slate-200 transition hover:border-[#EC008C]/50 hover:text-white"
               >
                 <span>{activeSecondaryCtaLabel}</span>
-                <ArrowUpRight className="h-3.5 w-3.5 text-slate-400" />
+                <ArrowUpRight className="h-3.5 w-3.5 text-[#EC008C]" />
               </Link>
             </div>
           </div>
 
           {/* Bottom Telemetry Bar */}
-          <div className="relative z-10 mt-12 grid grid-cols-2 gap-3 border-t border-white/[0.08] pt-6 sm:grid-cols-4">
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-3.5">
-              <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">
-                Australian Standards
+          <div className="relative z-10 mt-10 grid grid-cols-2 gap-3 border-t border-white/[0.08] pt-6 sm:grid-cols-4">
+            <div className="rounded-none border border-white/[0.08] bg-[#08090C] p-3.5">
+              <div className="font-mono text-[10px] uppercase tracking-wider text-[#ff7ac6]">
+                [01] AUSTRALIAN STANDARDS
               </div>
-              <div className="mt-1 font-display text-sm font-medium text-white">
+              <div className="mt-1 font-mono text-sm font-bold text-white">
                 AS/NZS 60335-2-95
               </div>
             </div>
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-3.5">
-              <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">
-                Direct Support Line
+            <div className="rounded-none border border-white/[0.08] bg-[#08090C] p-3.5">
+              <div className="font-mono text-[10px] uppercase tracking-wider text-[#ff7ac6]">
+                [02] DIRECT SUPPORT LINE
               </div>
-              <div className="mt-1 font-mono text-sm font-medium text-white tabular-nums">
+              <div className="mt-1 font-mono text-sm font-bold text-white tabular-nums">
                 1300 238 243
               </div>
             </div>
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-3.5">
-              <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">
-                Melbourne Coverage
+            <div className="rounded-none border border-white/[0.08] bg-[#08090C] p-3.5">
+              <div className="font-mono text-[10px] uppercase tracking-wider text-[#ff7ac6]">
+                [03] MELBOURNE COVERAGE
               </div>
-              <div className="mt-1 font-display text-sm font-medium text-white">
-                {suburbName ? `${suburbName} & Surrounds` : '11 Metropolitan Hubs'}
+              <div className="mt-1 font-display text-sm font-semibold text-white">
+                {suburbName ? `${suburbName} & Surrounds` : '11 Metropolitan Corridors'}
               </div>
             </div>
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-3.5">
-              <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">
-                CMS Revision
+            <div className="rounded-none border border-white/[0.08] bg-[#08090C] p-3.5">
+              <div className="font-mono text-[10px] uppercase tracking-wider text-[#ff7ac6]">
+                [04] CMS REVISION
               </div>
               <div className="mt-1 font-mono text-xs text-slate-300 tabular-nums">
                 Rev #{isPreviewActive ? pageRecord.draftRevision : pageRecord.publishedRevision} •{' '}
@@ -341,28 +321,28 @@ function DynamicCmsPageContent() {
       </section>
 
       {/* Structured CMS Content & Bento Insights */}
-      <section className="mx-auto max-w-[1440px] px-4 py-14 sm:px-8">
+      <section className="mx-auto max-w-[1760px] px-3 py-12 sm:px-5 lg:px-7">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           <div className="space-y-6 lg:col-span-8">
             {/* Key Highlights Card */}
             {pageRecord.highlights && pageRecord.highlights.length > 0 && (
-              <article className="relative overflow-hidden rounded-[26px] border border-white/[0.08] bg-[#0B0D10] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.65)] sm:p-8">
-                <div className="flex items-center justify-between gap-4">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#EC008C]">
+              <article className="hud-corner-brackets brand-animated-border relative overflow-hidden rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8">
+                <div className="flex items-center justify-between gap-4 pb-3 border-b border-white/[0.07]">
+                  <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-[#EC008C]">
                     ENGINEERED HIGHLIGHTS
                   </span>
-                  <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-0.5 font-mono text-[10px] text-slate-400">
+                  <span className="rounded-none border border-white/15 bg-[#08090C] px-3 py-0.5 font-mono text-[10px] text-slate-400">
                     {pageRecord.slug}
                   </span>
                 </div>
-                <h2 className="mt-2 font-display text-2xl font-medium tracking-tight text-white sm:text-3xl">
-                  Key Capabilities & Operational Scope
+                <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                  Key Capabilities &amp; Operational Scope
                 </h2>
-                <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <ul className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {pageRecord.highlights.map((bullet, idx) => (
                     <li
                       key={idx}
-                      className="flex items-start gap-2.5 rounded-xl border border-white/[0.06] bg-black/40 p-3.5 text-xs text-slate-200"
+                      className="flex items-start gap-2.5 rounded-none border border-white/[0.08] bg-[#08090C] p-3.5 text-xs text-slate-200"
                     >
                       <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
                       <span>{bullet}</span>
@@ -371,8 +351,8 @@ function DynamicCmsPageContent() {
                 </ul>
 
                 {pageRecord.specs && pageRecord.specs.length > 0 && (
-                  <div className="mt-6 overflow-hidden rounded-2xl border border-white/[0.08] bg-[#07080A]">
-                    <div className="border-b border-white/[0.07] bg-white/[0.02] px-4 py-2.5 font-mono text-[11px] uppercase tracking-wider text-slate-400">
+                  <div className="mt-6 overflow-hidden rounded-none border border-white/[0.09] bg-[#08090C]">
+                    <div className="border-b border-white/[0.08] bg-[#0B0C10] px-4 py-2.5 font-mono text-[11px] font-bold uppercase tracking-wider text-[#ff7ac6]">
                       Technical Specification Matrix
                     </div>
                     <dl className="divide-y divide-white/[0.06]">
@@ -382,7 +362,7 @@ function DynamicCmsPageContent() {
                           className="grid grid-cols-1 gap-1 px-4 py-3 text-xs sm:grid-cols-3 sm:gap-4"
                         >
                           <dt className="font-mono text-slate-400">{spec.label}</dt>
-                          <dd className="font-mono font-medium text-white sm:col-span-2 tabular-nums">
+                          <dd className="font-mono font-semibold text-white sm:col-span-2 tabular-nums">
                             {spec.value} {spec.unit || ''}
                           </dd>
                         </div>
@@ -397,21 +377,21 @@ function DynamicCmsPageContent() {
             {activeSections.map((section, index) => (
               <article
                 key={section.id}
-                className="relative overflow-hidden rounded-[26px] border border-white/[0.08] bg-[#0B0D10] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.65)] sm:p-8"
+                className="hud-corner-brackets brand-animated-border relative overflow-hidden rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8"
               >
-                <div className="flex items-center justify-between gap-4">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#EC008C]">
+                <div className="flex items-center justify-between gap-4 pb-3 border-b border-white/[0.07]">
+                  <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-[#EC008C]">
                     SECTION 0{index + 1} • {section.type.toUpperCase().replace(/_/g, ' ')}
                   </span>
-                  <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-0.5 font-mono text-[10px] text-slate-400">
+                  <span className="rounded-none border border-white/15 bg-[#08090C] px-3 py-0.5 font-mono text-[10px] text-slate-400">
                     {section.motionPreset}
                   </span>
                 </div>
 
-                <h2 className="mt-2 font-display text-2xl font-medium tracking-tight text-white sm:text-3xl">
+                <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
                   {section.title}
                 </h2>
-                <p className="mt-3 text-sm leading-relaxed text-slate-300/90 sm:text-base">
+                <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
                   {section.subtitle}
                 </p>
 
@@ -420,19 +400,19 @@ function DynamicCmsPageContent() {
                     {section.items.map((item) => (
                       <div
                         key={item.id}
-                        className="rounded-2xl border border-white/[0.07] bg-[#07080A] p-4"
+                        className="rounded-none border border-white/[0.08] bg-[#08090C] p-4"
                       >
                         {item.tag && (
-                          <span className="font-mono text-[10px] uppercase tracking-wider text-[#EC008C]">
+                          <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#EC008C]">
                             {item.tag}
                           </span>
                         )}
                         <div className="mt-1 flex items-baseline justify-between gap-2">
-                          <h3 className="font-display text-base font-medium text-white">
+                          <h3 className="font-display text-base font-semibold text-white">
                             {item.title}
                           </h3>
                           {item.metric && (
-                            <span className="font-mono text-xs font-semibold text-emerald-300 tabular-nums">
+                            <span className="font-mono text-xs font-bold text-[#ff7ac6] tabular-nums">
                               {item.metric}
                             </span>
                           )}
@@ -449,17 +429,17 @@ function DynamicCmsPageContent() {
 
             {/* Connected Category Ranges */}
             {relatedCatalogPages.length > 0 && (
-              <div className="rounded-[26px] border border-white/[0.08] bg-[#0B0D10] p-6 sm:p-8">
-                <div className="flex items-center justify-between">
+              <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8">
+                <div className="flex items-center justify-between pb-3 border-b border-white/[0.07]">
                   <div>
-                    <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">
-                      Connected Ranges & Sub-Categories
+                    <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#ff7ac6]">
+                      Connected Ranges &amp; Sub-Categories
                     </p>
-                    <h2 className="mt-1 font-display text-2xl font-medium text-white">
+                    <h2 className="mt-1 font-display text-2xl font-semibold text-white">
                       Explore Related BETA DOORS Pages
                     </h2>
                   </div>
-                  <Sliders className="h-5 w-5 text-slate-400" />
+                  <Sliders className="h-5 w-5 text-[#EC008C]" />
                 </div>
 
                 <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -467,22 +447,22 @@ function DynamicCmsPageContent() {
                     <Link
                       key={child.slug}
                       href={child.slug}
-                      className="group flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-[#07080A] p-5 transition hover:border-white/25 hover:bg-white/[0.03]"
+                      className="group hud-corner-brackets flex flex-col justify-between rounded-none border border-white/[0.09] bg-[#08090C] p-5 transition hover:border-[#EC008C]/60"
                     >
                       <div>
-                        <span className="font-mono text-[10px] uppercase tracking-wider text-[#EC008C]">
+                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#EC008C]">
                           {child.category.replace(/_/g, ' ')}
                         </span>
-                        <h3 className="mt-1.5 font-display text-lg font-medium text-white group-hover:text-slate-100">
+                        <h3 className="mt-1.5 font-display text-lg font-semibold text-white group-hover:text-[#EC008C]">
                           {child.title}
                         </h3>
                         <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-slate-400">
                           {child.leadDescription}
                         </p>
                       </div>
-                      <div className="mt-4 flex items-center justify-between border-t border-white/[0.06] pt-3 font-mono text-[11px] text-slate-300">
+                      <div className="mt-4 flex items-center justify-between border-t border-white/[0.07] pt-3 font-mono text-[11px] text-slate-300">
                         <span>{child.slug}</span>
-                        <ArrowUpRight className="h-4 w-4 text-slate-400 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white" />
+                        <ArrowUpRight className="h-4 w-4 text-[#EC008C] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </div>
                     </Link>
                   ))}
@@ -492,22 +472,22 @@ function DynamicCmsPageContent() {
 
             {/* Direct Online Shop Hardware Strip */}
             {pageRecord.category !== 'legal' && (
-              <div className="rounded-[26px] border border-white/[0.08] bg-[#0B0D10] p-6 sm:p-8">
-                <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8">
+                <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/[0.07]">
                   <div>
-                    <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">
+                    <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#ff7ac6]">
                       Single Commerce Authority • AUD GST Included
                     </p>
-                    <h2 className="mt-1 font-display text-2xl font-medium text-white">
+                    <h2 className="mt-1 font-display text-2xl font-semibold text-white">
                       Compatible BETA Automation Hardware
                     </h2>
                   </div>
                   <Link
-                    href="/shop/"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white transition hover:bg-white/[0.09]"
+                    href="/shop"
+                    className="inline-flex items-center gap-1.5 rounded-none border border-white/15 bg-[#08090C] px-4 py-2 text-xs font-mono font-semibold text-white transition hover:bg-white/[0.08]"
                   >
-                    <span>View All 5 Shop Products</span>
-                    <ArrowUpRight className="h-3.5 w-3.5" />
+                    <span>VIEW ALL 5 SHOP PRODUCTS</span>
+                    <ArrowUpRight className="h-3.5 w-3.5 text-[#EC008C]" />
                   </Link>
                 </div>
 
@@ -516,9 +496,9 @@ function DynamicCmsPageContent() {
                     <Link
                       key={product.id}
                       href={product.path}
-                      className="group flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-[#07080A] p-4 transition hover:border-white/25"
+                      className="group hud-corner-brackets flex flex-col justify-between rounded-none border border-white/[0.09] bg-[#08090C] p-4 transition hover:border-[#EC008C]/60"
                     >
-                      <div className="aspect-video w-full overflow-hidden rounded-xl border border-white/[0.05] bg-[#12141A]">
+                      <div className="aspect-video w-full overflow-hidden rounded-none border border-white/[0.08] bg-[#12141A]">
                         <ProductTechnicalArtwork
                           type={product.imageSvgType}
                           customImageUrl={product.customImageUrl}
@@ -531,13 +511,13 @@ function DynamicCmsPageContent() {
                           <span className="font-mono text-[10px] text-slate-400">
                             SKU: {product.sku}
                           </span>
-                          <span className="font-mono text-xs font-semibold text-emerald-300 tabular-nums">
+                          <span className="font-mono text-xs font-bold text-[#ff7ac6] tabular-nums">
                             {product.maxPriceCents
                               ? `${formatAudCents(product.priceCents)} – ${formatAudCents(product.maxPriceCents)}`
                               : formatAudCents(product.priceCents)}
                           </span>
                         </div>
-                        <h3 className="mt-1 font-display text-base font-medium text-white">
+                        <h3 className="mt-1 font-display text-base font-semibold text-white group-hover:text-[#EC008C]">
                           {product.name}
                         </h3>
                         <p className="mt-1 line-clamp-2 text-xs text-slate-400">
@@ -553,15 +533,15 @@ function DynamicCmsPageContent() {
             {/* Local Melbourne Suburb Directory */}
             {(pageRecord.category === 'local_services' ||
               pageRecord.category === 'services') && (
-              <div className="rounded-[26px] border border-white/[0.08] bg-[#0B0D10] p-6 sm:p-8">
+              <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8">
                 <div className="flex items-center gap-2.5">
                   <MapPin className="h-5 w-5 text-[#EC008C]" />
-                  <h2 className="font-display text-xl font-medium text-white">
-                    Greater Melbourne Local Repair & Automation Hubs (11 Suburbs)
+                  <h2 className="font-display text-xl font-semibold text-white">
+                    Greater Melbourne Local Repair &amp; Automation Corridors (11 Suburbs)
                   </h2>
                 </div>
                 <p className="mt-2 text-xs text-slate-400">
-                  Every local service page retains its dedicated URL slug, suburb-specific dispatch telemetry, and direct booking workflow.
+                  Every local service page retains its dedicated URL slug and direct technical booking workflow.
                 </p>
                 <div className="mt-5 grid grid-cols-1 gap-2.5 sm:grid-cols-2 md:grid-cols-3">
                   {siblingLocalPages.map((suburbPage) => {
@@ -570,10 +550,10 @@ function DynamicCmsPageContent() {
                       <Link
                         key={suburbPage.slug}
                         href={suburbPage.slug}
-                        className={`flex items-center justify-between rounded-xl border px-3.5 py-2.5 text-xs transition ${
+                        className={`flex items-center justify-between rounded-none border px-3.5 py-2.5 text-xs transition ${
                           isCurrent
-                            ? 'border-[#EC008C] bg-[#EC008C]/15 font-semibold text-white'
-                            : 'border-white/[0.07] bg-black/40 text-slate-300 hover:border-white/20 hover:text-white'
+                            ? 'keep-white-text border-[#EC008C] bg-[#EC008C] font-semibold text-white'
+                            : 'border-white/[0.08] bg-[#08090C] text-slate-300 hover:border-[#EC008C]/50 hover:text-white'
                         }`}
                       >
                         <span className="truncate">
@@ -590,37 +570,27 @@ function DynamicCmsPageContent() {
 
           {/* Right Column: Contextual Enquiry / Booking Form + Manuals Quick Access */}
           <aside id="page-enquiry-desk" className="space-y-6 lg:col-span-4">
-            <div className="rounded-[26px] border border-white/[0.09] bg-[#0B0D10] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.75)]">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#EC008C]">
-                  {suburbName ? `${suburbName} Dispatch Desk` : 'Direct Technical Desk'}
-                </span>
-                <Wrench className="h-4 w-4 text-slate-400" />
-              </div>
-              <div className="mt-3">
-                <EnquiryForm
-                  sourcePagePath={pageRecord.slug}
-                  productContext={activeTitle}
-                  heading={
-                    suburbName
-                      ? `Book ${suburbName} Door Repair or Quote`
-                      : 'Request Measure, Quote or Repair'
-                  }
-                  subheading="Direct routing to Campbellfield operations (1300 238 243). All submissions persist to the Admin Triage Queue."
-                />
-              </div>
-            </div>
+            <EnquiryForm
+              sourcePagePath={pageRecord.slug}
+              productContext={activeTitle}
+              heading={
+                suburbName
+                  ? `Book ${suburbName} Door Repair or Quote`
+                  : 'Request Measure, Quote or Repair'
+              }
+              subheading="Direct routing to Campbellfield operations (1300 238 243). All submissions persist to the Admin Triage Queue."
+            />
 
             {/* Downloadable Manuals Card */}
-            <div className="rounded-[26px] border border-white/[0.08] bg-[#0B0D10] p-6">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400">
+            <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6">
+              <div className="flex items-center justify-between pb-2 border-b border-white/[0.07]">
+                <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#EC008C]">
                   Technical PDF Library
                 </span>
                 <FileText className="h-4 w-4 text-[#EC008C]" />
               </div>
-              <h3 className="mt-1.5 font-display text-lg font-medium text-white">
-                Installation & Programming Manuals
+              <h3 className="mt-3 font-display text-lg font-semibold text-white">
+                Installation &amp; Programming Manuals
               </h3>
               <ul className="mt-4 space-y-2.5">
                 {manuals.map((manual) => (
@@ -629,53 +599,53 @@ function DynamicCmsPageContent() {
                       href={manual.localDownloadPath}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between rounded-xl border border-white/[0.07] bg-black/40 px-3.5 py-2.5 text-xs text-slate-200 transition hover:border-white/25 hover:text-white"
+                      className="flex items-center justify-between rounded-none border border-white/[0.08] bg-[#08090C] px-3.5 py-2.5 text-xs text-slate-200 transition hover:border-[#EC008C]/60 hover:text-white"
                     >
                       <span className="truncate pr-2">{manual.label}</span>
-                      <span className="shrink-0 font-mono text-[10px] text-slate-400">
+                      <span className="shrink-0 font-mono text-[10px] text-[#ff7ac6]">
                         {manual.version}
                       </span>
                     </a>
                   </li>
                 ))}
               </ul>
-              <div className="mt-4 flex flex-col gap-2 border-t border-white/[0.06] pt-4 text-xs">
+              <div className="mt-4 flex flex-col gap-2 border-t border-white/[0.07] pt-4 text-xs font-mono">
                 <Link
-                  href="/warranty-registration/"
-                  className="inline-flex items-center justify-between text-slate-300 hover:text-white"
+                  href="/warranty-registration"
+                  className="inline-flex items-center justify-between text-slate-300 hover:text-[#EC008C]"
                 >
-                  <span>Register Product Warranty</span>
+                  <span>REGISTER PRODUCT WARRANTY</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
                 <Link
-                  href="/register-to-service/"
-                  className="inline-flex items-center justify-between text-slate-300 hover:text-white"
+                  href="/register-to-service"
+                  className="inline-flex items-center justify-between text-slate-300 hover:text-[#EC008C]"
                 >
-                  <span>Schedule Annual Service</span>
+                  <span>SCHEDULE ANNUAL SERVICE</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
                 <Link
-                  href="/garage-door-spring-estimator/"
-                  className="inline-flex items-center justify-between text-slate-300 hover:text-white"
+                  href="/garage-door-spring-estimator"
+                  className="inline-flex items-center justify-between text-slate-300 hover:text-[#EC008C]"
                 >
-                  <span>Torsion Spring Estimator</span>
+                  <span>TORSION SPRING ESTIMATOR</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
             </div>
 
             {/* Australian Consumer Law & Safety Callout */}
-            <div className="rounded-[26px] border border-white/[0.08] bg-[#0B0D10] p-6">
+            <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6">
               <div className="flex items-center gap-2 text-xs font-semibold text-white">
                 <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                <span>Safety & Australian Consumer Law</span>
+                <span>Safety &amp; Australian Consumer Law</span>
               </div>
               <p className="mt-2 text-xs leading-relaxed text-slate-400">
                 High-tension garage door springs and 240V mains wiring must only be serviced by qualified technicians. All products come with guarantees that cannot be excluded under the Australian Consumer Law.
               </p>
               <div className="mt-3 flex items-center gap-2 font-mono text-[11px] text-slate-300">
                 <Clock className="h-3.5 w-3.5 text-[#EC008C]" />
-                <span>Mon–Fri 8:00am–5:30pm AEST • Emergency Dispatch</span>
+                <span>Mon–Fri 8:00am–5:30pm AEST • 1300 238 243</span>
               </div>
             </div>
           </aside>
@@ -690,8 +660,8 @@ export default function DynamicCmsPage() {
     <Suspense
       fallback={
         <SiteShell>
-          <div className="mx-auto max-w-[1400px] px-4 py-20 sm:px-8">
-            <div className="h-[460px] animate-pulse rounded-[28px] border border-white/10 bg-[#0B0D11]" />
+          <div className="mx-auto max-w-[1760px] px-4 py-20 sm:px-8">
+            <div className="h-[460px] animate-pulse rounded-none border border-white/10 bg-[#0B0D11]" />
           </div>
         </SiteShell>
       }

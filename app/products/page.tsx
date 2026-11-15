@@ -6,14 +6,11 @@ import {
   ArrowRight,
   ArrowUpRight,
   CheckCircle2,
-  ShieldCheck,
   Sparkles,
-  Wrench,
-  Layers,
-  Cpu,
 } from 'lucide-react';
 import { SiteShell } from '@/components/layout/SiteShell';
 import { DeFiPageHeroStage } from '@/components/hero/DeFiPageHeroStage';
+import { HudSectionRail } from '@/components/sections/HomeSections';
 import { ProductTechnicalArtwork } from '@/components/brand/ProductTechnicalArtwork';
 import { EnquiryForm } from '@/components/forms/EnquiryForm';
 import { useBetaDoors } from '@/components/providers/BetaDoorsProvider';
@@ -30,9 +27,9 @@ const OFFICIAL_PRODUCT_CATEGORIES = [
     description:
       'Enjoy a wide selection of Garage Doors in Melbourne. Our insulated sectional garage doors feature panels designed to provide thermal protection and finger protection technology, alongside Single Skin Sectional Doors and durable Australian Roller Doors.',
     subItems: [
-      { label: 'Insulated Sectional Garage Doors', href: '/garage-door-range' },
-      { label: 'Single Skin Sectional Garage Doors', href: '/garage-door-range' },
-      { label: 'Roller Doors', href: '/garage-door-range' },
+      { label: 'Insulated Sectional Garage Doors', href: '/insulated-sectional-garage-doors' },
+      { label: 'Single Skin Sectional Garage Doors', href: '/single-skin-sectional-garage-doors' },
+      { label: 'Roller Garage Doors', href: '/roller-garage-doors' },
     ],
   },
   {
@@ -81,8 +78,8 @@ const OFFICIAL_PRODUCT_CATEGORIES = [
     description:
       'Custom-fabricated Swing Gates and Sliding Gates designed for Australian driveways, commercial entrances, and automated security access control.',
     subItems: [
-      { label: 'Swing Gates', href: '/gate-catagories' },
-      { label: 'Sliding Gates', href: '/gate-catagories' },
+      { label: 'Swing Gates', href: '/swing-gates' },
+      { label: 'Sliding Gates', href: '/sliding-gates' },
     ],
   },
   {
@@ -123,16 +120,16 @@ export default function ProductsPage() {
 
   return (
     <SiteShell>
-      {/* 1. DeFi Landing Page 16:9 Hero Stage with verbatim betadoors.com.au/products/ copy */}
+      {/* 1. Architectural HUD Stage */}
       <DeFiPageHeroStage
         ariaLabel="BETA DOORS Product Categories 16:9 Hero Stage"
         badgeText="Pioneers in the door automation industry · Australia Wide"
-        badgeHref="/about-us/"
+        badgeHref="/about-us"
         headlinePrimary="Product Categories &"
         headlineGradient="Door Automation Systems"
         subheadline="At Beta, we are pioneers in the door automation industry. We offer a comprehensive range of solutions for Commercial and Residential Garage Door and Gates — from sectional and roller door operators to accessories, WiFi capabilities, springs, and receivers."
         primaryCtaLabel="Explore Online Shop"
-        primaryCtaHref="/shop/"
+        primaryCtaHref="/shop"
         secondaryCtaLabel="Enquire Now"
         secondaryCtaHref="#products-enquiry"
         scrollTargetId="products-bento-insights"
@@ -141,24 +138,30 @@ export default function ProductsPage() {
         bottomLeftNode={{ label: 'Sectional Springs', metric: '10+ Sizes' }}
         bottomRightNode={{ label: 'Gate Automation', metric: 'Swing & Sliding' }}
         horizonSlides={[
-          { label: '01/04 . Product Categories', tag: 'Garage Doors & Aria 121 Openers' },
-          { label: '02/04 . Product Categories', tag: 'Roller Door Openers (5 Years Warranty)' },
-          { label: '03/04 . Product Categories', tag: 'BETA & LIFE Gate Automation' },
-          { label: '04/04 . Product Categories', tag: 'Springs, Hardware & Smart Accessories' },
+          { label: '01/04 · Product Categories', tag: 'Garage Doors & Aria 121 Openers' },
+          { label: '02/04 · Product Categories', tag: 'Roller Door Openers (5 Years Warranty)' },
+          { label: '03/04 · Product Categories', tag: 'BETA & LIFE Gate Automation' },
+          { label: '04/04 · Product Categories', tag: 'Springs, Hardware & Smart Accessories' },
         ]}
       />
 
-      {/* 2. "What We Offer" 4-Card DeFi Bento Grid (matching uploaded DeFi reference image) */}
+      {/* 2. "What We Offer" 4-Card Sharp HUD Bento Grid */}
       <section
         id="products-bento-insights"
-        className="px-4 sm:px-8 lg:px-12 py-16 max-w-7xl mx-auto"
+        className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-14"
       >
-        <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1 font-mono text-[11px] text-slate-300">
+        <HudSectionRail
+          code="HUD.PROD.01"
+          sector="WHAT WE OFFER // BETADOORS.COM.AU SPECIFICATIONS"
+          status="AS/NZS VERIFIED"
+        />
+
+        <div className="max-w-2xl mb-10 space-y-2.5">
+          <div className="inline-flex items-center gap-2 rounded-none border border-[#EC008C]/40 bg-[#EC008C]/15 px-3 py-1 font-mono text-[11px] text-[#ff7ac6]">
             <Sparkles className="w-3.5 h-3.5 text-[#EC008C]" />
             <span>WHAT WE OFFER · BETADOORS.COM.AU SPECIFICATIONS</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-white">
+          <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-white">
             Speed in Service, Quality in Product
           </h2>
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
@@ -168,131 +171,99 @@ export default function ProductsPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           {/* Card 1 (Left 7 cols): Garage Door Openers & 7 Years Warranty */}
-          <div className="lg:col-span-7 rounded-[28px] brand-animated-border bg-[#0B0C10] border border-white/[0.08] p-7 sm:p-9 flex flex-col justify-between relative overflow-hidden">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-12 top-6 w-56 h-56 rounded-full blur-3xl opacity-35"
-              style={{
-                background:
-                  'radial-gradient(circle, rgba(215,230,222,0.5) 0%, rgba(11,12,16,0) 70%)',
-              }}
-            />
-
+          <div className="lg:col-span-7 hud-corner-brackets brand-animated-border hud-technical-grid rounded-none bg-[#0B0C10] border border-white/[0.09] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
               <div className="sm:col-span-5 space-y-1">
-                <div className="text-4xl sm:text-5xl font-light tracking-tight text-white tabular-nums">
-                  7 Years <span className="text-slate-500">.</span>
+                <div className="text-[10px] font-mono text-[#ff7ac6] uppercase tracking-wider">
+                  WARRANTY.COVERAGE // PDO
+                </div>
+                <div className="text-3xl sm:text-5xl font-bold font-mono tracking-tight text-white tabular-nums">
+                  7 YEARS <span className="text-[#EC008C]">■</span>
                 </div>
                 <div className="text-xs text-slate-400">
-                  Warranty · Garage Door Openers
+                  Sectional &amp; Tilt Garage Door Openers
                 </div>
               </div>
 
-              {/* Orbital Force Diagram */}
-              <div className="sm:col-span-7 relative h-36 flex items-center justify-center">
-                <svg viewBox="0 0 320 140" className="w-full h-full overflow-visible">
-                  <ellipse
-                    cx="160"
-                    cy="75"
-                    rx="135"
-                    ry="38"
-                    fill="none"
-                    stroke="rgba(255,255,255,0.14)"
+              {/* Sharp CAD Schematic Force Diagram */}
+              <div className="sm:col-span-7 relative h-36 flex items-center justify-center bg-[#08090C] border border-white/[0.08] p-3">
+                <svg viewBox="0 0 320 120" className="w-full h-full">
+                  <line
+                    x1="16"
+                    y1="30"
+                    x2="304"
+                    y2="30"
+                    stroke="rgba(236,0,140,0.3)"
                     strokeWidth="1"
-                    transform="rotate(-8 160 75)"
+                    className="hud-rail-dashed"
                   />
-                  <ellipse
-                    cx="165"
-                    cy="75"
-                    rx="95"
-                    ry="24"
-                    fill="none"
-                    stroke="rgba(255,255,255,0.1)"
+                  <line
+                    x1="16"
+                    y1="60"
+                    x2="304"
+                    y2="60"
+                    stroke="#EC008C"
+                    strokeWidth="1.5"
+                    className="hud-animated-trace"
+                  />
+                  <line
+                    x1="16"
+                    y1="90"
+                    x2="304"
+                    y2="90"
+                    stroke="rgba(56,189,248,0.35)"
                     strokeWidth="1"
-                    transform="rotate(-8 165 75)"
+                    className="hud-rail-dashed"
                   />
-                  <g transform="translate(110, 42)">
-                    <circle cx="30" cy="24" r="3" fill="#FFFFFF" />
-                    <rect
-                      x="0"
-                      y="0"
-                      width="68"
-                      height="18"
-                      rx="9"
-                      fill="#151821"
-                      stroke="rgba(255,255,255,0.2)"
-                    />
-                    <text x="34" y="12" textAnchor="middle" fill="#E2E8F0" fontSize="8" fontFamily="monospace">
-                      1000N
-                    </text>
-                  </g>
-                  <g transform="translate(175, 22)">
-                    <circle cx="30" cy="24" r="3" fill="#94A3B8" />
-                    <rect
-                      x="0"
-                      y="0"
-                      width="68"
-                      height="18"
-                      rx="9"
-                      fill="#151821"
-                      stroke="rgba(255,255,255,0.15)"
-                    />
-                    <text x="34" y="12" textAnchor="middle" fill="#CBD5E1" fontSize="8" fontFamily="monospace">
-                      1200N
-                    </text>
-                  </g>
-                  <g transform="translate(222, 68)">
-                    <circle cx="28" cy="0" r="3" fill="#EC008C" />
-                    <rect
-                      x="0"
-                      y="6"
-                      width="68"
-                      height="18"
-                      rx="9"
-                      fill="#151821"
-                      stroke="rgba(236,0,140,0.4)"
-                    />
-                    <text x="34" y="18" textAnchor="middle" fill="#F8FAFC" fontSize="8" fontFamily="monospace">
-                      1500N + WiFi
-                    </text>
-                  </g>
+                  <rect x="24" y="18" width="76" height="22" fill="#14161D" stroke="rgba(255,255,255,0.2)" />
+                  <text x="62" y="32" textAnchor="middle" fill="#F8FAFC" fontSize="8.5" fontFamily="monospace">
+                    800N / 1000N
+                  </text>
+                  <rect x="122" y="48" width="76" height="22" fill="#14161D" stroke="#EC008C" />
+                  <text x="160" y="62" textAnchor="middle" fill="#F8FAFC" fontSize="8.5" fontFamily="monospace">
+                    1200N ARIA
+                  </text>
+                  <rect x="218" y="78" width="82" height="22" fill="#14161D" stroke="rgba(56,189,248,0.6)" />
+                  <text x="259" y="92" textAnchor="middle" fill="#F8FAFC" fontSize="8.5" fontFamily="monospace">
+                    1500N + WIFI
+                  </text>
                 </svg>
               </div>
             </div>
 
-            <div className="my-5 p-1.5 rounded-full bg-[#07080A] border border-white/[0.07] flex flex-wrap items-center justify-between gap-2 text-[11px]">
+            <div className="my-5 p-2 rounded-none bg-[#08090C] border border-white/[0.08] flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
               <Link
-                href="/sectional-and-tilt-door-opener-range/"
-                className="px-3 py-1 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 transition-colors"
+                href="/sectional-and-tilt-door-opener-range"
+                className="px-3 py-1.5 rounded-none bg-[#0B0C10] hover:bg-white/[0.08] border border-white/10 text-slate-300 transition-colors"
               >
-                ↗ Aria 121 Sectional Opener
+                [01] Aria 121 Sectional Opener
               </Link>
               <Link
-                href="/product/motor-pack/"
-                className="px-3.5 py-1 rounded-full bg-white/[0.1] text-white font-medium border border-white/15"
+                href="/product/motor-pack"
+                className="keep-white-text px-3.5 py-1.5 rounded-none bg-[#EC008C] text-white font-bold"
               >
-                ⓘ Optional WiFi Kit &amp; Camera
+                [02] WiFi Motor Pack ($650–$730)
               </Link>
               <Link
-                href="/beta-doors-manuals/"
-                className="px-3 py-1 rounded-full text-slate-400 hover:text-white transition-colors"
+                href="/beta-doors-manuals"
+                className="px-3 py-1.5 rounded-none text-slate-400 hover:text-white transition-colors"
               >
-                Asterion PDO Manual
+                [03] Asterion PDO Manual →
               </Link>
             </div>
 
-            <div className="text-center space-y-1.5 pt-1">
-              <h3 className="text-lg font-medium text-white">
+            <div className="space-y-1.5 pt-3 border-t border-white/[0.07]">
+              <h3 className="text-base sm:text-lg font-semibold text-white">
                 Garage Door Openers (1000N · 1200N · 1500N)
               </h3>
-              <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
+              <p className="text-xs text-slate-400 leading-relaxed">
                 Sectional and tilt door operators backed by a 7-year warranty, hopping code security, photocell safety beams, and optional WiFi kit.
               </p>
             </div>
           </div>
 
-          {/* Card 2 (Right 5 cols): Vertical Glowing Cylinders for Roller Door Openers */}
-          <div className="lg:col-span-5 rounded-[28px] brand-animated-border bg-[#0B0C10] border border-white/[0.08] p-7 sm:p-9 flex flex-col justify-between relative overflow-hidden">
+          {/* Card 2 (Right 5 cols): Sharp Columns for Roller Door Openers */}
+          <div className="lg:col-span-5 hud-corner-brackets brand-animated-border hud-technical-grid rounded-none bg-[#0B0C10] border border-white/[0.09] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
             <div className="h-48 flex items-end justify-center gap-4 sm:gap-5 pt-4 px-2">
               {[
                 { label: '1800N', height: '100%' },
@@ -300,141 +271,145 @@ export default function ProductsPage() {
                 { label: '1200N', height: '72%' },
                 { label: '1000N', height: '58%' },
                 { label: '5 YR', height: '46%' },
-              ].map((bar) => (
+              ].map((bar, idx) => (
                 <div
                   key={bar.label}
-                  className="flex flex-col items-center gap-2 h-full justify-end flex-1 max-w-[42px]"
+                  className="flex flex-col items-center gap-2 h-full justify-end flex-1 max-w-[46px]"
                 >
                   <div
                     style={{ height: bar.height }}
-                    className="w-full rounded-t-2xl bg-gradient-to-b from-white/30 via-white/[0.08] to-transparent border-t border-x border-white/25 relative flex justify-center pt-2 shadow-[0_0_25px_rgba(255,255,255,0.08)]"
+                    className={`w-full rounded-none border-t border-x relative flex justify-center pt-2 ${
+                      idx === 0
+                        ? 'bg-gradient-to-b from-[#EC008C]/65 via-[#EC008C]/20 to-transparent border-[#EC008C]'
+                        : 'bg-gradient-to-b from-slate-400/35 via-slate-400/10 to-transparent border-white/25'
+                    }`}
                   >
-                    <span className="w-3.5 h-1.5 rounded-full bg-white shadow-[0_0_10px_#fff]" />
+                    <span className="w-4 h-1 rounded-none bg-[#EC008C]" />
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400 tabular-nums">
+                  <span className="text-[10px] font-mono text-slate-300 font-bold tabular-nums">
                     {bar.label}
                   </span>
                 </div>
               ))}
             </div>
 
-            <div className="text-center space-y-1.5 pt-6">
-              <h3 className="text-lg font-medium text-white">
+            <div className="space-y-1.5 pt-4 border-t border-white/[0.07]">
+              <h3 className="text-base sm:text-lg font-semibold text-white">
                 Roller Door Openers (5 Years Warranty)
               </h3>
-              <p className="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">
+              <p className="text-xs text-slate-400 leading-relaxed">
                 Available in 1000N and 1500N residential options plus our heavy-duty 1800N commercial roller door opener.
               </p>
             </div>
           </div>
 
           {/* Card 3 (Bottom-Left 5 cols): Sectional & Tilt Door Springs */}
-          <div className="lg:col-span-5 rounded-[28px] brand-animated-border bg-[#0B0C10] border border-white/[0.08] p-7 sm:p-9 flex flex-col justify-between relative overflow-hidden">
+          <div className="lg:col-span-5 hud-corner-brackets brand-animated-border hud-technical-grid rounded-none bg-[#0B0C10] border border-white/[0.09] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
             <div className="grid grid-cols-2 gap-3.5">
               <Link
-                href="/hardware/"
-                className="rounded-2xl bg-[#12141A] border border-white/[0.08] hover:border-white/20 p-4 space-y-3 transition-colors"
+                href="/hardware"
+                className="rounded-none bg-[#08090C] border border-white/[0.09] hover:border-[#EC008C]/60 p-4 space-y-2.5 transition-colors"
               >
-                <div className="flex items-center gap-1.5 text-xs text-slate-300">
-                  <span className="w-1 h-3.5 rounded-full bg-amber-400" />
-                  <span>Sectional Springs</span>
+                <div className="flex items-center gap-1.5 text-xs font-mono text-[#ff7ac6]">
+                  <span className="w-1.5 h-3.5 bg-amber-400" />
+                  <span>SECTIONAL SPRINGS</span>
                 </div>
-                <div className="text-[11px] text-slate-400">Range</div>
-                <div className="text-2xl sm:text-3xl font-light text-white tabular-nums">
-                  10+ Sizes
+                <div className="text-[11px] text-slate-400">Calibration Range</div>
+                <div className="text-2xl sm:text-3xl font-bold font-mono text-white tabular-nums">
+                  10+ SIZES
                 </div>
-                <div className="text-xs text-slate-400 font-mono">
+                <div className="text-[11px] text-slate-400 font-mono">
                   Custom Installer Software
                 </div>
               </Link>
 
               <Link
-                href="/garage-door-spring-estimator/"
-                className="rounded-2xl bg-[#12141A] border border-white/[0.08] hover:border-white/20 p-4 space-y-3 transition-colors"
+                href="/garage-door-spring-estimator"
+                className="rounded-none bg-[#08090C] border border-white/[0.09] hover:border-[#EC008C]/60 p-4 space-y-2.5 transition-colors"
               >
-                <div className="flex items-center gap-1.5 text-xs text-slate-300">
-                  <span className="w-1 h-3.5 rounded-full bg-[#EC008C]" />
-                  <span>Tilt Door Springs</span>
+                <div className="flex items-center gap-1.5 text-xs font-mono text-[#ff7ac6]">
+                  <span className="w-1.5 h-3.5 bg-[#EC008C]" />
+                  <span>TILT SPRINGS</span>
                 </div>
                 <div className="text-[11px] text-slate-400">Coverage</div>
-                <div className="text-2xl sm:text-3xl font-light text-white tabular-nums">
-                  Full Range
+                <div className="text-2xl sm:text-3xl font-bold font-mono text-white tabular-nums">
+                  FULL RANGE
                 </div>
-                <div className="text-xs text-slate-400 font-mono">
-                  Spring Estimator →
+                <div className="text-[11px] text-[#EC008C] font-mono font-bold">
+                  OPEN ESTIMATOR →
                 </div>
               </Link>
             </div>
 
-            <div className="text-center space-y-1.5 pt-6">
-              <h3 className="text-lg font-medium text-white">
+            <div className="space-y-1.5 pt-4 border-t border-white/[0.07]">
+              <h3 className="text-base sm:text-lg font-semibold text-white">
                 Sectional &amp; Tilt Door Springs
               </h3>
-              <p className="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">
+              <p className="text-xs text-slate-400 leading-relaxed">
                 Over 10 sizes of sectional springs, full range of tilt door springs, and custom sectional spring software for installers.
               </p>
             </div>
           </div>
 
           {/* Card 4 (Bottom-Right 7 cols): Gate Automation & Accessories Matrix */}
-          <div className="lg:col-span-7 rounded-[28px] brand-animated-border bg-[#0B0C10] border border-white/[0.08] p-7 sm:p-9 flex flex-col justify-between relative overflow-hidden">
-            <div className="text-center space-y-1.5">
-              <h3 className="text-lg font-medium text-white">
-                Gate Automation . Smart Accessories
+          <div className="lg:col-span-7 hud-corner-brackets brand-animated-border hud-technical-grid rounded-none bg-[#0B0C10] border border-white/[0.09] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
+            <div className="space-y-1 pb-3 border-b border-white/[0.07]">
+              <h3 className="text-base sm:text-lg font-semibold text-white">
+                Gate Automation &amp; Smart Accessories
               </h3>
-              <p className="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
+              <p className="text-xs text-slate-400 leading-relaxed">
                 Swing &amp; Sliding Gate Openers, Hopping Code Remote Controls, External Receivers, and Universal WiFi Kits.
               </p>
             </div>
 
-            <div className="h-44 flex items-end justify-center gap-3 sm:gap-5 pt-6 px-4">
+            <div className="h-44 flex items-end justify-center gap-3 sm:gap-5 pt-6 px-2">
               {[
                 {
                   name: 'B600 / B550',
                   tag: 'BETA Gate',
                   height: '65%',
-                  color: 'from-amber-200/40 via-amber-500/15 to-transparent border-amber-300/30',
+                  color: 'from-amber-400/50 via-amber-500/15 to-transparent border-amber-400/50',
                 },
                 {
                   name: 'LIFE HP4/HP6',
                   tag: 'Sliding Gate',
                   height: '86%',
-                  color: 'from-[#EC008C]/55 via-[#EC008C]/20 to-transparent border-[#EC008C]/40',
+                  color: 'from-[#EC008C]/65 via-[#EC008C]/20 to-transparent border-[#EC008C]',
                 },
                 {
                   name: 'LIFE OP2–OP5',
                   tag: 'Swing Gate',
                   height: '100%',
-                  color: 'from-emerald-200/50 via-teal-400/20 to-transparent border-emerald-200/40',
+                  color: 'from-emerald-400/55 via-teal-400/20 to-transparent border-emerald-400/50',
                 },
                 {
                   name: '2-Ch Receiver',
                   tag: 'External',
                   height: '62%',
-                  color: 'from-amber-100/40 via-amber-400/15 to-transparent border-amber-200/30',
+                  color: 'from-sky-400/50 via-sky-500/15 to-transparent border-sky-400/50',
                 },
                 {
                   name: 'WiFi + Beams',
                   tag: 'Smart Kit',
                   height: '76%',
-                  color: 'from-slate-200/45 via-slate-400/15 to-transparent border-white/30',
+                  color: 'from-slate-400/50 via-slate-500/15 to-transparent border-slate-400/50',
                 },
               ].map((col, idx) => (
                 <div
                   key={col.name}
                   onClick={() => setActiveBarIndex(idx)}
-                  className="flex flex-col items-center justify-end h-full flex-1 max-w-[82px] cursor-pointer group"
+                  className="flex flex-col items-center justify-end h-full flex-1 max-w-[88px] cursor-pointer group"
                 >
                   <span className="text-[10px] font-mono text-slate-300 mb-1.5 tabular-nums">
                     {col.tag}
                   </span>
                   <div
                     style={{ height: col.height }}
-                    className={`w-full rounded-t-xl bg-gradient-to-b ${col.color} border-t border-x relative flex justify-center pt-1.5 transition-all group-hover:brightness-125`}
+                    className={`w-full rounded-none bg-gradient-to-b ${col.color} border-t border-x relative flex justify-center pt-1.5 transition-all group-hover:brightness-125`}
                   >
-                    <span className="w-4 h-1 rounded-full bg-white/90" />
+                    <span className="w-4 h-1 rounded-none bg-white/90" />
                   </div>
-                  <span className="text-[10px] font-mono text-slate-500 mt-2 truncate max-w-full">
+                  <span className="text-[10px] font-mono text-slate-400 mt-2 truncate max-w-full">
                     {col.name}
                   </span>
                 </div>
@@ -448,8 +423,8 @@ export default function ProductsPage() {
                   type="button"
                   onClick={() => setActiveBarIndex(idx)}
                   aria-label={`Select capability column ${idx + 1}`}
-                  className={`h-1 rounded-full transition-all ${
-                    activeBarIndex === idx ? 'w-6 bg-white' : 'w-4 bg-white/15'
+                  className={`h-1.5 rounded-none transition-all cursor-pointer ${
+                    activeBarIndex === idx ? 'w-7 bg-[#EC008C]' : 'w-4 bg-slate-500/35'
                   }`}
                 />
               ))}
@@ -458,37 +433,47 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* 3. All 6 Official Product Categories from betadoors.com.au/products/ */}
-      <section className="px-4 sm:px-8 lg:px-12 py-12 max-w-7xl mx-auto space-y-10">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-6">
-          <div className="space-y-2">
+      {/* 3. All 6 Official Product Categories (0px Sharp HUD Cards) */}
+      <section className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-12 space-y-10">
+        <HudSectionRail
+          code="HUD.PROD.02"
+          sector="OFFICIAL BETADOORS.COM.AU/PRODUCTS/ DIRECTORY"
+          status="06 CORE FAMILIES"
+        />
+
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/[0.08] pb-6">
+          <div className="space-y-1.5">
             <div className="font-mono text-xs uppercase tracking-[0.18em] text-[#EC008C]">
               OFFICIAL BETADOORS.COM.AU/PRODUCTS/ DIRECTORY
             </div>
             <h2 className="text-2xl sm:text-4xl font-semibold text-white tracking-tight">
               6 Core Product Categories
             </h2>
-            <p className="text-sm text-slate-400">
+            <p className="text-xs sm:text-sm text-slate-400">
               Select any category below to inspect models, technical specifications, and sub-ranges.
             </p>
           </div>
           <Link
-            href="/shop/"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-semibold text-slate-950 hover:bg-slate-200 transition-colors self-start"
+            href="/shop"
+            className="keep-white-text inline-flex items-center gap-2 rounded-none bg-[#EC008C] hover:bg-[#d4007d] px-5 py-2.5 text-xs font-mono font-bold text-white transition-colors self-start"
           >
-            <span>Open Online Shop ({products.length} Products)</span>
+            <span>OPEN ONLINE SHOP ({products.length} PRODUCTS)</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {OFFICIAL_PRODUCT_CATEGORIES.map((cat) => (
             <article
               key={cat.id}
-              className="group brand-animated-border bg-[#0B0C10] border border-white/[0.08] rounded-[26px] overflow-hidden flex flex-col justify-between transition-all"
+              className="group hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-none overflow-hidden flex flex-col justify-between transition-all"
             >
               <div>
-                <Link href={cat.href} className="block aspect-video w-full border-b border-[#EC008C]/25 bg-[#12141A] overflow-hidden">
+                <div className="px-4 py-2 border-b border-white/[0.07] bg-[#08090C] flex items-center justify-between text-[10px] font-mono">
+                  <span className="text-[#EC008C] font-bold">SYS.CAT // [{cat.number}]</span>
+                  <span className="text-slate-400">{cat.href}</span>
+                </div>
+                <Link href={cat.href} className="block aspect-video w-full border-b border-white/[0.08] bg-[#12141A] overflow-hidden">
                   <ProductTechnicalArtwork
                     type={cat.artwork}
                     title={cat.title}
@@ -496,24 +481,20 @@ export default function ProductsPage() {
                   />
                 </Link>
                 <div className="p-6 space-y-3">
-                  <div className="flex items-center justify-between text-[11px] font-mono text-[#EC008C]">
-                    <span>CATEGORY {cat.number}</span>
-                    <span className="text-slate-500">{cat.href}</span>
-                  </div>
                   <h3 className="text-xl font-semibold text-white">
                     <Link href={cat.href} className="hover:text-[#EC008C] transition-colors">
                       {cat.title}
                     </Link>
                   </h3>
-                  <p className="text-xs font-medium text-slate-300">{cat.subtitle}</p>
+                  <p className="text-xs font-mono text-[#ff7ac6]">{cat.subtitle}</p>
                   <p className="text-xs text-slate-400 leading-relaxed">{cat.description}</p>
 
-                  <ul className="pt-2 space-y-1.5 border-t border-white/[0.06]">
+                  <ul className="pt-2 space-y-1.5 border-t border-white/[0.07]">
                     {cat.subItems.map((sub) => (
                       <li key={sub.label}>
                         <Link
                           href={sub.href}
-                          className="flex items-center justify-between text-xs text-slate-300 hover:text-white py-1"
+                          className="flex items-center justify-between text-xs text-slate-300 hover:text-[#EC008C] py-1"
                         >
                           <span className="flex items-center gap-2">
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -530,9 +511,9 @@ export default function ProductsPage() {
               <div className="px-6 pb-6 pt-2">
                 <Link
                   href={cat.href}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-white/[0.06] hover:bg-white text-white hover:text-black border border-white/10 py-2.5 px-4 text-xs font-semibold transition-colors"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-none bg-[#08090C] hover:bg-[#EC008C] text-white hover:keep-white-text border border-white/15 py-2.5 px-4 text-xs font-mono font-bold transition-colors"
                 >
-                  <span>Explore {cat.title}</span>
+                  <span>EXPLORE {cat.title.toUpperCase()}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -542,23 +523,23 @@ export default function ProductsPage() {
       </section>
 
       {/* 4. Direct Storefront Preview Strip */}
-      <section className="px-4 sm:px-8 lg:px-12 py-10 max-w-7xl mx-auto">
-        <div className="rounded-[28px] border border-white/[0.08] bg-[#0B0C10] p-6 sm:p-9 space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-4">
+      <section className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-8">
+        <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8 space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.07] pb-4">
             <div>
-              <span className="font-mono text-xs uppercase tracking-wider text-slate-400">
-                READY FOR IMMEDIATE DISPATCH · CAMPBELLFIELD VIC 3061
+              <span className="font-mono text-xs uppercase tracking-wider text-[#ff7ac6]">
+                DIRECT STOREFRONT · CAMPBELLFIELD VIC 3061
               </span>
               <h2 className="mt-1 text-2xl sm:text-3xl font-semibold text-white">
                 Direct Online Shop Products
               </h2>
             </div>
             <Link
-              href="/shop/"
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.05] px-5 py-2.5 text-xs font-medium text-white hover:bg-white/[0.1]"
+              href="/shop"
+              className="inline-flex items-center gap-2 rounded-none border border-white/15 bg-[#08090C] px-4 py-2 text-xs font-mono font-semibold text-white hover:bg-white/[0.08]"
             >
-              <span>Go to Shop</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <span>GO TO SHOP</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#EC008C]" />
             </Link>
           </div>
 
@@ -567,10 +548,10 @@ export default function ProductsPage() {
               <Link
                 key={prod.id}
                 href={prod.path}
-                className="rounded-2xl brand-animated-border border border-white/[0.08] bg-[#07080A] p-4 flex flex-col justify-between transition-all"
+                className="hud-corner-brackets rounded-none brand-animated-border border border-white/[0.09] bg-[#08090C] p-4 flex flex-col justify-between transition-all"
               >
                 <div>
-                  <div className="aspect-video w-full rounded-xl overflow-hidden border border-white/[0.06] bg-[#12141A] mb-3">
+                  <div className="aspect-video w-full rounded-none overflow-hidden border border-white/[0.08] bg-[#12141A] mb-3">
                     <ProductTechnicalArtwork
                       type={prod.imageSvgType}
                       customImageUrl={prod.customImageUrl}
@@ -581,7 +562,7 @@ export default function ProductsPage() {
                   <div className="font-mono text-[10px] text-slate-400">{prod.sku}</div>
                   <h3 className="text-sm font-semibold text-white mt-0.5">{prod.name}</h3>
                 </div>
-                <div className="mt-3 pt-2 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-emerald-300 tabular-nums">
+                <div className="mt-3 pt-2 border-t border-white/[0.07] flex items-center justify-between text-xs font-mono text-[#ff7ac6] font-bold tabular-nums">
                   <span>
                     {prod.maxPriceCents
                       ? `${formatAudCents(prod.priceCents)}–${formatAudCents(prod.maxPriceCents)}`
@@ -596,7 +577,7 @@ export default function ProductsPage() {
       </section>
 
       {/* 5. Make an Enquiry Form */}
-      <section id="products-enquiry" className="px-4 sm:px-8 lg:px-12 py-12 max-w-5xl mx-auto">
+      <section id="products-enquiry" className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-12">
         <EnquiryForm
           sourcePagePath="/products/"
           heading="Make an Enquiry — Product Selection, Trade & Installer Support"

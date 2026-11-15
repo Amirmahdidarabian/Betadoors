@@ -8,13 +8,11 @@ import {
   CheckCircle2,
   X,
   ArrowRight,
-  ArrowUpRight,
   Sparkles,
-  ShieldCheck,
-  CreditCard,
 } from 'lucide-react';
 import { SiteShell } from '@/components/layout/SiteShell';
 import { DeFiPageHeroStage } from '@/components/hero/DeFiPageHeroStage';
+import { HudSectionRail } from '@/components/sections/HomeSections';
 import { useBetaDoors } from '@/components/providers/BetaDoorsProvider';
 import { formatAudCents } from '@/lib/domain-logic';
 import { ProductTechnicalArtwork } from '@/components/brand/ProductTechnicalArtwork';
@@ -45,16 +43,16 @@ export function ShopListingView({
 
   return (
     <SiteShell>
-      {/* 1. DeFi Landing Page 16:9 Hero Stage for Online Shop */}
+      {/* 1. Architectural HUD Stage for Online Shop */}
       <DeFiPageHeroStage
         ariaLabel="BETA DOORS Online Shop 16:9 Hero Stage"
         badgeText="Official BETA DOORS Online Storefront · Australia Wide Delivery"
-        badgeHref="/cart/"
+        badgeHref="/cart"
         headlinePrimary="Shop BETA DOORS"
         headlineGradient="Automation & Remotes"
         subheadline="Built in WiFi. Photocell sensors. WiFi camera. Hopping code security. Experience enhanced comfort and security with official BETA DOORS operators, receivers, and remote packs."
         primaryCtaLabel={`View Cart (${cartTotals.itemCount})`}
-        primaryCtaHref="/cart/"
+        primaryCtaHref="/cart"
         secondaryCtaLabel="Browse 5 Shop Products"
         secondaryCtaHref="#shop-product-grid"
         scrollTargetId="shop-product-grid"
@@ -63,10 +61,10 @@ export function ShopListingView({
         bottomLeftNode={{ label: 'Remote Pack (3+1)', metric: '$240 AUD' }}
         bottomRightNode={{ label: 'Receiver & Remote', metric: '$90 / $60' }}
         horizonSlides={[
-          { label: '01/05 . Online Shop', tag: 'Panel Door Motor Pack (800N / 1200N / 1500N)' },
-          { label: '02/05 . Online Shop', tag: 'Roller Door Opener (1000N + 2x P2011 Remotes)' },
-          { label: '03/05 . Online Shop', tag: 'Remote Pack (3x Remotes + 1x Receiver)' },
-          { label: '04/05 . Online Shop', tag: 'Universal External Receiver & Hopping Code Remote' },
+          { label: '01/05 · Online Shop', tag: 'Panel Door Motor Pack (800N / 1200N / 1500N)' },
+          { label: '02/05 · Online Shop', tag: 'Roller Door Opener (1000N + 2x P2011 Remotes)' },
+          { label: '03/05 · Online Shop', tag: 'Remote Pack (3x Remotes + 1x Receiver)' },
+          { label: '04/05 · Online Shop', tag: 'Universal External Receiver & Hopping Code Remote' },
         ]}
       />
 
@@ -74,11 +72,17 @@ export function ShopListingView({
         id="shop-product-grid"
         className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-12 space-y-12"
       >
-        {/* DeFi Bento Storefront Highlights Strip */}
+        <HudSectionRail
+          code="HUD.SHOP.01"
+          sector="DIRECT AUSTRALIAN STOREFRONT // AUTHORITATIVE INVENTORY"
+          status="GST INCLUSIVE · AUD"
+        />
+
+        {/* Storefront Highlights Strip (0px Sharp HUD Boxes) */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="hud-corner-brackets rounded-xl border border-white/[0.08] bg-[#0B0C10] p-5">
-            <div className="font-mono text-[11px] uppercase text-[#EC008C]">
-              PANEL AUTOMATION
+          <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-5">
+            <div className="font-mono text-[11px] font-bold uppercase text-[#EC008C]">
+              [01] PANEL AUTOMATION
             </div>
             <div className="mt-1 text-xl font-semibold text-white tabular-nums">
               800N · 1200N · 1500N
@@ -87,9 +91,9 @@ export function ShopListingView({
               Built-in WiFi, photocell sensors &amp; WiFi camera included in Motor Pack.
             </p>
           </div>
-          <div className="hud-corner-brackets rounded-xl border border-white/[0.08] bg-[#0B0C10] p-5">
-            <div className="font-mono text-[11px] uppercase text-[#EC008C]">
-              ROLLER OPENER
+          <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-5">
+            <div className="font-mono text-[11px] font-bold uppercase text-[#EC008C]">
+              [02] ROLLER OPENER
             </div>
             <div className="mt-1 text-xl font-semibold text-white tabular-nums">
               1000 Newtons
@@ -98,9 +102,9 @@ export function ShopListingView({
               Includes 2 × BETA DOORS P2011 remotes &amp; wall button for single/double roller doors.
             </p>
           </div>
-          <div className="hud-corner-brackets rounded-xl border border-white/[0.08] bg-[#0B0C10] p-5">
-            <div className="font-mono text-[11px] uppercase text-[#EC008C]">
-              RF SECURITY
+          <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-5">
+            <div className="font-mono text-[11px] font-bold uppercase text-[#EC008C]">
+              [03] RF SECURITY
             </div>
             <div className="mt-1 text-xl font-semibold text-white">
               Hopping Code
@@ -109,9 +113,9 @@ export function ShopListingView({
               Advanced hopping code radio frequency security technique across all P2011 remotes.
             </p>
           </div>
-          <div className="hud-corner-brackets rounded-xl border border-white/[0.08] bg-[#0B0C10] p-5">
-            <div className="font-mono text-[11px] uppercase text-[#EC008C]">
-              CHECKOUT &amp; SUPPORT
+          <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-5">
+            <div className="font-mono text-[11px] font-bold uppercase text-[#EC008C]">
+              [04] CHECKOUT &amp; SUPPORT
             </div>
             <div className="mt-1 text-xl font-semibold text-white tabular-nums">
               1300 238 243
@@ -123,25 +127,25 @@ export function ShopListingView({
         </div>
 
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/[0.08] pb-8">
           <div className="space-y-2 max-w-3xl">
-            <div className="inline-flex items-center gap-2 text-xs font-mono text-slate-400">
+            <div className="inline-flex items-center gap-2 text-xs font-mono text-[#ff7ac6]">
               <Sparkles className="w-3.5 h-3.5 text-[#EC008C]" />
               <span>BETA DOORS Storefront · Single Commerce Authority · AUD</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-bold text-white tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
               {heading}
             </h2>
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
               {subheading}
             </p>
           </div>
           <Link
-            href="/cart/"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-white text-slate-950 text-xs sm:text-sm font-mono font-semibold hover:bg-slate-200 transition-colors self-start whitespace-nowrap shadow-[0_0_25px_rgba(255,255,255,0.2)]"
+            href="/cart"
+            className="keep-white-text inline-flex items-center gap-2 px-5 py-2.5 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs sm:text-sm font-mono font-bold transition-colors self-start whitespace-nowrap shadow-[0_0_24px_rgba(236,0,140,0.35)]"
           >
             <ShoppingBag className="w-4 h-4" />
-            <span>View Cart &amp; Checkout ({formatAudCents(cartTotals.totalCents)})</span>
+            <span>VIEW CART &amp; CHECKOUT ({formatAudCents(cartTotals.totalCents)})</span>
           </Link>
         </div>
 
@@ -149,31 +153,36 @@ export function ShopListingView({
           <div
             role="status"
             aria-live="polite"
-            className="p-4 rounded-xl bg-emerald-950/70 border border-emerald-500/40 text-xs sm:text-sm text-emerald-100 flex items-center justify-between gap-4"
+            className="keep-white-text p-4 rounded-none bg-emerald-950 border border-emerald-500/40 text-xs sm:text-sm text-emerald-100 flex items-center justify-between gap-4"
           >
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
               <span>{toastMessage}</span>
             </div>
             <Link
-              href="/cart/"
-              className="underline font-semibold text-white whitespace-nowrap"
+              href="/cart"
+              className="underline font-mono font-bold text-white whitespace-nowrap"
             >
-              Proceed to Cart →
+              PROCEED TO CART →
             </Link>
           </div>
         )}
 
-        {/* 3-Column DeFi Dark Obsidian Product Grid */}
+        {/* 3-Column Sharp 0px HUD Product Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((prod) => (
+          {products.map((prod, idx) => (
             <article
               key={prod.id}
-              className="hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.08] rounded-xl overflow-hidden flex flex-col justify-between transition-all duration-150 hover:-translate-y-0.5"
+              className="hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-none overflow-hidden flex flex-col justify-between transition-all duration-150 hover:-translate-y-0.5"
             >
               <div>
-                <div className="p-2 pb-0">
-                  <div className="relative aspect-video w-full rounded-lg border border-white/[0.08] bg-[#12141A] overflow-hidden">
+                <div className="px-4 py-2 border-b border-white/[0.07] bg-[#08090C] flex items-center justify-between text-[10px] font-mono">
+                  <span className="text-slate-400">[0{idx + 1}] {prod.sku}</span>
+                  <span className="text-emerald-400 font-bold">■ IN STOCK ({prod.stockCount})</span>
+                </div>
+
+                <div className="p-2.5 pb-0">
+                  <div className="relative aspect-video w-full rounded-none border border-white/[0.08] bg-[#12141A] overflow-hidden">
                     <Link href={prod.path} className="block w-full h-full">
                       <ProductTechnicalArtwork
                         type={prod.imageSvgType}
@@ -189,19 +198,15 @@ export function ShopListingView({
                         setSelectedVariant(prod.requiresVariant ? '1200N' : '');
                       }}
                       aria-label={`Quick view ${prod.name}`}
-                      className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-black/80 hover:bg-black text-[11px] font-mono text-slate-200 border border-white/15 backdrop-blur-md transition-colors cursor-pointer"
+                      className="keep-white-text absolute top-2.5 right-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none bg-black/85 hover:bg-[#EC008C] text-[10px] font-mono font-bold text-white border border-white/20 backdrop-blur-md transition-colors cursor-pointer"
                     >
-                      <Eye className="w-3.5 h-3.5 text-[#EC008C]" />
+                      <Eye className="w-3 h-3" />
                       <span>QUICK VIEW</span>
                     </button>
                   </div>
                 </div>
 
                 <div className="p-5 space-y-2.5">
-                  <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono pb-2 border-b border-white/[0.06]">
-                    <span>{prod.sku}</span>
-                    <span className="text-emerald-400 font-semibold">● IN STOCK ({prod.stockCount})</span>
-                  </div>
                   <h3 className="text-lg font-semibold text-white">
                     <Link
                       href={prod.path}
@@ -210,12 +215,12 @@ export function ShopListingView({
                       {prod.name}
                     </Link>
                   </h3>
-                  <div className="text-lg font-bold font-mono text-white tabular-nums">
+                  <div className="text-lg font-bold font-mono text-[#ff7ac6] tabular-nums">
                     {prod.maxPriceCents
                       ? `${formatAudCents(prod.priceCents)} – ${formatAudCents(prod.maxPriceCents)}`
                       : formatAudCents(prod.priceCents)}
                   </div>
-                  <p className="text-xs text-slate-300/90 leading-relaxed">
+                  <p className="text-xs text-slate-400 leading-relaxed">
                     {prod.shortDescription}
                   </p>
                 </div>
@@ -225,7 +230,7 @@ export function ShopListingView({
                 {prod.requiresVariant ? (
                   <Link
                     href={prod.path}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-md bg-white hover:bg-slate-200 text-slate-950 text-xs font-mono font-semibold transition-colors whitespace-nowrap"
+                    className="keep-white-text flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs font-mono font-bold transition-colors whitespace-nowrap"
                   >
                     <span>SELECT OPTIONS (800N–1500N)</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -235,13 +240,13 @@ export function ShopListingView({
                     <button
                       type="button"
                       onClick={() => handleDirectAdd(prod, null)}
-                      className="flex-1 py-2.5 px-4 rounded-md bg-white hover:bg-slate-200 text-slate-950 text-xs font-mono font-semibold transition-colors whitespace-nowrap cursor-pointer"
+                      className="keep-white-text flex-1 py-2.5 px-4 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs font-mono font-bold transition-colors whitespace-nowrap cursor-pointer"
                     >
                       + ADD TO CART
                     </button>
                     <Link
                       href={prod.path}
-                      className="py-2.5 px-4 rounded-md bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-xs font-mono font-medium text-slate-200 transition-colors whitespace-nowrap"
+                      className="py-2.5 px-4 rounded-none bg-[#08090C] hover:bg-white/[0.08] border border-white/15 text-xs font-mono font-semibold text-slate-200 transition-colors whitespace-nowrap"
                     >
                       DETAILS
                     </Link>
@@ -260,7 +265,7 @@ export function ShopListingView({
             aria-labelledby="quick-view-title"
             className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
           >
-            <div className="bg-[#0F1117] border border-white/15 rounded-[26px] max-w-2xl w-full overflow-hidden shadow-2xl">
+            <div className="hud-corner-brackets bg-[#0F1117] border border-white/15 rounded-none max-w-2xl w-full overflow-hidden shadow-2xl">
               <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
                 <h2 id="quick-view-title" className="text-lg font-bold text-white">
                   {quickViewProduct.name} — Quick View
@@ -269,13 +274,13 @@ export function ShopListingView({
                   type="button"
                   onClick={() => setQuickViewProduct(null)}
                   aria-label="Close quick view modal"
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10"
+                  className="p-1.5 rounded-none text-slate-400 hover:text-white hover:bg-white/10 cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
               <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
-                <div className="aspect-video w-full rounded-2xl overflow-hidden border border-white/10 bg-[#12141A]">
+                <div className="aspect-video w-full rounded-none overflow-hidden border border-white/10 bg-[#12141A]">
                   <ProductTechnicalArtwork
                     type={quickViewProduct.imageSvgType}
                     customImageUrl={quickViewProduct.customImageUrl}
@@ -287,7 +292,7 @@ export function ShopListingView({
                   <div className="text-xs font-mono text-slate-400">
                     SKU: {quickViewProduct.sku} · Stock: {quickViewProduct.stockCount}
                   </div>
-                  <div className="text-2xl font-bold text-white tabular-nums">
+                  <div className="text-2xl font-bold font-mono text-white tabular-nums">
                     {quickViewProduct.maxPriceCents
                       ? `${formatAudCents(quickViewProduct.priceCents)} – ${formatAudCents(quickViewProduct.maxPriceCents)}`
                       : formatAudCents(quickViewProduct.priceCents)}
@@ -308,7 +313,7 @@ export function ShopListingView({
                         id="qv-variant-select"
                         value={selectedVariant}
                         onChange={(e) => setSelectedVariant(e.target.value)}
-                        className="w-full bg-[#08090C] border border-white/15 rounded-xl px-3 py-2 text-xs text-white"
+                        className="w-full bg-[#08090C] border border-white/15 rounded-none px-3 py-2 text-xs text-white"
                       >
                         {quickViewProduct.variants.map((v) => (
                           <option key={v.id} value={v.label}>
@@ -329,16 +334,16 @@ export function ShopListingView({
                         );
                         setQuickViewProduct(null);
                       }}
-                      className="flex-1 py-2.5 px-4 rounded-full bg-white hover:bg-slate-200 text-slate-950 text-xs font-semibold"
+                      className="keep-white-text flex-1 py-2.5 px-4 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs font-mono font-bold cursor-pointer"
                     >
-                      Add to cart
+                      + ADD TO CART
                     </button>
                     <Link
                       href={quickViewProduct.path}
                       onClick={() => setQuickViewProduct(null)}
-                      className="py-2.5 px-4 rounded-full bg-white/10 hover:bg-white/15 text-xs text-white"
+                      className="py-2.5 px-4 rounded-none bg-[#08090C] border border-white/15 hover:bg-white/10 text-xs font-mono text-white"
                     >
-                      Full Page
+                      FULL PAGE
                     </Link>
                   </div>
                 </div>
