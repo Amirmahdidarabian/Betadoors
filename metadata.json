@@ -1,0 +1,6 @@
+{
+  "name": "BETA DOORS — Garage Doors, Gate Automation & CMS",
+  "description": "Australian garage doors, roller and sectional door openers, gate automation, local Melbourne repairs, online shop, and persistent staff CMS workspace.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

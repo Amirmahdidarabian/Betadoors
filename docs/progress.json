@@ -1,0 +1,66 @@
+{
+  "project": "BETA DOORS Website & Persistent Admin CMS Rebuild",
+  "updatedAt": "2025-05-15T06:30:00.000Z",
+  "milestones": [
+    {
+      "id": "P00",
+      "title": "Workspace & Prompt Contract Discovery",
+      "status": "done",
+      "evidence": ["README.md", "docs/decisions.md", "docs/route-coverage.json"]
+    },
+    {
+      "id": "P01",
+      "title": "Public Route & Asset Discovery (44 Legacy Routes)",
+      "status": "done",
+      "evidence": ["docs/route-coverage.json", "lib/seed-data.ts"]
+    },
+    {
+      "id": "P02",
+      "title": "Architecture & Single Commerce Authority Selection",
+      "status": "done",
+      "evidence": ["lib/types.ts", "lib/cms-store.ts", "app/api/state/route.ts"]
+    },
+    {
+      "id": "P03",
+      "title": "Brand Tokens, Logo Geometry & Design System Specimen",
+      "status": "done",
+      "evidence": ["app/globals.css", "components/brand/BetaDoorsLogo.tsx", "app/design-system/page.tsx"]
+    },
+    {
+      "id": "P04",
+      "title": "16:9 Homepage Showcase, DeFi Bento Insights & Orbital Workflow",
+      "status": "done",
+      "evidence": ["components/hero/Hero16By9Showcase.tsx", "components/sections/HomeSections.tsx", "app/page.tsx"]
+    },
+    {
+      "id": "P05",
+      "title": "Persistent Admin CMS (Draft / Scoped Preview / Publish / Rollback / RBAC)",
+      "status": "done",
+      "evidence": ["app/admin/page.tsx", "app/api/state/route.ts", "lib/domain-logic.ts"]
+    },
+    {
+      "id": "P06",
+      "title": "Catalogue & 11 Melbourne Local Service Landing Pages",
+      "status": "done",
+      "evidence": ["app/[...slug]/page.tsx", "lib/seed-data.ts"]
+    },
+    {
+      "id": "P07",
+      "title": "Storefront, Variant PDP, Cart, Conditional Checkout & Capability Order View",
+      "status": "done",
+      "evidence": ["app/shop/page.tsx", "app/product/[slug]/page.tsx", "app/cart/page.tsx", "app/checkout/page.tsx", "app/order-confirmation/[token]/page.tsx"]
+    },
+    {
+      "id": "P08",
+      "title": "Manuals PDF Library, Warranty, Service Registration (10MB Proof RBAC) & Spring Estimator",
+      "status": "done",
+      "evidence": ["app/beta-doors-manuals/page.tsx", "app/warranty-registration/page.tsx", "app/register-to-service/page.tsx", "app/garage-door-spring-estimator/page.tsx", "app/api/private-proof/[id]/route.ts"]
+    },
+    {
+      "id": "P09",
+      "title": "Security Review, Automated Unit Tests & Real-Browser Verification",
+      "status": "done",
+      "evidence": ["lib/domain-logic.test.ts", "docs/security-review.md", "docs/test-results.md"]
+    }
+  ]
+}

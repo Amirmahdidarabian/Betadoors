@@ -1,0 +1,61 @@
+{
+  "totalRoutes": 44,
+  "brokenLinkRedirects": [
+    {
+      "brokenSource": "/sectional-and-ti…oor-opener-range/",
+      "destination": "/sectional-and-tilt-door-opener-range/",
+      "statusCode": 301
+    },
+    {
+      "brokenSource": "/hardware/ ‎",
+      "destination": "/hardware/",
+      "statusCode": 301
+    }
+  ],
+  "routes": [
+    { "path": "/", "group": "Core", "template": "home", "status": "verified" },
+    { "path": "/about-us/", "group": "Company", "template": "company_profile", "status": "verified" },
+    { "path": "/contact-us/", "group": "Company", "template": "contact", "status": "verified" },
+    { "path": "/services/", "group": "Services", "template": "service_overview", "status": "verified" },
+    { "path": "/products/", "group": "Catalogue", "template": "category_hub", "status": "verified" },
+    { "path": "/garage-door-range/", "group": "Catalogue", "template": "catalog_range", "status": "verified" },
+    { "path": "/gate-opener-brands/", "group": "Catalogue", "template": "brand_hub", "status": "verified" },
+    { "path": "/garage-door-opener-catagories/", "group": "Catalogue", "template": "category_hub", "status": "verified" },
+    { "path": "/gate-catagories/", "group": "Catalogue", "template": "category_hub", "status": "verified" },
+    { "path": "/sectional-and-tilt-door-opener-range/", "group": "Catalogue", "template": "catalog_range", "status": "verified" },
+    { "path": "/roller-door-opener-range/", "group": "Catalogue", "template": "catalog_range", "status": "verified" },
+    { "path": "/beta-gate-opener-range/", "group": "Catalogue", "template": "catalog_range", "status": "verified" },
+    { "path": "/life-gate-opener-range/", "group": "Catalogue", "template": "catalog_range", "status": "verified" },
+    { "path": "/accessories/", "group": "Catalogue", "template": "catalog_range", "status": "verified" },
+    { "path": "/hardware/", "group": "Catalogue", "template": "catalog_range", "status": "verified" },
+    { "path": "/shop/", "group": "Commerce", "template": "shop_archive", "status": "verified" },
+    { "path": "/product-category/uncategorized/", "group": "Commerce", "template": "category_archive", "status": "verified" },
+    { "path": "/product/motor-pack/", "group": "Commerce", "template": "product_detail", "status": "verified" },
+    { "path": "/product/roller-door-opener/", "group": "Commerce", "template": "product_detail", "status": "verified" },
+    { "path": "/product/remote-pack/", "group": "Commerce", "template": "product_detail", "status": "verified" },
+    { "path": "/product/receiver/", "group": "Commerce", "template": "product_detail", "status": "verified" },
+    { "path": "/product/remote/", "group": "Commerce", "template": "product_detail", "status": "verified" },
+    { "path": "/cart/", "group": "Commerce", "template": "cart", "status": "verified" },
+    { "path": "/checkout/", "group": "Commerce", "template": "checkout", "status": "verified" },
+    { "path": "/my-account/", "group": "Account", "template": "account_dashboard", "status": "verified" },
+    { "path": "/my-account/lost-password/", "group": "Account", "template": "lost_password", "status": "verified" },
+    { "path": "/warranty-registration/", "group": "Support", "template": "warranty_form", "status": "verified" },
+    { "path": "/register-to-service/", "group": "Support", "template": "service_registration_form", "status": "verified" },
+    { "path": "/beta-doors-manuals/", "group": "Support", "template": "manuals_library", "status": "verified" },
+    { "path": "/beta-smart-support/", "group": "Support", "template": "smart_support", "status": "verified" },
+    { "path": "/garage-door-spring-estimator/", "group": "Utility", "template": "spring_estimator", "status": "verified" },
+    { "path": "/terms-conditions/", "group": "Legal", "template": "legal_document", "status": "verified" },
+    { "path": "/refund_returns/", "group": "Legal", "template": "legal_document", "status": "verified" },
+    { "path": "/garage-door-repairs-melbourne-beta-doors/", "group": "Local SEO", "template": "local_service_landing", "status": "verified" },
+    { "path": "/garage-door-repairs-craigieburn-3064-beta-doors/", "group": "Local SEO", "template": "local_service_landing", "status": "verified" },
+    { "path": "/garage-door-repairs-narre-warren-3805-beta-doors/", "group": "Local SEO", "template": "local_service_landing", "status": "verified" },
+    { "path": "/garage-door-repairs-deer-park-3023-beta-doors/", "group": "Local SEO", "template": "local_service_landing", "status": "verified" },
+    { "path": "/roller-door-repairs-melbourne-same-day-repairs/", "group": "Local SEO", "template": "local_service_landing", "status": "verified" },
+    { "path": "/roller-door-repairs-essendon-same-day-repairs/", "group": "Local SEO", "template": "local_service_landing", "status": "verified" },
+    { "path": "/roller-door-repairs-thomastown-same-day-repairs/", "group": "Local SEO", "template": "local_service_landing", "status": "verified" },
+    { "path": "/commercial-roller-doors-melbourne-industrial-roller-doors/", "group": "Local SEO", "template": "local_service_landing", "status": "verified" },
+    { "path": "/commercial-roller-door-repairs-melbourne-industrial-shutters/", "group": "Local SEO", "template": "local_service_landing", "status": "verified" },
+    { "path": "/commercial-roller-door-repairs-craigieburn-industrial-shutters/", "group": "Local SEO", "template": "local_service_landing", "status": "verified" },
+    { "path": "/same-day-garage-door-repairs-melbourne-emergency-repairs/", "group": "Local SEO", "template": "local_service_landing", "status": "verified" }
+  ]
+}

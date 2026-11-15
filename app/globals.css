@@ -1,0 +1,599 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --bg-canvas: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-elevated: #f1f5f9;
+    --border-subtle: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --accent-magenta: #ec008c;
+    --accent-glow: rgba(236, 0, 140, 0.14);
+  }
+
+  .dark {
+    --bg-canvas: #040406;
+    --bg-surface: #0b0c10;
+    --bg-elevated: #12141a;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-magenta: #ec008c;
+    --accent-glow: rgba(236, 0, 140, 0.22);
+  }
+
+  html {
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   Architectural Daylight (Light Theme) Surface & Typography Adaptation
+   Applies whenever html does NOT have `.dark`
+   ============================================================================ */
+html:not(.dark) {
+  /* Page & Section Canvases */
+  .bg-\[\#040406\]:not([data-testid="hero-16x9-container"]) {
+    background-color: #f8fafc !important;
+  }
+
+  /* Primary Bento & Content Cards */
+  .bg-\[\#0B0C10\],
+  .bg-\[\#0D0E12\],
+  .bg-\[\#0F1117\],
+  .bg-\[\#060709\]:not([data-testid="hero-16x9-container"]) {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03) !important;
+  }
+
+  /* Secondary / Inner Sub-Cards, Inputs & Technical Wells */
+  .bg-\[\#07080A\],
+  .bg-\[\#08090C\],
+  .bg-\[\#08090C\]\/90,
+  .bg-\[\#090A0D\],
+  .bg-\[\#0D0F14\],
+  .bg-\[\#111216\],
+  .bg-\[\#111216\]\/90,
+  .bg-\[\#111318\],
+  .bg-\[\#111318\]\/90,
+  .bg-\[\#12141A\],
+  .bg-\[\#13151B\],
+  .bg-\[\#13151B\]\/90,
+  .bg-\[\#151821\] {
+    background-color: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  /* Translucent Glass Pills & Badges on Light Surfaces */
+  .bg-white\/\[0\.03\],
+  .bg-white\/\[0\.04\],
+  .bg-white\/\[0\.05\],
+  .bg-white\/\[0\.06\],
+  .bg-white\/\[0\.07\],
+  .bg-white\/\[0\.08\],
+  .bg-white\/\[0\.1\],
+  .bg-white\/\[0\.12\],
+  .bg-white\/5,
+  .bg-white\/10 {
+    background-color: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  /* Subtle Borders */
+  .border-white\/\[0\.05\],
+  .border-white\/\[0\.06\],
+  .border-white\/\[0\.07\],
+  .border-white\/\[0\.08\],
+  .border-white\/\[0\.09\],
+  .border-white\/\[0\.1\],
+  .border-white\/\[0\.12\],
+  .border-white\/5,
+  .border-white\/10,
+  .border-white\/15,
+  .border-white\/20,
+  .border-white\/25 {
+    border-color: #e2e8f0 !important;
+  }
+
+  /* Primary CTA Pill Buttons that were white-on-dark become Dark Slate-on-White */
+  .bg-white.text-slate-950,
+  .bg-white.text-black {
+    background-color: #0f172a !important;
+    color: #ffffff !important;
+    border: 1px solid #0f172a !important;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.14) !important;
+  }
+  .bg-white.text-slate-950:hover,
+  .bg-white.text-black:hover {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+  }
+
+  /* Quick View & Overlay Buttons */
+  .bg-black\/80 {
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+  }
+
+  /* Status Alert Banners (Emerald / Rose / Amber) */
+  .bg-emerald-950,
+  .bg-emerald-950\/70,
+  .bg-emerald-950\/50,
+  .bg-emerald-950\/40 {
+    background-color: #ecfdf5 !important;
+    border-color: #6ee7b7 !important;
+    color: #065f46 !important;
+  }
+  .text-emerald-100,
+  .text-emerald-200,
+  .text-emerald-200\/90,
+  .text-emerald-300,
+  .text-emerald-400 {
+    color: #047857 !important;
+  }
+
+  .bg-rose-950\/60,
+  .bg-rose-950\/40 {
+    background-color: #fff1f2 !important;
+    border-color: #fda4af !important;
+    color: #9f1239 !important;
+  }
+  .text-rose-200,
+  .text-rose-300,
+  .text-rose-400 {
+    color: #be123c !important;
+  }
+
+  /* Typography Polarity Mapping in Light Mode */
+  .text-white:not(.keep-white-text):not(.bg-\[\#EC008C\]):not(.bg-slate-900):not(.bg-slate-950) {
+    color: #0f172a !important;
+  }
+
+  .text-slate-100,
+  .text-slate-200 {
+    color: #1e293b !important;
+  }
+  .text-slate-300,
+  .text-slate-300\/90,
+  .text-slate-300\/85 {
+    color: #334155 !important;
+  }
+  .text-slate-400 {
+    color: #475569 !important;
+  }
+  .text-slate-500 {
+    color: #64748b !important;
+  }
+
+  /* High-contrast deep magenta for mono subtitles on white Light Mode cards */
+  .text-\[\#ff7ac6\]:not(.keep-white-text) {
+    color: #c80076 !important;
+  }
+
+  /* Ensure keep-white-text and Hero Video Crystal Glass HUD always stay crisp white in Light Mode */
+  .keep-white-text,
+  .keep-white-text *,
+  [data-testid="hero-16x9-container"] .crystal-glass-panel,
+  [data-testid="hero-16x9-container"] .crystal-glass-panel *,
+  [data-testid="hero-16x9-container"] .crystal-glass-pill,
+  [data-testid="hero-16x9-container"] .crystal-glass-pill *,
+  .bg-\[\#EC008C\],
+  .bg-\[\#EC008C\] * {
+    color: #ffffff !important;
+  }
+
+  /* Light Mode Studio Product & Category Artwork Optimization */
+  .studio-artwork-container {
+    background: linear-gradient(180deg, #1e2430 0%, #131720 100%) !important;
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
+      0 10px 24px -8px rgba(15, 23, 42, 0.14) !important;
+  }
+
+  .studio-artwork-img {
+    filter: brightness(1.16) contrast(1.04) saturate(1.05);
+  }
+
+  .studio-artwork-vignette {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 45%,
+      rgba(15, 23, 42, 0.24) 100%
+    ) !important;
+  }
+
+  /* Compact Architectural Micro-Tag over Product & Category Studio Photos in Light Mode */
+  .studio-floating-badge {
+    background: rgba(15, 23, 42, 0.84) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    color: #f8fafc !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+  }
+  .studio-floating-badge * {
+    color: #f8fafc !important;
+  }
+  .studio-floating-badge .studio-badge-dot {
+    background-color: #ec008c !important;
+  }
+  .studio-floating-badge .studio-stock-text {
+    color: #34d399 !important;
+  }
+
+  /* Bento Cylinder Bars & Orbital Dial in Light Mode */
+  .from-white\/35,
+  .from-white\/30 {
+    --tw-gradient-from: rgba(15, 23, 42, 0.14) !important;
+    --tw-gradient-via: rgba(236, 0, 140, 0.08) !important;
+    border-color: #cbd5e1 !important;
+  }
+  .from-\[\#14161D\] {
+    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08) !important;
+  }
+  .bg-\[\#07080B\] {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  /* SVG Orbital Ellipses & Trajectories inside Bento Cards (exclude Hero 16:9 dark stage) */
+  *:not([data-testid="hero-16x9-container"]) > svg ellipse[stroke*="rgba(255,255,255"],
+  *:not([data-testid="hero-16x9-container"]) > svg path[stroke*="rgba(255,255,255"],
+  *:not([data-testid="hero-16x9-container"]) > svg circle[stroke*="rgba(255,255,255"] {
+    stroke: rgba(15, 23, 42, 0.18) !important;
+  }
+  svg circle[stroke="#FFFFFF"] {
+    stroke: #ec008c !important;
+  }
+  svg rect[fill="#181A20"],
+  svg rect[fill="#14161C"],
+  svg rect[fill="#151821"] {
+    fill: #f1f5f9 !important;
+    stroke: #cbd5e1 !important;
+  }
+  svg text[fill="#E2E8F0"],
+  svg text[fill="#CBD5E1"],
+  svg text[fill="#F8FAFC"] {
+    fill: #0f172a !important;
+  }
+}
+
+/* ============================================================================
+   Ultra-Transparent Crystal Glass HUD System (Hero 16:9 Video Overlays)
+   Engineered for ultra-sheer transparency so the 3D motion video shines clearly through
+   ============================================================================ */
+.crystal-glass-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(10, 12, 18, 0.42) 0%,
+    rgba(6, 8, 14, 0.56) 65%,
+    rgba(236, 0, 140, 0.08) 100%
+  ) !important;
+  backdrop-filter: blur(10px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(140%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.16),
+    0 12px 32px -10px rgba(0, 0, 0, 0.45) !important;
+}
+
+.crystal-glass-panel:hover {
+  border-color: rgba(236, 0, 140, 0.45) !important;
+}
+
+.crystal-glass-pill {
+  background: linear-gradient(
+    135deg,
+    rgba(12, 14, 22, 0.58) 0%,
+    rgba(6, 8, 14, 0.72) 100%
+  ) !important;
+  backdrop-filter: blur(10px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(140%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.14),
+    0 4px 14px -4px rgba(0, 0, 0, 0.35) !important;
+}
+
+.crystal-glass-pill:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(20, 24, 36, 0.75) 0%,
+    rgba(236, 0, 140, 0.18) 100%
+  ) !important;
+  border-color: rgba(236, 0, 140, 0.5) !important;
+}
+
+/* ============================================================================
+   Animated HUD Telemetry Lines, Travelling Laser Pulses & Corner Reticles
+   ============================================================================ */
+@keyframes hud-dash-flow {
+  0% {
+    stroke-dashoffset: 240;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes hud-dash-flow-reverse {
+  0% {
+    stroke-dashoffset: -240;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes hud-reticle-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hud-horizontal-scan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+.hud-animated-trace {
+  stroke-dasharray: 18 220;
+  animation: hud-dash-flow 3.8s linear infinite;
+}
+
+.hud-animated-trace-fast {
+  stroke-dasharray: 28 190;
+  animation: hud-dash-flow 2.6s linear infinite;
+}
+
+.hud-animated-trace-reverse {
+  stroke-dasharray: 20 200;
+  animation: hud-dash-flow-reverse 3.4s linear infinite;
+}
+
+.hud-rail-dashed {
+  stroke-dasharray: 4 6;
+}
+
+.hud-reticle-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hud-reticle-spin 16s linear infinite;
+}
+
+.hud-scan-beam {
+  animation: hud-horizontal-scan 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Precision HUD Corner Crosshair Brackets on Cards */
+.hud-corner-brackets {
+  position: relative;
+}
+
+.hud-corner-brackets::before,
+.hud-corner-brackets::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 20;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.45;
+}
+
+.hud-corner-brackets::before {
+  top: 6px;
+  left: 6px;
+  border-top: 1.5px solid #ec008c;
+  border-left: 1.5px solid #ec008c;
+}
+
+.hud-corner-brackets::after {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 1.5px solid #ec008c;
+  border-right: 1.5px solid #ec008c;
+}
+
+.hud-corner-brackets:hover::before,
+.hud-corner-brackets:hover::after {
+  width: 14px;
+  height: 14px;
+  opacity: 1;
+}
+
+/* ============================================================================
+   Animated Black & Brand-Pink (#EC008C) Gradient Border System
+   Slowly shifts & rotates between deep obsidian black and BETA DOORS magenta
+   ============================================================================ */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes brand-border-spin {
+  0% {
+    --border-angle: 0deg;
+  }
+  100% {
+    --border-angle: 360deg;
+  }
+}
+
+/* Refined, slow-moving (24s) obsidian border with a delicate travelling brand-pink (#EC008C) specular arc strictly on the 1px border */
+.brand-animated-border {
+  --card-fill-top: #0d0f16;
+  --card-fill-bottom: #08090d;
+  border: 1px solid transparent !important;
+  background-origin: border-box !important;
+  background-clip: padding-box, border-box !important;
+  background-image:
+    linear-gradient(165deg, var(--card-fill-top) 0%, var(--card-fill-bottom) 100%),
+    conic-gradient(
+      from var(--border-angle, 0deg),
+      rgba(255, 255, 255, 0.09) 0%,
+      #07080c 25%,
+      rgba(236, 0, 140, 0.28) 42%,
+      #ec008c 48%,
+      rgba(255, 110, 199, 0.82) 50%,
+      #ec008c 52%,
+      rgba(236, 0, 140, 0.28) 58%,
+      #07080c 75%,
+      rgba(255, 255, 255, 0.09) 100%
+    ) !important;
+  animation: brand-border-spin 24s linear infinite !important;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.07),
+    0 16px 40px -15px rgba(0, 0, 0, 0.85),
+    0 0 24px -10px rgba(236, 0, 140, 0.12) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+
+.brand-animated-border:hover {
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.14),
+    0 20px 50px -12px rgba(0, 0, 0, 0.92),
+    0 0 30px -6px rgba(236, 0, 140, 0.28) !important;
+}
+
+html:not(.dark) .brand-animated-border {
+  --card-fill-top: #ffffff;
+  --card-fill-bottom: #f8fafc;
+  border: 1px solid transparent !important;
+  background-origin: border-box !important;
+  background-clip: padding-box, border-box !important;
+  background-image:
+    linear-gradient(165deg, var(--card-fill-top) 0%, var(--card-fill-bottom) 100%),
+    conic-gradient(
+      from var(--border-angle, 0deg),
+      #e2e8f0 0%,
+      #cbd5e1 30%,
+      rgba(236, 0, 140, 0.35) 44%,
+      #ec008c 50%,
+      rgba(236, 0, 140, 0.35) 56%,
+      #cbd5e1 70%,
+      #e2e8f0 100%
+    ) !important;
+  box-shadow:
+    0 12px 28px -8px rgba(15, 23, 42, 0.07),
+    0 0 18px -8px rgba(236, 0, 140, 0.12) !important;
+}
+
+html:not(.dark) [data-testid="hero-16x9-container"].brand-animated-border {
+  --card-fill-top: #040406;
+  --card-fill-bottom: #040406;
+}
+
+/* ============================================================================
+   High-Craft Dark Mode Ambient Aurora & Raycast Perimeter Backdrop
+   90% Deep Obsidian (#040406) + Ultra-Slow (28s–36s) Softly Diffused Brand-Pink Blooms
+   ============================================================================ */
+@keyframes beta-aurora-drift-primary {
+  0% {
+    transform: translate3d(-4%, -3%, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(4%, 3%, 0) scale(1.06) rotate(2deg);
+  }
+  100% {
+    transform: translate3d(-2%, 4%, 0) scale(0.97) rotate(-2deg);
+  }
+}
+
+@keyframes beta-aurora-drift-secondary {
+  0% {
+    transform: translate3d(3%, 4%, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-4%, -2%, 0) scale(1.05) rotate(-3deg);
+  }
+  100% {
+    transform: translate3d(2%, -4%, 0) scale(0.96) rotate(2deg);
+  }
+}
+
+@keyframes beta-raycast-sweep {
+  0% {
+    background-position: 200% 0%;
+  }
+  100% {
+    background-position: -200% 0%;
+  }
+}
+
+.brand-outer-ambient-frame {
+  position: relative;
+  background-color: #040406 !important;
+}
+
+html:not(.dark) .brand-outer-ambient-frame {
+  background-color: #f8fafc !important;
+}
+
+.beta-aurora-orb-primary {
+  animation: beta-aurora-drift-primary 30s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.beta-aurora-orb-secondary {
+  animation: beta-aurora-drift-secondary 36s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.beta-raycast-beams {
+  background: linear-gradient(
+    115deg,
+    transparent 28%,
+    rgba(255, 255, 255, 0.012) 38%,
+    rgba(236, 0, 140, 0.045) 43%,
+    rgba(255, 255, 255, 0.01) 48%,
+    transparent 58%
+  );
+  background-size: 220% 220%;
+  animation: beta-raycast-sweep 32s linear infinite;
+}
+
+
