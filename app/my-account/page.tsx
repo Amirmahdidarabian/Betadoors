@@ -131,16 +131,48 @@ export default function MyAccountPage() {
               </button>
             </form>
 
-            {/* Quick Sandbox Account Switcher for Testing */}
+            {/* Quick Account & Admin Switcher */}
             <div className="pt-4 border-t border-white/10 space-y-2.5">
               <div className="text-xs font-semibold text-slate-300">
-                Quick Two-Customer Isolation Test Switcher:
+                Quick Login &amp; Admin Access:
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="p-3 bg-[#08090C] border border-[#EC008C]/40 text-xs space-y-1.5">
+                <div className="font-mono text-[#EC008C] font-bold">
+                  ADMIN CREDENTIALS
+                </div>
+                <div className="font-mono text-slate-300">
+                  Username: <strong className="text-white">admin@betadoors.com.au</strong>
+                </div>
+                <div className="font-mono text-slate-300">
+                  Password: <strong className="text-white">BetaAdmin2026!</strong>
+                </div>
+                <div className="flex flex-wrap items-center gap-2 pt-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActorKey('administrator');
+                      setUsernameOrEmail('admin@betadoors.com.au');
+                      setPassword('BetaAdmin2026!');
+                      setLoginStatus('Signed in as Site Administrator (Full Access).');
+                    }}
+                    className="keep-white-text px-3 py-1.5 bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs font-mono font-bold cursor-pointer"
+                  >
+                    1-Click Admin Login
+                  </button>
+                  <Link
+                    href="/admin"
+                    className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-mono font-semibold"
+                  >
+                    Open Admin Panel →
+                  </Link>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => setActorKey('customer_alice')}
-                  className={`p-2.5 rounded-lg border text-xs text-left transition-colors ${
+                  className={`p-2.5 rounded-lg border text-xs text-left transition-colors cursor-pointer ${
                     actorKey === 'customer_alice'
                       ? 'bg-[#EC008C]/20 border-[#EC008C] text-white'
                       : 'bg-[#08090C] border-white/10 text-slate-300 hover:border-white/25'
@@ -152,7 +184,7 @@ export default function MyAccountPage() {
                 <button
                   type="button"
                   onClick={() => setActorKey('customer_bob')}
-                  className={`p-2.5 rounded-lg border text-xs text-left transition-colors ${
+                  className={`p-2.5 rounded-lg border text-xs text-left transition-colors cursor-pointer ${
                     actorKey === 'customer_bob'
                       ? 'bg-[#EC008C]/20 border-[#EC008C] text-white'
                       : 'bg-[#08090C] border-white/10 text-slate-300 hover:border-white/25'

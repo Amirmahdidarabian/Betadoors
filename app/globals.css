@@ -580,8 +580,8 @@ html:not(.dark) .brand-animated-border {
 }
 
 html:not(.dark) [data-testid="hero-16x9-container"].brand-animated-border {
-  --card-fill-top: #040406;
-  --card-fill-bottom: #040406;
+  --card-fill-top: #ffffff;
+  --card-fill-bottom: #fdf8fb;
 }
 
 /* ============================================================================

@@ -193,7 +193,7 @@ export function SiteShell({
             className="flex items-center gap-2.5 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-[#EC008C]"
           >
             <BetaDoorsLogo
-              variant={theme === 'light' ? 'light_surface' : 'dark_surface'}
+              variant="adaptive"
               className="h-6 sm:h-7 w-auto"
             />
           </a>
