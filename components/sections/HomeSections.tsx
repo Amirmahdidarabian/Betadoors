@@ -825,8 +825,8 @@ export function DefiBentoInsightsSection() {
                   onClick={() => setActiveBarPage(idx)}
                   className={`relative p-2.5 sm:px-3.5 sm:py-2.5 border transition-colors cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 overflow-hidden ${
                     isSelected
-                      ? 'border-[#EC008C] bg-[#08090C]'
-                      : 'border-white/[0.08] bg-[#08090C]/80 hover:border-white/20'
+                      ? 'border-[#EC008C] bg-[#EC008C]/[0.06] dark:bg-[#12151E]'
+                      : 'border-white/[0.08] bg-[#08090C] hover:border-[#EC008C]/45'
                   }`}
                 >
                   {isSelected && (
@@ -848,7 +848,7 @@ export function DefiBentoInsightsSection() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="w-28 sm:w-36 h-1 bg-white/[0.08] overflow-hidden shrink-0">
+                      <div className="w-28 sm:w-36 h-1.5 bg-slate-200 dark:bg-white/[0.08] overflow-hidden shrink-0">
                         <div
                           style={{ width: `${row.pct}%` }}
                           className="h-full bg-[#EC008C]"

@@ -111,6 +111,10 @@ html:not(.dark) {
   /* Secondary / Inner Sub-Cards, Inputs & Technical Wells */
   .bg-\[\#08090C\]:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#08090C\]\/90:not([data-testid="hero-16x9-container"] *),
+  .bg-\[\#08090C\]\/80:not([data-testid="hero-16x9-container"] *),
+  .bg-\[\#08090C\]\/70:not([data-testid="hero-16x9-container"] *),
+  .bg-\[\#0B0C10\]\/90:not([data-testid="hero-16x9-container"] *),
+  .bg-\[\#0B0C10\]\/80:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#090A0D\]:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#090A0E\]:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#0D0F14\]:not([data-testid="hero-16x9-container"] *),

@@ -279,54 +279,55 @@ export function Hero16By9Showcase() {
           className="flex-1 min-h-[240px] sm:min-h-[300px] pointer-events-none"
         />
 
-        {/* 5. Bottom Precision HUD Split Dock (0px Sharp) with Animated Slide Transitions & Clean Unboxed Telemetry Specs */}
+        {/* 5. Bottom Precision HUD Split Dock (0px Sharp) with Fixed-Height Smooth Animated Slide Transitions */}
         <div className="relative z-20 flex flex-col lg:flex-row lg:items-end justify-between gap-4 pt-2">
-          {/* Bottom-Left HUD Panel: Animated Slide Content + Clean Inline Telemetry Spec Strip */}
-          <div className="hud-corner-brackets crystal-glass-panel rounded-none p-4 sm:p-5 w-full lg:max-w-[430px] xl:max-w-[460px] text-left transition-all overflow-hidden">
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <div className="flex items-center gap-2">
-                <a
-                  href="#bento-insights-heading"
-                  aria-label="Scroll down to engineering insights"
-                  className="keep-white-text w-5 h-5 rounded-none bg-[#EC008C] text-white flex items-center justify-center hover:bg-[#d4007d] transition-colors shrink-0 shadow-[0_0_12px_rgba(236,0,140,0.55)]"
-                >
-                  <ArrowDown className="w-3 h-3" />
-                </a>
-                <a
-                  href="#bento-insights-heading"
-                  className="keep-white-text text-[10px] font-mono uppercase tracking-wider text-slate-200 hover:text-white transition-colors whitespace-nowrap"
-                >
-                  {currentSlide.label}
-                </a>
-              </div>
-
-              <span className="keep-white-text inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-[#ff7ac6] font-semibold">
-                <Crosshair className="w-2.5 h-2.5 text-[#EC008C]" />
-                {currentSlide.seriesCode}
-              </span>
-            </div>
-
-            <AnimatePresence mode="wait">
+          {/* Bottom-Left HUD Panel: Locked Height so Frame Never Jumps + Unified Smooth Slide Animation */}
+          <div className="hud-corner-brackets crystal-glass-panel relative rounded-none p-4 sm:p-5 w-full lg:w-[460px] xl:w-[480px] h-[212px] sm:h-[216px] text-left overflow-hidden flex flex-col justify-between shrink-0">
+            <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={activeSlide}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.24, ease: 'easeOut' }}
-                className="space-y-2"
+                initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
+                transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                className="flex flex-col justify-between h-full"
               >
-                <h1
-                  style={{ textWrap: 'balance' }}
-                  className="keep-white-text text-base sm:text-lg xl:text-[21px] font-semibold tracking-tight leading-snug text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]"
-                >
-                  {currentSlide.headline}
-                </h1>
+                {/* Top Row: Slide Counter + Series Code */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="#bento-insights-heading"
+                      aria-label="Scroll down to engineering insights"
+                      className="keep-white-text w-5 h-5 rounded-none bg-[#EC008C] text-white flex items-center justify-center hover:bg-[#d4007d] transition-colors shrink-0 shadow-[0_0_12px_rgba(236,0,140,0.55)]"
+                    >
+                      <ArrowDown className="w-3 h-3" />
+                    </a>
+                    <a
+                      href="#bento-insights-heading"
+                      className="keep-white-text text-[10px] font-mono uppercase tracking-wider text-slate-200 hover:text-white transition-colors whitespace-nowrap"
+                    >
+                      {currentSlide.label}
+                    </a>
+                  </div>
 
-                <p className="keep-white-text text-xs text-slate-100/90 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.65)]">
-                  {currentSlide.subheadline}
-                </p>
+                  <span className="keep-white-text inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-[#ff7ac6] font-semibold">
+                    <Crosshair className="w-2.5 h-2.5 text-[#EC008C]" />
+                    {currentSlide.seriesCode}
+                  </span>
+                </div>
 
-                {/* Clean Inline HUD Telemetry Spec Bar */}
+                {/* Middle Row: Locked-Height Headline & Subheadline so Card Never Resizes */}
+                <div className="my-auto py-1 space-y-1.5">
+                  <h1 className="keep-white-text text-base sm:text-lg xl:text-[20px] font-semibold tracking-tight leading-[1.25] min-h-[48px] sm:min-h-[50px] flex items-center line-clamp-2 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]">
+                    {currentSlide.headline}
+                  </h1>
+
+                  <p className="keep-white-text text-xs text-slate-100/90 leading-relaxed min-h-[36px] line-clamp-2 drop-shadow-[0_1px_6px_rgba(0,0,0,0.65)]">
+                    {currentSlide.subheadline}
+                  </p>
+                </div>
+
+                {/* Bottom Row: Clean Inline HUD Telemetry Spec Bar */}
                 <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 pt-2 border-t border-white/15 text-[10px] font-mono uppercase tracking-[0.06em] text-slate-100">
                   {currentSlide.specs.map((spec, idx) => (
                     <React.Fragment key={spec}>
@@ -347,17 +348,31 @@ export function Hero16By9Showcase() {
                 </div>
               </motion.div>
             </AnimatePresence>
+
+            {/* Smooth Animated Auto-Advance Progress Line Along Bottom Edge */}
+            <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px] bg-white/10 overflow-hidden">
+              <motion.div
+                key={`progress-${activeSlide}-${isPlaying}`}
+                initial={{ width: '0%' }}
+                animate={{ width: isPlaying ? '100%' : '35%' }}
+                transition={{
+                  duration: isPlaying ? 6.8 : 0.3,
+                  ease: 'linear',
+                }}
+                className="h-full bg-[#EC008C] shadow-[0_0_10px_#EC008C]"
+              />
+            </div>
           </div>
 
-          {/* Bottom-Right HUD Panel: Precision CTAs (0px Sharp) + Interactive BETA Horizons Switcher */}
-          <div className="hud-corner-brackets crystal-glass-panel rounded-none p-4 sm:p-5 flex flex-col sm:items-end justify-end gap-3 w-full lg:max-w-[390px] xl:max-w-[420px] shrink-0 transition-all">
-            <AnimatePresence mode="wait">
+          {/* Bottom-Right HUD Panel: Precision CTAs (0px Sharp) + Interactive BETA Series Switcher */}
+          <div className="hud-corner-brackets crystal-glass-panel rounded-none p-4 sm:p-5 flex flex-col sm:items-end justify-between gap-3 w-full lg:w-[410px] xl:w-[430px] min-h-[132px] shrink-0">
+            <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={`cta-${activeSlide}`}
-                initial={{ opacity: 0, x: 8 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -6 }}
-                transition={{ duration: 0.22 }}
+                initial={{ opacity: 0, y: 6, filter: 'blur(3px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: -6, filter: 'blur(3px)' }}
+                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
                 className="flex flex-wrap items-center sm:justify-end gap-2 w-full"
               >
                 <a
@@ -377,26 +392,32 @@ export function Hero16By9Showcase() {
               </motion.div>
             </AnimatePresence>
 
-            {/* Interactive BETA Horizons Switcher */}
+            {/* Interactive BETA Series Switcher (No HORIZON text) */}
             <div className="space-y-2 text-left sm:text-right w-full pt-2.5 border-t border-white/15">
               <div className="flex items-center justify-between gap-3">
-                <a
-                  href={currentSlide.href}
-                  className="keep-white-text text-[11px] font-mono font-semibold text-white hover:text-[#ff7ac6] transition-colors inline-flex items-center gap-1.5 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
-                >
-                  <span className="text-[#EC008C]">■</span>
-                  <span className="keep-white-text text-white">HORIZON</span>
-                  <span className="keep-white-text text-slate-200 font-sans font-normal">
-                    · {currentSlide.tag}
-                  </span>
-                  <ArrowUpRight className="w-3 h-3 text-[#EC008C] shrink-0" />
-                </a>
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.a
+                    key={`tag-${activeSlide}`}
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 6 }}
+                    transition={{ duration: 0.25 }}
+                    href={currentSlide.href}
+                    className="keep-white-text text-[11px] font-mono font-semibold text-white hover:text-[#ff7ac6] transition-colors inline-flex items-center gap-1.5 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)] truncate"
+                  >
+                    <span className="text-[#EC008C] shrink-0">■</span>
+                    <span className="keep-white-text text-white truncate">
+                      {currentSlide.tag}
+                    </span>
+                    <ArrowUpRight className="w-3 h-3 text-[#EC008C] shrink-0" />
+                  </motion.a>
+                </AnimatePresence>
 
                 <div className="flex items-center gap-1 shrink-0">
                   <button
                     type="button"
                     onClick={() => selectSlide((activeSlide + 3) % 4)}
-                    aria-label="Previous horizon slide"
+                    aria-label="Previous slide"
                     className="keep-white-text crystal-glass-pill w-6 h-6 rounded-none flex items-center justify-center text-white cursor-pointer transition-colors"
                   >
                     <ChevronLeft className="w-3 h-3 text-white keep-white-text" />
@@ -404,7 +425,7 @@ export function Hero16By9Showcase() {
                   <button
                     type="button"
                     onClick={() => selectSlide((activeSlide + 1) % 4)}
-                    aria-label="Next horizon slide"
+                    aria-label="Next slide"
                     className="keep-white-text crystal-glass-pill w-6 h-6 rounded-none flex items-center justify-center text-white cursor-pointer transition-colors"
                   >
                     <ChevronRight className="w-3 h-3 text-white keep-white-text" />
@@ -418,7 +439,7 @@ export function Hero16By9Showcase() {
                     key={slide.tag}
                     type="button"
                     onClick={() => selectSlide(idx)}
-                    aria-label={`Select horizon slide ${idx + 1}: ${slide.tag}`}
+                    aria-label={`Select slide ${idx + 1}: ${slide.tag}`}
                     title={slide.tag}
                     className="py-0.5 cursor-pointer group"
                   >

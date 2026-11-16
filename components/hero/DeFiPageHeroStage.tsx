@@ -519,10 +519,7 @@ export function DeFiPageHeroStage({
               className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-white hover:text-[#EC008C] transition-colors whitespace-nowrap"
             >
               <Crosshair className="w-3.5 h-3.5 text-[#EC008C]" />
-              <span>HORIZON</span>
-              <span className="text-slate-400 font-sans font-normal hidden sm:inline">
-                · {horizonSlides[activeSlide]?.tag}
-              </span>
+              <span>{horizonSlides[activeSlide]?.tag || 'BETA DOORS HARDWARE'}</span>
             </a>
 
             <div className="flex items-center gap-1.5">
