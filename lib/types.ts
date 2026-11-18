@@ -16,7 +16,10 @@ export type MotionPreset =
   | 'editorial_reveal'
   | 'subtle_fade'
   | 'kinetic_bento'
-  | 'minimal_static';
+  | 'minimal_static'
+  | 'hero_reveal'
+  | 'stagger_cards'
+  | 'fade_up';
 
 export interface PageHeaderConfig {
   badgeText?: string;
@@ -49,9 +52,15 @@ export interface CategoryCardItem {
 
 export interface BrandSettings {
   siteName: string;
+  companyName?: string;
+  tagline?: string;
+  headOfficeAddress?: string;
   logoUrl: string;
+  customLogoUrl?: string;
+  logoVariant?: string;
   useCustomSvgLogo: boolean;
   primaryAccentHex: string;
+  secondaryAccentHex?: string;
   secondaryGlowHex: string;
   displayFontFamily: string;
   bodyFontFamily: string;
@@ -67,6 +76,7 @@ export interface BrandSettings {
   navLabels?: Record<string, string>;
   pageHeaders?: Record<string, PageHeaderConfig>;
   siteCopyOverrides?: Record<string, string>;
+  siteCopy?: Record<string, string>;
   categoryCards?: CategoryCardItem[];
   motionPreset: MotionPreset;
   heroConfig: {
@@ -82,6 +92,7 @@ export interface BrandSettings {
     secondaryCtaLabel: string;
     secondaryCtaHref: string;
     autoplayMuted: boolean;
+    autoplayMutedLoop?: boolean;
     loop: boolean;
     captionTranscriptText: string;
     revisionNumber: number;
@@ -103,6 +114,7 @@ export type SectionType =
   | 'featured_aria_121'
   | 'orbital_workflow'
   | 'service_grid'
+  | 'feature_highlights'
   | 'enquiry_section'
   | 'downloads_preview'
   | 'faq_accordion';
@@ -137,16 +149,25 @@ export interface CmsPageRecord {
   canonicalPath: string;
   noindex: boolean;
   category:
+    | 'core'
     | 'company'
     | 'services'
     | 'catalog'
+    | 'products_overview'
     | 'commerce'
     | 'account'
     | 'support'
     | 'tools'
     | 'legal'
-    | 'local_services';
+    | 'local_services'
+    | 'garage_doors'
+    | 'garage_door_openers'
+    | 'gate_openers'
+    | 'gates'
+    | 'accessories'
+    | 'hardware';
   template: string;
+  parentSlug?: string;
   status: 'published' | 'draft' | 'archived';
   publishedRevision: number;
   draftRevision: number;
@@ -168,7 +189,8 @@ export interface CmsPageRecord {
     label: string;
     value: string;
     unit?: string;
-    classification: EvidenceClassification;
+    classification?: EvidenceClassification;
+    verified?: boolean;
   }>;
   sections: PageSectionBlock[];
   draftSections?: PageSectionBlock[];
@@ -378,12 +400,14 @@ export interface ManualDownloadItem {
   label: string;
   modelName: string;
   version: string;
-  language: string;
-  legacySourceUrl: string;
+  language?: string;
+  legacySourceUrl?: string;
+  wpOriginalUrl?: string;
   localDownloadPath: string;
   fileSizeKb: number;
   published: boolean;
   summary: string;
+  updatedAt?: string;
 }
 
 export interface RedirectRule {
@@ -391,7 +415,8 @@ export interface RedirectRule {
   oldPath: string;
   destinationPath: string;
   statusCode: 301 | 302;
-  reason: string;
+  reason?: string;
+  notes?: string;
 }
 
 export interface AuditLogEntry {

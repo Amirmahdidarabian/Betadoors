@@ -1,589 +1,539 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
-  ArrowRight,
-  ArrowUpRight,
-  CheckCircle2,
+  Search,
+  X,
+  Layers,
+  Grid3X3,
   Sparkles,
+  ShoppingBag,
+  FileText,
+  ChevronLeft,
 } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import { SiteShell } from '@/components/layout/SiteShell';
 import { DeFiPageHeroStage } from '@/components/hero/DeFiPageHeroStage';
-import { HudSectionRail } from '@/components/sections/HomeSections';
 import { ProductTechnicalArtwork } from '@/components/brand/ProductTechnicalArtwork';
+import { BetaReferenceProductCard } from '@/components/shop/BetaReferenceProductCard';
 import { EnquiryForm } from '@/components/forms/EnquiryForm';
-import { useBetaDoors } from '@/components/providers/BetaDoorsProvider';
-import { formatAudCents } from '@/lib/domain-logic';
-
-const OFFICIAL_PRODUCT_CATEGORIES = [
-  {
-    id: 'garage-doors',
-    number: '01',
-    title: 'Garage Doors',
-    subtitle: 'Insulated Sectional · Single Skin Sectional · Roller Doors',
-    href: '/garage-door-range',
-    artwork: 'sectional_door' as const,
-    description:
-      'Enjoy a wide selection of Garage Doors in Melbourne. Our insulated sectional garage doors feature panels designed to provide thermal protection and finger protection technology, alongside Single Skin Sectional Doors and durable Australian Roller Doors.',
-    subItems: [
-      { label: 'Insulated Sectional Garage Doors', href: '/insulated-sectional-garage-doors' },
-      { label: 'Single Skin Sectional Garage Doors', href: '/single-skin-sectional-garage-doors' },
-      { label: 'Roller Garage Doors', href: '/roller-garage-doors' },
-    ],
-  },
-  {
-    id: 'gate-openers',
-    number: '02',
-    title: 'Gate Openers',
-    subtitle: 'BETA Gate Openers · LIFE Gate Openers · Swing & Sliding',
-    href: '/gate-opener-brands',
-    artwork: 'gate_opener' as const,
-    description:
-      'Comprehensive Swing Gate Openers and Sliding Gate Openers from BETA (B600 / B550) and LIFE (HP4, OP2, OP3-OP5, HP6, and articulated swing gate openers) engineered for residential and commercial perimeters.',
-    subItems: [
-      { label: 'BETA Gate Opener Range (B600 / B550)', href: '/beta-gate-opener-range' },
-      { label: 'LIFE Gate Opener Range (HP4 / OP2 / HP6)', href: '/life-gate-opener-range' },
-      { label: 'All Gate Opener Brands', href: '/gate-opener-brands' },
-    ],
-  },
-  {
-    id: 'garage-door-openers',
-    number: '03',
-    title: 'Garage Door Openers',
-    subtitle: '7 Years Warranty · 1000N · 1200N · 1500N · Optional WiFi Kit',
-    href: '/garage-door-opener-catagories',
-    artwork: 'aria_121' as const,
-    description:
-      'Featuring the BETA DOORS Aria 121 sectional/tilt door opener and Residential & Heavy-duty Roller Door Openers (5 Years Warranty · 1000N, 1500N, and 1800N commercial motors) for smooth, quiet everyday operation.',
-    subItems: [
-      {
-        label: 'Sectional & Tilt Door Openers (Aria 121)',
-        href: '/sectional-and-tilt-door-opener-range',
-      },
-      {
-        label: 'Roller Door Openers (1000N / 1500N / 1800N)',
-        href: '/roller-door-opener-range',
-      },
-      { label: 'Panel Door Motor Pack (Shop)', href: '/product/motor-pack' },
-    ],
-  },
-  {
-    id: 'gates',
-    number: '04',
-    title: 'Gates',
-    subtitle: 'Swing Gates · Sliding Gates · Custom Architectural Profiles',
-    href: '/gate-catagories',
-    artwork: 'roller_opener' as const,
-    description:
-      'Custom-fabricated Swing Gates and Sliding Gates designed for Australian driveways, commercial entrances, and automated security access control.',
-    subItems: [
-      { label: 'Swing Gates', href: '/swing-gates' },
-      { label: 'Sliding Gates', href: '/sliding-gates' },
-    ],
-  },
-  {
-    id: 'accessories',
-    number: '05',
-    title: 'Accessories',
-    subtitle: 'Remotes · External Receivers · Universal WiFi Kit · Safety Beams',
-    href: '/accessories',
-    artwork: 'keypad' as const,
-    description:
-      'Hopping code Remote controls, External Receivers, Universal WiFi Kit, Wireless Keypad, Wall Button, WiFi Camera, and Photocell Safety Beams for enhanced comfort and peace of mind.',
-    subItems: [
-      { label: 'Remotes & Wireless Keypad', href: '/accessories' },
-      { label: 'Wall Button & WiFi Camera', href: '/accessories' },
-      { label: 'Safety Beams & External Receivers', href: '/accessories' },
-    ],
-  },
-  {
-    id: 'hardware',
-    number: '06',
-    title: 'Hardware',
-    subtitle: 'Over 10 Sizes of Sectional Springs · Hinges · Bearings · Cables',
-    href: '/hardware',
-    artwork: 'hardware_kit' as const,
-    description:
-      'Steel Line Hinges, B&D Hinges, Gliderol Hinges, Centurion T Shaped & Old T Hinges, Side Bearing Plates, Middle Bearings, Sectional & Tilt Door Springs, and heavy-duty lifting Cables.',
-    subItems: [
-      { label: 'Steel Line, B&D, Gliderol & Centurion Hinges', href: '/hardware' },
-      { label: 'Sectional & Tilt Door Springs + Cables', href: '/hardware' },
-      { label: 'Garage Door Spring Estimator Tool', href: '/garage-door-spring-estimator' },
-    ],
-  },
-];
+import {
+  BETA_OFFICIAL_CATEGORIES,
+  BETA_ALL_OFFICIAL_PRODUCTS,
+  type BetaOfficialProductItem,
+} from '@/lib/beta-official-catalog';
 
 export default function ProductsPage() {
-  const { products } = useBetaDoors();
-  const [activeBarIndex, setActiveBarIndex] = useState(2);
+  const pathname = usePathname();
+  const [selectedCatId, setSelectedCatId] = useState<string>('all');
+  const [selectedSubId, setSelectedSubId] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [visibleCount, setVisibleCount] = useState<number>(24);
+  const [quickPreviewProduct, setQuickPreviewProduct] =
+    useState<BetaOfficialProductItem | null>(null);
+
+  // Sync URL query params (?cat=...&sub=...&q=...)
+  useEffect(() => {
+    const syncFromUrl = () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const catParam = params.get('cat');
+        const subParam = params.get('sub');
+        const qParam = params.get('q') || params.get('product');
+        if (
+          catParam &&
+          BETA_OFFICIAL_CATEGORIES.some((c) => c.id === catParam)
+        ) {
+          setSelectedCatId(catParam);
+        }
+        if (subParam) {
+          setSelectedSubId(subParam);
+        } else {
+          setSelectedSubId('all');
+        }
+        if (qParam) {
+          setSearchQuery(qParam);
+        }
+      } catch {
+        // ignore
+      }
+    };
+    syncFromUrl();
+    window.addEventListener('popstate', syncFromUrl);
+    return () => window.removeEventListener('popstate', syncFromUrl);
+  }, [pathname]);
+
+  const activeCategory = useMemo(
+    () =>
+      BETA_OFFICIAL_CATEGORIES.find((c) => c.id === selectedCatId) || null,
+    [selectedCatId]
+  );
+
+  const filteredProducts = useMemo(() => {
+    return BETA_ALL_OFFICIAL_PRODUCTS.filter((prod) => {
+      if (selectedCatId !== 'all' && prod.categoryId !== selectedCatId) {
+        return false;
+      }
+      if (selectedSubId !== 'all' && prod.subCategoryId !== selectedSubId) {
+        return false;
+      }
+      if (searchQuery.trim()) {
+        const q = searchQuery.trim().toLowerCase();
+        const match =
+          prod.title.toLowerCase().includes(q) ||
+          prod.categoryTitle.toLowerCase().includes(q) ||
+          prod.subCategoryTitle.toLowerCase().includes(q) ||
+          prod.sku.toLowerCase().includes(q);
+        if (!match) return false;
+      }
+      return true;
+    });
+  }, [selectedCatId, selectedSubId, searchQuery]);
+
+  const visibleProducts = useMemo(
+    () => filteredProducts.slice(0, visibleCount),
+    [filteredProducts, visibleCount]
+  );
+
+  const handleSelectCat = (catId: string) => {
+    setSelectedCatId(catId);
+    setSelectedSubId('all');
+    setVisibleCount(24);
+  };
+
+  const handleSelectSub = (subId: string) => {
+    setSelectedSubId(subId);
+    setVisibleCount(24);
+  };
 
   return (
     <SiteShell>
-      {/* 1. Architectural HUD Stage */}
+      {/* 1. Clean Apple Header */}
       <DeFiPageHeroStage
-        ariaLabel="BETA DOORS Product Categories 16:9 Hero Stage"
-        badgeText="Pioneers in the door automation industry · Australia Wide"
+        ariaLabel="کاتالوگ جامع محصولات شرکت بتا"
+        badgeText="مرجع فنی و کاتالوگ رسمی شرکت بتا (BETA.IR)"
         badgeHref="/about-us"
-        headlinePrimary="Product Categories &"
-        headlineGradient="Door Automation Systems"
-        subheadline="At Beta, we are pioneers in the door automation industry. We offer a comprehensive range of solutions for Commercial and Residential Garage Door and Gates — from sectional and roller door operators to accessories, WiFi capabilities, springs, and receivers."
-        primaryCtaLabel="Explore Online Shop"
+        headlinePrimary="کاتالوگ فنی ۱۱ گروه و ۳۷۰ محصول رسمی شرکت بتا."
+        headlineGradient=""
+        subheadline="مرجع کامل بررسی مشخصات فنی، کدهای مهندسی (SKU) و زیرمجموعه‌های تخصصی شرکت بتا (حضور و غیاب و UHF، ریموت، مدار کنترل، درب بازکن، سیستم‌های امنیتی، موتور کرکره، راهبند، اپراتور شیشه برقی، آرام‌بند، قفل برقی و UPS)."
+        primaryCtaLabel="ورود به فروشگاه آنلاین (خرید مستقیم)"
         primaryCtaHref="/shop"
-        secondaryCtaLabel="Enquire Now"
+        secondaryCtaLabel="مشاوره و استعلام"
         secondaryCtaHref="#products-enquiry"
-        scrollTargetId="products-bento-insights"
-        topLeftNode={{ label: 'Garage Door Openers', metric: '7 Years Warranty' }}
-        topRightNode={{ label: 'Roller Door Openers', metric: '1000N – 1800N' }}
-        bottomLeftNode={{ label: 'Sectional Springs', metric: '10+ Sizes' }}
-        bottomRightNode={{ label: 'Gate Automation', metric: 'Swing & Sliding' }}
-        horizonSlides={[
-          { label: '01/04 · Product Categories', tag: 'Garage Doors & Aria 121 Openers' },
-          { label: '02/04 · Product Categories', tag: 'Roller Door Openers (5 Years Warranty)' },
-          { label: '03/04 · Product Categories', tag: 'BETA & LIFE Gate Automation' },
-          { label: '04/04 · Product Categories', tag: 'Springs, Hardware & Smart Accessories' },
-        ]}
+        scrollTargetId="products-catalog"
+        topLeftNode={{ label: 'گروه‌های اصلی', metric: '۱۱ گروه تخصصی' }}
+        topRightNode={{ label: 'زیرمجموعه‌ها', metric: '۴۵ زیرگروه' }}
+        bottomLeftNode={{
+          label: 'تعداد کل محصولات',
+          metric: `${BETA_ALL_OFFICIAL_PRODUCTS.length} محصول رسمی`,
+        }}
+        bottomRightNode={{ label: 'کاربری بخش', metric: 'کاتالوگ و مشخصات فنی' }}
+        horizonSlides={[]}
       />
 
-      {/* 2. "What We Offer" 4-Card Sharp HUD Bento Grid */}
-      <section
-        id="products-bento-insights"
-        className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-14"
-      >
-        <HudSectionRail
-          code="HUD.PROD.01"
-          sector="WHAT WE OFFER // BETADOORS.COM.AU SPECIFICATIONS"
-          status="AS/NZS VERIFIED"
-        />
-
-        <div className="max-w-2xl mb-10 space-y-2.5">
-          <div className="inline-flex items-center gap-2 rounded-none border border-[#EC008C]/40 bg-[#EC008C]/15 px-3 py-1 font-mono text-[11px] text-[#ff7ac6]">
-            <Sparkles className="w-3.5 h-3.5 text-[#EC008C]" />
-            <span>WHAT WE OFFER · BETADOORS.COM.AU SPECIFICATIONS</span>
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-white">
-            Speed in Service, Quality in Product
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-            Every product undergoes rigorous testing to ensure it meets our high Australian standards, backed by dedicated installer support and warranty coverage.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-          {/* Card 1 (Left 7 cols): Garage Door Openers & 7 Years Warranty */}
-          <div className="lg:col-span-7 hud-corner-brackets brand-animated-border hud-technical-grid rounded-none bg-[#0B0C10] border border-white/[0.09] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
-            <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
-              <div className="sm:col-span-5 space-y-1">
-                <div className="text-[10px] font-mono text-[#ff7ac6] uppercase tracking-wider">
-                  WARRANTY.COVERAGE // PDO
-                </div>
-                <div className="text-3xl sm:text-5xl font-bold font-mono tracking-tight text-white tabular-nums">
-                  7 YEARS <span className="text-[#EC008C]">■</span>
-                </div>
-                <div className="text-xs text-slate-400">
-                  Sectional &amp; Tilt Garage Door Openers
-                </div>
-              </div>
-
-              {/* Sharp CAD Schematic Force Diagram */}
-              <div className="sm:col-span-7 relative h-36 flex items-center justify-center bg-[#08090C] border border-white/[0.08] p-3">
-                <svg viewBox="0 0 320 120" className="w-full h-full">
-                  <line
-                    x1="16"
-                    y1="30"
-                    x2="304"
-                    y2="30"
-                    stroke="rgba(236,0,140,0.3)"
-                    strokeWidth="1"
-                    className="hud-rail-dashed"
-                  />
-                  <line
-                    x1="16"
-                    y1="60"
-                    x2="304"
-                    y2="60"
-                    stroke="#EC008C"
-                    strokeWidth="1.5"
-                    className="hud-animated-trace"
-                  />
-                  <line
-                    x1="16"
-                    y1="90"
-                    x2="304"
-                    y2="90"
-                    stroke="rgba(56,189,248,0.35)"
-                    strokeWidth="1"
-                    className="hud-rail-dashed"
-                  />
-                  <rect x="24" y="18" width="76" height="22" fill="#14161D" stroke="rgba(255,255,255,0.2)" />
-                  <text x="62" y="32" textAnchor="middle" fill="#F8FAFC" fontSize="8.5" fontFamily="monospace">
-                    800N / 1000N
-                  </text>
-                  <rect x="122" y="48" width="76" height="22" fill="#14161D" stroke="#EC008C" />
-                  <text x="160" y="62" textAnchor="middle" fill="#F8FAFC" fontSize="8.5" fontFamily="monospace">
-                    1200N ARIA
-                  </text>
-                  <rect x="218" y="78" width="82" height="22" fill="#14161D" stroke="rgba(56,189,248,0.6)" />
-                  <text x="259" y="92" textAnchor="middle" fill="#F8FAFC" fontSize="8.5" fontFamily="monospace">
-                    1500N + WIFI
-                  </text>
-                </svg>
-              </div>
+      {/* Clear Comparison Strip: Difference Between کاتالوگ محصولات vs فروشگاه آنلاین */}
+      <section className="w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        <div className="rounded-[26px] bg-white dark:bg-[#161617] border border-black/[0.06] dark:border-white/[0.1] p-4 sm:p-5 grid grid-cols-1 md:grid-cols-2 gap-4 shadow-[0_8px_28px_rgba(0,0,0,0.03)]">
+          <div className="flex items-start gap-3.5 p-3 rounded-2xl bg-[#EC008C]/[0.06] dark:bg-[#EC008C]/[0.12] border border-[#EC008C]/25">
+            <div className="w-10 h-10 rounded-xl bg-[#EC008C] text-white flex items-center justify-center shrink-0">
+              <FileText className="w-5 h-5" />
             </div>
-
-            <div className="my-5 p-2 rounded-none bg-[#08090C] border border-white/[0.08] flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
-              <Link
-                href="/sectional-and-tilt-door-opener-range"
-                className="px-3 py-1.5 rounded-none bg-[#0B0C10] hover:bg-white/[0.08] border border-white/10 text-slate-300 transition-colors"
-              >
-                [01] Aria 121 Sectional Opener
-              </Link>
-              <Link
-                href="/product/motor-pack"
-                className="keep-white-text px-3.5 py-1.5 rounded-none bg-[#EC008C] text-white font-bold"
-              >
-                [02] WiFi Motor Pack ($650–$730)
-              </Link>
-              <Link
-                href="/beta-doors-manuals"
-                className="px-3 py-1.5 rounded-none text-slate-400 hover:text-white transition-colors"
-              >
-                [03] Asterion PDO Manual →
-              </Link>
-            </div>
-
-            <div className="space-y-1.5 pt-3 border-t border-white/[0.07]">
-              <h3 className="text-base sm:text-lg font-semibold text-white">
-                Garage Door Openers (1000N · 1200N · 1500N)
-              </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Sectional and tilt door operators backed by a 7-year warranty, hopping code security, photocell safety beams, and optional WiFi kit.
+            <div className="space-y-1">
+              <div className="text-xs font-extrabold text-[#EC008C]">
+                شما در بخش «محصولات (کاتالوگ فنی)» هستید
+              </div>
+              <div className="text-sm font-black text-[#1D1D1F] dark:text-white">
+                مرجع کامل ۳۷۰ محصول، ۴۵ زیرگروه، مشخصات فنی و کدهای کالا
+              </div>
+              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+                مخصوص آشنایی با تمام تولیدات کارخانه بتا، بررسی زیرگروه‌های تخصصی
+                (مانند اکسس کنترل، EM Reader، بردهای فرمان و تگ‌ها) و استعلام
+                فنی پروژه‌ها.
               </p>
             </div>
           </div>
 
-          {/* Card 2 (Right 5 cols): Sharp Columns for Roller Door Openers */}
-          <div className="lg:col-span-5 hud-corner-brackets brand-animated-border hud-technical-grid rounded-none bg-[#0B0C10] border border-white/[0.09] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
-            <div className="h-48 flex items-end justify-center gap-4 sm:gap-5 pt-4 px-2">
-              {[
-                { label: '1800N', height: '100%' },
-                { label: '1500N', height: '86%' },
-                { label: '1200N', height: '72%' },
-                { label: '1000N', height: '58%' },
-                { label: '5 YR', height: '46%' },
-              ].map((bar, idx) => (
-                <div
-                  key={bar.label}
-                  className="flex flex-col items-center gap-2 h-full justify-end flex-1 max-w-[46px]"
-                >
-                  <div
-                    style={{ height: bar.height }}
-                    className={`w-full rounded-none border-t border-x relative flex justify-center pt-2 ${
-                      idx === 0
-                        ? 'bg-gradient-to-b from-[#EC008C]/65 via-[#EC008C]/20 to-transparent border-[#EC008C]'
-                        : 'bg-gradient-to-b from-slate-400/35 via-slate-400/10 to-transparent border-white/25'
-                    }`}
-                  >
-                    <span className="w-4 h-1 rounded-none bg-[#EC008C]" />
-                  </div>
-                  <span className="text-[10px] font-mono text-slate-300 font-bold tabular-nums">
-                    {bar.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="space-y-1.5 pt-4 border-t border-white/[0.07]">
-              <h3 className="text-base sm:text-lg font-semibold text-white">
-                Roller Door Openers (5 Years Warranty)
-              </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Available in 1000N and 1500N residential options plus our heavy-duty 1800N commercial roller door opener.
-              </p>
-            </div>
-          </div>
-
-          {/* Card 3 (Bottom-Left 5 cols): Sectional & Tilt Door Springs */}
-          <div className="lg:col-span-5 hud-corner-brackets brand-animated-border hud-technical-grid rounded-none bg-[#0B0C10] border border-white/[0.09] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
-            <div className="grid grid-cols-2 gap-3.5">
-              <Link
-                href="/hardware"
-                className="rounded-none bg-[#08090C] border border-white/[0.09] hover:border-[#EC008C]/60 p-4 space-y-2.5 transition-colors"
-              >
-                <div className="flex items-center gap-1.5 text-xs font-mono text-[#ff7ac6]">
-                  <span className="w-1.5 h-3.5 bg-amber-400" />
-                  <span>SECTIONAL SPRINGS</span>
-                </div>
-                <div className="text-[11px] text-slate-400">Calibration Range</div>
-                <div className="text-2xl sm:text-3xl font-bold font-mono text-white tabular-nums">
-                  10+ SIZES
-                </div>
-                <div className="text-[11px] text-slate-400 font-mono">
-                  Custom Installer Software
-                </div>
-              </Link>
-
-              <Link
-                href="/garage-door-spring-estimator"
-                className="rounded-none bg-[#08090C] border border-white/[0.09] hover:border-[#EC008C]/60 p-4 space-y-2.5 transition-colors"
-              >
-                <div className="flex items-center gap-1.5 text-xs font-mono text-[#ff7ac6]">
-                  <span className="w-1.5 h-3.5 bg-[#EC008C]" />
-                  <span>TILT SPRINGS</span>
-                </div>
-                <div className="text-[11px] text-slate-400">Coverage</div>
-                <div className="text-2xl sm:text-3xl font-bold font-mono text-white tabular-nums">
-                  FULL RANGE
-                </div>
-                <div className="text-[11px] text-[#EC008C] font-mono font-bold">
-                  OPEN ESTIMATOR →
-                </div>
-              </Link>
-            </div>
-
-            <div className="space-y-1.5 pt-4 border-t border-white/[0.07]">
-              <h3 className="text-base sm:text-lg font-semibold text-white">
-                Sectional &amp; Tilt Door Springs
-              </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Over 10 sizes of sectional springs, full range of tilt door springs, and custom sectional spring software for installers.
-              </p>
-            </div>
-          </div>
-
-          {/* Card 4 (Bottom-Right 7 cols): Gate Automation & Accessories Matrix */}
-          <div className="lg:col-span-7 hud-corner-brackets brand-animated-border hud-technical-grid rounded-none bg-[#0B0C10] border border-white/[0.09] p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
-            <div className="space-y-1 pb-3 border-b border-white/[0.07]">
-              <h3 className="text-base sm:text-lg font-semibold text-white">
-                Gate Automation &amp; Smart Accessories
-              </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Swing &amp; Sliding Gate Openers, Hopping Code Remote Controls, External Receivers, and Universal WiFi Kits.
-              </p>
-            </div>
-
-            <div className="h-44 flex items-end justify-center gap-3 sm:gap-5 pt-6 px-2">
-              {[
-                {
-                  name: 'B600 / B550',
-                  tag: 'BETA Gate',
-                  height: '65%',
-                  color: 'from-amber-400/50 via-amber-500/15 to-transparent border-amber-400/50',
-                },
-                {
-                  name: 'LIFE HP4/HP6',
-                  tag: 'Sliding Gate',
-                  height: '86%',
-                  color: 'from-[#EC008C]/65 via-[#EC008C]/20 to-transparent border-[#EC008C]',
-                },
-                {
-                  name: 'LIFE OP2–OP5',
-                  tag: 'Swing Gate',
-                  height: '100%',
-                  color: 'from-emerald-400/55 via-teal-400/20 to-transparent border-emerald-400/50',
-                },
-                {
-                  name: '2-Ch Receiver',
-                  tag: 'External',
-                  height: '62%',
-                  color: 'from-sky-400/50 via-sky-500/15 to-transparent border-sky-400/50',
-                },
-                {
-                  name: 'WiFi + Beams',
-                  tag: 'Smart Kit',
-                  height: '76%',
-                  color: 'from-slate-400/50 via-slate-500/15 to-transparent border-slate-400/50',
-                },
-              ].map((col, idx) => (
-                <div
-                  key={col.name}
-                  onClick={() => setActiveBarIndex(idx)}
-                  className="flex flex-col items-center justify-end h-full flex-1 max-w-[88px] cursor-pointer group"
-                >
-                  <span className="text-[10px] font-mono text-slate-300 mb-1.5 tabular-nums">
-                    {col.tag}
-                  </span>
-                  <div
-                    style={{ height: col.height }}
-                    className={`w-full rounded-none bg-gradient-to-b ${col.color} border-t border-x relative flex justify-center pt-1.5 transition-all group-hover:brightness-125`}
-                  >
-                    <span className="w-4 h-1 rounded-none bg-white/90" />
-                  </div>
-                  <span className="text-[10px] font-mono text-slate-400 mt-2 truncate max-w-full">
-                    {col.name}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex items-center justify-center gap-1.5 pt-4">
-              {[0, 1, 2, 3, 4].map((idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setActiveBarIndex(idx)}
-                  aria-label={`Select capability column ${idx + 1}`}
-                  className={`h-1.5 rounded-none transition-all cursor-pointer ${
-                    activeBarIndex === idx ? 'w-7 bg-[#EC008C]' : 'w-4 bg-slate-500/35'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. All 6 Official Product Categories (0px Sharp HUD Cards) */}
-      <section className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-12 space-y-10">
-        <HudSectionRail
-          code="HUD.PROD.02"
-          sector="OFFICIAL BETADOORS.COM.AU/PRODUCTS/ DIRECTORY"
-          status="06 CORE FAMILIES"
-        />
-
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/[0.08] pb-6">
-          <div className="space-y-1.5">
-            <div className="font-mono text-xs uppercase tracking-[0.18em] text-[#EC008C]">
-              OFFICIAL BETADOORS.COM.AU/PRODUCTS/ DIRECTORY
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-semibold text-white tracking-tight">
-              6 Core Product Categories
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-400">
-              Select any category below to inspect models, technical specifications, and sub-ranges.
-            </p>
-          </div>
-          <Link
-            href="/shop"
-            className="keep-white-text inline-flex items-center gap-2 rounded-none bg-[#EC008C] hover:bg-[#d4007d] px-5 py-2.5 text-xs font-mono font-bold text-white transition-colors self-start"
-          >
-            <span>OPEN ONLINE SHOP ({products.length} PRODUCTS)</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {OFFICIAL_PRODUCT_CATEGORIES.map((cat) => (
-            <article
-              key={cat.id}
-              className="group hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-none overflow-hidden flex flex-col justify-between transition-all"
-            >
-              <div>
-                <div className="px-4 py-2 border-b border-white/[0.07] bg-[#08090C] flex items-center justify-between text-[10px] font-mono">
-                  <span className="text-[#EC008C] font-bold">SYS.CAT // [{cat.number}]</span>
-                  <span className="text-slate-400">{cat.href}</span>
-                </div>
-                <Link href={cat.href} className="block aspect-video w-full border-b border-white/[0.08] bg-[#12141A] overflow-hidden">
-                  <ProductTechnicalArtwork
-                    type={cat.artwork}
-                    title={cat.title}
-                    className="w-full h-full"
-                  />
-                </Link>
-                <div className="p-6 space-y-3">
-                  <h3 className="text-xl font-semibold text-white">
-                    <Link href={cat.href} className="hover:text-[#EC008C] transition-colors">
-                      {cat.title}
-                    </Link>
-                  </h3>
-                  <p className="text-xs font-mono text-[#ff7ac6]">{cat.subtitle}</p>
-                  <p className="text-xs text-slate-400 leading-relaxed">{cat.description}</p>
-
-                  <ul className="pt-2 space-y-1.5 border-t border-white/[0.07]">
-                    {cat.subItems.map((sub) => (
-                      <li key={sub.label}>
-                        <Link
-                          href={sub.href}
-                          className="flex items-center justify-between text-xs text-slate-300 hover:text-[#EC008C] py-1"
-                        >
-                          <span className="flex items-center gap-2">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                            <span>{sub.label}</span>
-                          </span>
-                          <ArrowUpRight className="w-3.5 h-3.5 text-slate-500" />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+          <div className="flex items-start justify-between gap-3.5 p-3 rounded-2xl bg-[#F4F5F8] dark:bg-[#1E2029] border border-black/[0.05] dark:border-white/[0.08]">
+            <div className="flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-[#1D1D1F] dark:bg-white/10 text-white flex items-center justify-center shrink-0">
+                <ShoppingBag className="w-5 h-5 text-[#EC008C]" />
               </div>
-
-              <div className="px-6 pb-6 pt-2">
-                <Link
-                  href={cat.href}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-none bg-[#08090C] hover:bg-[#EC008C] text-white hover:keep-white-text border border-white/15 py-2.5 px-4 text-xs font-mono font-bold transition-colors"
-                >
-                  <span>EXPLORE {cat.title.toUpperCase()}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+              <div className="space-y-1">
+                <div className="text-xs font-extrabold text-[#6E6E73] dark:text-[#A1A1A6]">
+                  تفاوت با «فروشگاه آنلاین»
+                </div>
+                <div className="text-sm font-black text-[#1D1D1F] dark:text-white">
+                  خرید مستقیم اینترنتی، پکیج‌های آماده نصب و افزودن آنی به سبد خرید
+                </div>
+                <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+                  در فروشگاه آنلاین می‌توانید پکیج‌های کامل نصب یا تک‌محصولات را با
+                  انتخاب ظرفیت موتور مستقیماً به سبد خرید اضافه و آنلاین سفارش
+                  دهید.
+                </p>
               </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* 4. Direct Storefront Preview Strip */}
-      <section className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-8">
-        <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8 space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.07] pb-4">
-            <div>
-              <span className="font-mono text-xs uppercase tracking-wider text-[#ff7ac6]">
-                DIRECT STOREFRONT · CAMPBELLFIELD VIC 3061
-              </span>
-              <h2 className="mt-1 text-2xl sm:text-3xl font-semibold text-white">
-                Direct Online Shop Products
-              </h2>
             </div>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 rounded-none border border-white/15 bg-[#08090C] px-4 py-2 text-xs font-mono font-semibold text-white hover:bg-white/[0.08]"
+              className="keep-white-text shrink-0 self-center inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs font-extrabold"
             >
-              <span>GO TO SHOP</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#EC008C]" />
+              <span>فروشگاه آنلاین</span>
+              <ChevronLeft className="w-3.5 h-3.5" />
             </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {products.map((prod) => (
-              <Link
-                key={prod.id}
-                href={prod.path}
-                className="hud-corner-brackets rounded-none brand-animated-border border border-white/[0.09] bg-[#08090C] p-4 flex flex-col justify-between transition-all"
-              >
-                <div>
-                  <div className="aspect-video w-full rounded-none overflow-hidden border border-white/[0.08] bg-[#12141A] mb-3">
-                    <ProductTechnicalArtwork
-                      type={prod.imageSvgType}
-                      customImageUrl={prod.customImageUrl}
-                      title={prod.name}
-                      className="w-full h-full"
-                    />
-                  </div>
-                  <div className="font-mono text-[10px] text-slate-400">{prod.sku}</div>
-                  <h3 className="text-sm font-semibold text-white mt-0.5">{prod.name}</h3>
-                </div>
-                <div className="mt-3 pt-2 border-t border-white/[0.07] flex items-center justify-between text-xs font-mono text-[#ff7ac6] font-bold tabular-nums">
-                  <span>
-                    {prod.maxPriceCents
-                      ? `${formatAudCents(prod.priceCents)}–${formatAudCents(prod.maxPriceCents)}`
-                      : formatAudCents(prod.priceCents)}
-                  </span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-400" />
-                </div>
-              </Link>
-            ))}
           </div>
         </div>
       </section>
 
-      {/* 5. Make an Enquiry Form */}
-      <section id="products-enquiry" className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-12">
+      {/* 2. All 11 Official Main Categories Visual Overview Grid */}
+      <section
+        id="products-catalog"
+        className="w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6 space-y-6"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-[#EC008C]">
+              <Layers className="w-4 h-4" />
+              <span>۱۱ گروه اصلی محصولات شرکت بتا</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1D1D1F] dark:text-white mt-1">
+              انتخاب گروه تخصصی محصولات
+            </h2>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedCatId('all');
+              setSelectedSubId('all');
+              setSearchQuery('');
+              setVisibleCount(36);
+            }}
+            className={`apple-pill-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold cursor-pointer ${
+              selectedCatId === 'all'
+                ? 'keep-white-text bg-[#EC008C] text-white shadow-md'
+                : 'bg-white dark:bg-[#161617] text-[#1D1D1F] dark:text-white border border-black/[0.08] dark:border-white/[0.12]'
+            }`}
+          >
+            نمایش همه ۱۱ گروه ({BETA_ALL_OFFICIAL_PRODUCTS.length} محصول)
+          </button>
+        </div>
+
+        {/* 11 Official Categories Cards matching beta.ir/product */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+          {BETA_OFFICIAL_CATEGORIES.map((cat) => {
+            const totalCatProducts = cat.subCategories.reduce(
+              (acc, s) => acc + s.products.length,
+              0
+            );
+            const isSelected = selectedCatId === cat.id;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => handleSelectCat(cat.id)}
+                className={`group text-right rounded-[24px] p-3 transition-all flex flex-col justify-between cursor-pointer border ${
+                  isSelected
+                    ? 'bg-white dark:bg-[#1E2029] border-[#EC008C] ring-2 ring-[#EC008C]/30 shadow-lg'
+                    : 'bg-white/90 dark:bg-[#161617] border-black/[0.06] dark:border-white/[0.08] hover:border-[#EC008C]/50'
+                }`}
+              >
+                <div className="aspect-[16/10] w-full rounded-2xl bg-[#ECECEE] overflow-hidden flex items-center justify-center p-2 mb-2.5 border border-black/[0.04]">
+                  <img
+                    src={cat.image}
+                    alt={cat.title}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div>
+                  <div
+                    className={`text-xs sm:text-[13px] font-black line-clamp-1 ${
+                      isSelected
+                        ? 'text-[#EC008C]'
+                        : 'text-[#1D1D1F] dark:text-white group-hover:text-[#EC008C]'
+                    }`}
+                  >
+                    {cat.title}
+                  </div>
+                  <div className="mt-1 flex items-center justify-between text-[11px] text-[#6E6E73] dark:text-[#A1A1A6]">
+                    <span>{cat.subCategories.length} زیرگروه</span>
+                    <span className="font-bold text-[#EC008C] tabular-nums">
+                      {totalCatProducts} محصول
+                    </span>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Horizontal Level-2 Sub-Category Bar + Search Filter (With Smooth Sliding Pill Animation) */}
+        <div className="rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.06] dark:border-white/[0.1] p-4 sm:p-5 space-y-4 shadow-[0_12px_32px_rgba(0,0,0,0.04)]">
+          {activeCategory && (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory.id}
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 4 }}
+                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-wrap items-center gap-2 pb-3 border-b border-black/[0.06] dark:border-white/[0.08]"
+              >
+                <span className="text-xs font-extrabold text-[#86868B] pl-2">
+                  زیرمجموعه‌های {activeCategory.title}:
+                </span>
+                <button
+                  type="button"
+                  onClick={() => handleSelectSub('all')}
+                  onMouseEnter={() => handleSelectSub('all')}
+                  className={`relative z-10 px-3.5 py-1.5 rounded-full text-xs font-extrabold transition-colors duration-200 cursor-pointer ${
+                    selectedSubId === 'all'
+                      ? 'keep-white-text text-white'
+                      : 'bg-[#F4F5F8] dark:bg-[#242731] text-[#3A3A3C] dark:text-[#E5E5EA] hover:text-[#EC008C]'
+                  }`}
+                >
+                  {selectedSubId === 'all' && (
+                    <motion.span
+                      layoutId={`products-page-sub-pill-${activeCategory.id}`}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 420,
+                        damping: 32,
+                      }}
+                      className="absolute inset-0 rounded-full bg-[#EC008C] shadow-[0_6px_18px_rgba(236,0,140,0.32)] -z-10"
+                    />
+                  )}
+                  <span className="relative z-10">همه زیرگروه‌ها</span>
+                </button>
+                {activeCategory.subCategories.map((sub) => {
+                  const isSubSelected = selectedSubId === sub.id;
+                  return (
+                    <button
+                      key={sub.id}
+                      type="button"
+                      onClick={() => handleSelectSub(sub.id)}
+                      onMouseEnter={() => handleSelectSub(sub.id)}
+                      className={`relative z-10 px-3.5 py-1.5 rounded-full text-xs font-bold transition-colors duration-200 cursor-pointer ${
+                        isSubSelected
+                          ? 'keep-white-text text-white font-extrabold'
+                          : 'bg-[#F4F5F8] dark:bg-[#242731] text-[#3A3A3C] dark:text-[#E5E5EA] hover:text-[#EC008C]'
+                      }`}
+                    >
+                      {isSubSelected && (
+                        <motion.span
+                          layoutId={`products-page-sub-pill-${activeCategory.id}`}
+                          transition={{
+                            type: 'spring',
+                            stiffness: 420,
+                            damping: 32,
+                          }}
+                          className="absolute inset-0 rounded-full bg-[#EC008C] shadow-[0_6px_18px_rgba(236,0,140,0.32)] -z-10"
+                        />
+                      )}
+                      <span className="relative z-10">
+                        {sub.title} ({sub.products.length})
+                      </span>
+                    </button>
+                  );
+                })}
+              </motion.div>
+            </AnimatePresence>
+          )}
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+            <div className="relative flex-1 max-w-md">
+              <Search className="w-4 h-4 text-[#86868B] absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setVisibleCount(24);
+                }}
+                placeholder="جستجوی نام یا مدل در بین ۳۷۰ محصول بتا (مثلاً F600، 2208، Z7-GSM، سیموت...)"
+                aria-label="جستجو در کاتالوگ محصولات بتا"
+                className="w-full pr-10 pl-4 py-2.5 rounded-full bg-[#F4F5F8] dark:bg-[#242731] border border-transparent focus:border-[#EC008C] text-xs sm:text-sm text-[#1D1D1F] dark:text-white focus:outline-none"
+              />
+            </div>
+
+            <div className="flex items-center justify-between sm:justify-end gap-3 text-xs sm:text-sm font-bold text-[#6E6E73] dark:text-[#A1A1A6]">
+              <span className="inline-flex items-center gap-1.5">
+                <Grid3X3 className="w-4 h-4 text-[#EC008C]" />
+                <span>
+                  نمایش{' '}
+                  <strong className="text-[#1D1D1F] dark:text-white tabular-nums">
+                    {visibleProducts.length}
+                  </strong>{' '}
+                  از{' '}
+                  <strong className="text-[#EC008C] tabular-nums">
+                    {filteredProducts.length}
+                  </strong>{' '}
+                  محصول
+                </span>
+              </span>
+              {visibleProducts.length < filteredProducts.length && (
+                <button
+                  type="button"
+                  onClick={() => setVisibleCount(filteredProducts.length)}
+                  className="text-xs font-extrabold text-[#EC008C] hover:underline cursor-pointer"
+                >
+                  نمایش یکجای همه ({filteredProducts.length})
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Official Products Grid (Using BetaReferenceProductCard + Authentic beta.ir Product Images) */}
+      <section className="w-full max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
+        {visibleProducts.length === 0 ? (
+          <div className="rounded-[32px] bg-white dark:bg-[#161617] border border-black/[0.06] dark:border-white/[0.1] p-12 text-center space-y-4">
+            <div className="text-lg font-black text-[#1D1D1F] dark:text-white">
+              محصولی مطابق با عبارت جستجو شده یافت نشد.
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedCatId('all');
+                setSelectedSubId('all');
+                setSearchQuery('');
+              }}
+              className="keep-white-text px-6 py-2.5 rounded-full bg-[#EC008C] text-white text-sm font-bold cursor-pointer"
+            >
+              نمایش همه محصولات بتا
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {visibleProducts.map((prod, idx) => (
+              <BetaReferenceProductCard
+                key={prod.id}
+                id={prod.id}
+                sku={prod.sku}
+                title={prod.title}
+                priceText={prod.priceRange}
+                description={`گروه ${prod.categoryTitle} · زیرمجموعه ${prod.subCategoryTitle} — محصول اصلی شرکت بتا با گارانتی و خدمات پس از فروش معتبر.`}
+                href={prod.internalHref}
+                artworkType={prod.artwork}
+                customImageUrl={prod.image}
+                ctaMode="select_model"
+                onQuickView={() => setQuickPreviewProduct(prod)}
+                index={idx}
+              />
+            ))}
+          </div>
+        )}
+
+        {visibleProducts.length < filteredProducts.length && (
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+            <button
+              type="button"
+              onClick={() => setVisibleCount((prev) => prev + 24)}
+              className="apple-pill-btn keep-white-text px-8 py-3.5 rounded-full bg-[#EC008C] hover:bg-[#d4007d] text-white text-sm font-extrabold shadow-lg cursor-pointer"
+            >
+              نمایش ۲۴ محصول بعدی (باقی‌مانده:{' '}
+              {filteredProducts.length - visibleProducts.length} محصول)
+            </button>
+            <button
+              type="button"
+              onClick={() => setVisibleCount(filteredProducts.length)}
+              className="apple-pill-btn px-6 py-3.5 rounded-full bg-white dark:bg-[#1E2029] border border-black/[0.08] dark:border-white/[0.12] text-[#1D1D1F] dark:text-white text-sm font-extrabold cursor-pointer"
+            >
+              نمایش تمام {filteredProducts.length} محصول
+            </button>
+          </div>
+        )}
+      </section>
+
+      {/* 4. Enquiry Section */}
+      <section
+        id="products-enquiry"
+        className="w-full max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-12"
+      >
         <EnquiryForm
-          sourcePagePath="/products/"
-          heading="Make an Enquiry — Product Selection, Trade & Installer Support"
-          subheading="We're available Australia wide! Contact our Campbellfield head office (1300 238 243 · sales@betadoors.com.au) for product specifications, dealer pricing, or installation quotes."
+          sourcePagePath="/products"
+          heading="مشاوره انتخاب محصول و فروش سازمانی."
+          subheading="کارشناسان شرکت بتا (۰۲۱-۸۸۴۰۴۴۰۷) آماده پاسخگویی به شما هستند."
         />
       </section>
+
+      {/* Product Quick View Modal */}
+      {quickPreviewProduct && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`مشاهده سریع ${quickPreviewProduct.title}`}
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4"
+        >
+          <div className="w-full max-w-xl rounded-[32px] bg-white dark:bg-[#161617] border border-black/[0.08] dark:border-white/[0.12] p-6 sm:p-8 shadow-2xl space-y-5">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div
+                  className="text-xs font-bold text-[#64748B] uppercase"
+                  dir="ltr"
+                >
+                  {quickPreviewProduct.sku}
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-[#1D1D1F] dark:text-white mt-1">
+                  {quickPreviewProduct.title}
+                </h2>
+                <div className="mt-1 inline-flex items-center gap-1.5 text-xs font-bold text-[#EC008C]">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>
+                    {quickPreviewProduct.categoryTitle} /{' '}
+                    {quickPreviewProduct.subCategoryTitle}
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setQuickPreviewProduct(null)}
+                className="w-9 h-9 rounded-full bg-[#F5F5F7] dark:bg-[#242426] flex items-center justify-center text-[#1D1D1F] dark:text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="aspect-video w-full rounded-2xl overflow-hidden bg-[#ECECEE] border border-black/[0.04]">
+              <ProductTechnicalArtwork
+                type={quickPreviewProduct.artwork}
+                customImageUrl={quickPreviewProduct.image}
+                title={quickPreviewProduct.title}
+                className="w-full h-full"
+              />
+            </div>
+
+            <div className="text-xl font-black text-[#EC008C] tabular-nums">
+              {quickPreviewProduct.priceRange}
+            </div>
+
+            <p className="text-sm text-[#64748B] dark:text-[#A1A1A6] leading-relaxed">
+              محصول رسمی شرکت بتا در گروه «{quickPreviewProduct.categoryTitle}» و
+              زیرمجموعه «{quickPreviewProduct.subCategoryTitle}» با گارانتی و
+              پشتیبانی فنی مستقیم دفتر مرکزی تهران.
+            </p>
+
+            <div className="flex items-center gap-3 pt-2">
+              <Link
+                href={quickPreviewProduct.internalHref}
+                onClick={() => setQuickPreviewProduct(null)}
+                className="apple-pill-btn keep-white-text flex-1 py-3.5 px-6 rounded-full bg-[#EC008C] hover:bg-[#d4007d] text-white text-sm font-bold text-center"
+              >
+                مشاهده مشخصات و سفارش
+              </Link>
+              <button
+                type="button"
+                onClick={() => setQuickPreviewProduct(null)}
+                className="px-5 py-3.5 rounded-full bg-[#F5F5F7] dark:bg-[#242426] text-sm font-bold text-[#1D1D1F] dark:text-white cursor-pointer"
+              >
+                بستن
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </SiteShell>
   );
 }

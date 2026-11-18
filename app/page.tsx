@@ -45,7 +45,7 @@ function HomeContent() {
           <DefiBentoInsightsSection />
           <ProductFamilyGridSection />
           <FeaturedAriaAndShopSection />
-          <div className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-12">
+          <div className="w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <EnquiryForm sourcePagePath="/" />
           </div>
         </>
@@ -66,7 +66,7 @@ function HomeContent() {
               return (
                 <div
                   key={sec.id}
-                  className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-12"
+                  className="w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-16"
                 >
                   <EnquiryForm
                     sourcePagePath="/"
@@ -86,7 +86,7 @@ function HomeContent() {
 
 export default function HomePage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#08090C]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-[#F5F5F7] dark:bg-[#000000]" />}>
       <HomeContent />
     </Suspense>
   );

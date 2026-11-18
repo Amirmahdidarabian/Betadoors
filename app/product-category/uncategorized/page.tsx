@@ -1,13 +1,16 @@
 'use client';
 
 import React from 'react';
+import { SiteShell } from '@/components/layout/SiteShell';
 import { ShopListingView } from '@/components/shop/ShopListingView';
 
 export default function UncategorizedCategoryPage() {
   return (
-    <ShopListingView
-      heading="Uncategorized Archives — BETA DOORS Shop"
-      subheading="Preserved legacy WooCommerce archive route (/product-category/uncategorized/) listing all 5 active BETA DOORS shop products."
-    />
+    <SiteShell>
+      <ShopListingView
+        heading="آرشیو محصولات فروشگاه بتا"
+        subheading="مشاهده و سفارش مستقیم پکیج‌های جک پارکینگی، موتور کرکره، مدار فرمان و تجهیزات بتا."
+      />
+    </SiteShell>
   );
 }

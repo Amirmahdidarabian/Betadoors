@@ -1,1375 +1,1106 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'motion/react';
 import {
-  ArrowRight,
-  ArrowUpRight,
-  CheckCircle2,
-  ShieldCheck,
-  Crosshair,
-  Activity,
-  ShoppingCart,
+  ChevronLeft,
+  Calculator,
+  Wrench,
+  FileText,
+  Phone,
+  X,
+  Search,
   Layers,
 } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useBetaDoors } from '@/components/providers/BetaDoorsProvider';
 import { formatAudCents } from '@/lib/domain-logic';
 import { ProductTechnicalArtwork } from '@/components/brand/ProductTechnicalArtwork';
+import { BetaReferenceProductCard } from '@/components/shop/BetaReferenceProductCard';
+import {
+  BETA_OFFICIAL_CATEGORIES,
+  BETA_ALL_OFFICIAL_PRODUCTS,
+  type BetaOfficialMainCategory,
+  type BetaOfficialProductItem,
+} from '@/lib/beta-official-catalog';
+import type { ShopProduct } from '@/lib/types';
 
 /**
- * Reusable Sharp Art-Director HUD Schematic Section Rail (0px Geometry)
+ * Clean Apple-style Section Divider
  */
 export function HudSectionRail({
-  code,
   sector,
-  status = 'ONLINE // CALIBRATED',
+  status,
 }: {
-  code: string;
+  code?: string;
   sector: string;
   status?: string;
 }) {
   return (
-    <div
-      className="mb-6 flex items-center gap-3 select-none border-b border-white/[0.08] pb-2.5"
-      aria-hidden="true"
-    >
-      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none bg-[#EC008C]/15 border border-[#EC008C]/50 text-[10px] font-mono font-bold tracking-widest text-[#ff7ac6] shrink-0">
-        <span className="w-1.5 h-1.5 bg-[#EC008C] animate-pulse" />
-        <span>{code}</span>
-      </div>
-
-      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-400 shrink-0 hidden sm:inline">
-        {sector}
+    <div className="mb-8 flex flex-wrap items-center justify-between gap-3 border-b border-black/[0.06] dark:border-white/[0.08] pb-3 text-xs sm:text-sm text-[#86868B]">
+      <span className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
+        {sector.split('//')[0].trim()}
       </span>
-
-      <div className="relative flex-1 h-4 flex items-center overflow-hidden">
-        <svg
-          viewBox="0 0 800 16"
-          preserveAspectRatio="none"
-          className="w-full h-4"
-        >
-          <line
-            x1="0"
-            y1="8"
-            x2="800"
-            y2="8"
-            stroke="rgba(236,0,140,0.22)"
-            strokeWidth="1"
-            className="hud-rail-dashed"
-          />
-          <line
-            x1="0"
-            y1="8"
-            x2="800"
-            y2="8"
-            stroke="#EC008C"
-            strokeWidth="1.5"
-            className="hud-animated-trace"
-          />
-          {/* Precision CAD Tick Marks */}
-          <line x1="80" y1="3" x2="80" y2="13" stroke="rgba(236,0,140,0.5)" strokeWidth="1" />
-          <rect x="220" y="5" width="6" height="6" fill="rgba(236,0,140,0.75)" />
-          <line x1="380" y1="4" x2="380" y2="12" stroke="rgba(148,163,184,0.4)" strokeWidth="1" />
-          <rect x="540" y="5" width="5" height="5" fill="rgba(56,189,248,0.65)" />
-          <line x1="700" y1="3" x2="700" y2="13" stroke="rgba(236,0,140,0.5)" strokeWidth="1" />
-        </svg>
-      </div>
-
-      <span className="px-2 py-0.5 border border-white/[0.08] bg-[#08090C] text-[10px] font-mono uppercase tracking-widest text-slate-400 shrink-0 hidden md:inline">
-        [{status}]
-      </span>
+      {status && (
+        <span className="text-[#EC008C] font-semibold">
+          {status.split('//')[0].trim()}
+        </span>
+      )}
     </div>
   );
 }
 
 /**
- * Interactive 4-Card Architectural HUD Bento Grid ("Meet Marvellous Engineering")
- * Pure 0px Sharp HUD Geometry — High-Precision Engineering Visualizers & Infographics
+ * 1. Apple.com 2x2 Visual Promo Grid + Minimal Weight Selector Bar
+ * Uses Authentic beta.ir Category & Product Photos from /assets/beta-official/
  */
+const APPLE_PROMO_TILES = [
+  {
+    id: 'promo_gate',
+    eyebrow: 'اتوماسیون پارکینگ (۳۴ محصول)',
+    title: 'درب بازکن بازویی، ریلی و زیرسقفی.',
+    subtitle:
+      'انواع جک پارکینگی بتا لاین، MPC TITAN-400/600، F600، موتور ریلی F-550M و زیرسقفی سکشنال.',
+    primaryLabel: 'مشاهده ۳۴ محصول',
+    primaryHref: '/products?cat=gate-openers',
+    secondaryLabel: 'خرید پکیج',
+    secondaryHref: '/product/motor-pack',
+    artwork: 'gate_opener' as const,
+    imageUrl:
+      BETA_OFFICIAL_CATEGORIES.find((c) => c.id === 'gate-openers')?.image ||
+      '/assets/products/apple_studio/beta_swing_gate_arms.jpg',
+  },
+  {
+    id: 'promo_simote',
+    eyebrow: 'مدار کنترل و رسیور (۸۸ محصول)',
+    title: 'مدار فرمان هوشمند و رسیور سیموت.',
+    subtitle:
+      'مراکز کنترل درب بازکن، کرکره برقی، اپراتور شیشه برقی، برد راهبند و رسیور سیم‌کارتی سیموت.',
+    primaryLabel: 'مشاهده ۸۸ محصول',
+    primaryHref: '/products?cat=control-boards',
+    secondaryLabel: 'خرید سیموت',
+    secondaryHref: '/product/receiver',
+    artwork: 'aria_121' as const,
+    imageUrl:
+      BETA_OFFICIAL_CATEGORIES.find((c) => c.id === 'control-boards')?.image ||
+      '/assets/products/apple_studio/beta_control_simote_gsm.jpg',
+  },
+  {
+    id: 'promo_uhf',
+    eyebrow: 'کنترل تردد هوشمند (۷۷ محصول)',
+    title: 'حضور و غیاب، اکسس کنترل و UHF.',
+    subtitle:
+      'دستگاه حضور و غیاب تشخیص چهره و اثرانگشت، آنتن برد بلند UHF، دستگیره دیجیتال و تگ RFID.',
+    primaryLabel: 'مشاهده ۷۷ محصول',
+    primaryHref: '/products?cat=attendance-uhf-rfid',
+    secondaryLabel: 'مشاوره فنی',
+    secondaryHref: '/contact-us',
+    artwork: 'keypad' as const,
+    imageUrl:
+      BETA_OFFICIAL_CATEGORIES.find((c) => c.id === 'attendance-uhf-rfid')
+        ?.image ||
+      '/assets/products/apple_studio/beta_attendance_uhf_access.jpg',
+  },
+  {
+    id: 'promo_alarm',
+    eyebrow: 'امنیت و حفاظت اماکن (۲۶ محصول)',
+    title: 'دزدگیر اماکن و تلفن‌کننده سیم‌کارتی.',
+    subtitle:
+      'دزدگیرهای سیم‌کارتی Z7-GSM Plus، B1 Ultimate Plus، Z4، چشمی‌های حرکتی و آژیرهای حفاظتی بتا.',
+    primaryLabel: 'مشاهده ۲۶ محصول',
+    primaryHref: '/products?cat=security-systems',
+    secondaryLabel: 'خرید دزدگیر',
+    secondaryHref: '/product/remote-pack',
+    artwork: 'remote_pack' as const,
+    imageUrl:
+      BETA_OFFICIAL_CATEGORIES.find((c) => c.id === 'security-systems')
+        ?.image || '/assets/products/apple_studio/beta_z7_gsm_alarm_pack.jpg',
+  },
+];
+
+const QUICK_FORCE_TIERS = [
+  {
+    force: '۴۰۰ کیلوگرم',
+    model: 'جک بازویی MPC TITAN-400 / BETA-400',
+    desc: 'مناسب درب‌های مسکونی تا عرض ۳ متر',
+    price: '۱۳,۰۰۰,۰۰۰ تومان',
+    href: '/products?cat=gate-openers',
+  },
+  {
+    force: '۶۰۰ کیلوگرم',
+    model: 'جک بازویی F600 / MPC TITAN-600',
+    desc: 'مناسب مجتمع‌های پرتردد تا عرض ۳.۵ متر',
+    price: '۱۳,۸۰۰,۰۰۰ تومان',
+    href: '/products?cat=gate-openers',
+  },
+  {
+    force: '۱۰۰۰ کیلوگرم',
+    model: 'موتور کرکره ساید با UPS هوشمند',
+    desc: 'مجهز به برق اضطراری هوشمند هنگام قطع برق',
+    price: '۱۱,۸۰۰,۰۰۰ تومان',
+    href: '/products?cat=shutter-motors',
+  },
+  {
+    force: '۱۵۰۰ کیلوگرم',
+    model: 'موتور درب ریلی F-550M / F-500',
+    desc: 'مناسب درب‌های کشویی سنگین و صنعتی',
+    price: '۱۴,۶۰۰,۰۰۰ تومان',
+    href: '/products?cat=gate-openers',
+  },
+];
+
 export function DefiBentoInsightsSection() {
-  const [activeBlueprintIdx, setActiveBlueprintIdx] = useState(0);
-  const [activeCylinderIdx, setActiveCylinderIdx] = useState(2); // Default 1200N
-  const [activePackTab, setActivePackTab] = useState<number>(0);
-  const [activeBarPage, setActiveBarPage] = useState(0);
-
-  const architecturalBlueprints = [
-    {
-      code: 'CAD.01',
-      tabLabel: '01 · Insulated Sectional',
-      name: 'Insulated Overhead Sectional Doors',
-      metric: '40mm PU',
-      unit: 'THERMAL CORE',
-      specCode: 'AS/NZS 4505 // ACOUSTIC & THERMAL RATED',
-      artType: 'sectional_door' as const,
-      cycle: '35,000+ Cycle Torsion Assembly',
-      href: '/insulated-sectional-garage-doors',
-      meters: [
-        { label: 'Thermal & Acoustic Insulation', value: 'R-2.2 / 40mm PU', pct: 96 },
-        { label: 'Wind-Lock Structural Integrity', value: 'AS/NZS 4505 Rated', pct: 94 },
-        { label: 'Torsion Cycle Endurance', value: '35,000+ Cycles', pct: 92 },
-      ],
-      specs: [
-        { code: '01', label: 'PANEL SKIN', val: '0.60mm Dual-Skin Colorbond Steel' },
-        { code: '02', label: 'BAY WIDTH', val: '2,100mm – 6,400mm Custom Span' },
-        { code: '03', label: 'DRIVE MATCH', val: 'Aria 121 / Motor Pack (800N–1500N)' },
-      ],
-    },
-    {
-      code: 'CAD.02',
-      tabLabel: '02 · Continuous Roller',
-      name: 'Continuous Curtain Steel Roller Doors',
-      metric: '1000–1800N',
-      unit: 'DRUM DRIVE',
-      specCode: 'HEAVY DUTY // NYLON FELT RUNNING STRIPS',
-      artType: 'roller_opener' as const,
-      cycle: 'Precision Helical Drum Springs',
-      href: '/roller-garage-doors',
-      meters: [
-        { label: 'Curtain Tensile Rigidity', value: 'Deep-Ribbed Steel', pct: 95 },
-        { label: 'Low-Friction Acoustic Glide', value: 'Nylon Felt Strips', pct: 90 },
-        { label: 'Side-Drum Torque Capacity', value: 'Up to 1800N Drive', pct: 96 },
-      ],
-      specs: [
-        { code: '01', label: 'CURTAIN', val: 'Roll-Formed High-Tensile Steel' },
-        { code: '02', label: 'GUIDE RAILS', val: 'Heavy Extruded Aluminium Tracks' },
-        { code: '03', label: 'DRIVE MATCH', val: 'BETA RDO-1000N / 1500N / 1800N' },
-      ],
-    },
-    {
-      code: 'CAD.03',
-      tabLabel: '03 · BETA & LIFE Gates',
-      name: 'BETA & LIFE Sliding & Swing Gates',
-      metric: '600–1500KG',
-      unit: 'GATE TORQUE',
-      specCode: 'IP44 / IP55 // ITALIAN & BETA PERIMETER DRIVES',
-      artType: 'gate_opener' as const,
-      cycle: 'Continuous Commercial & Residential Duty',
-      href: '/gate-opener-brands',
-      meters: [
-        { label: 'Sliding & Swing Mass Rating', value: '600kg – 1,500kg', pct: 98 },
-        { label: 'Weather & Ingress Protection', value: 'IP44 / IP55 Sealed', pct: 94 },
-        { label: 'Obstacle Reversal Precision', value: 'Dual Photocell Sync', pct: 97 },
-      ],
-      specs: [
-        { code: '01', label: 'GEARBOX', val: 'Die-Cast Alloy + Hardened Steel Pinion' },
-        { code: '02', label: 'SPAN RATING', val: 'Up to 12m Sliding / 5m Dual Swing' },
-        { code: '03', label: 'DRIVE MATCH', val: 'BETA B600/B550 · LIFE HP4/OP2/HP6' },
-      ],
-    },
-    {
-      code: 'CAD.04',
-      tabLabel: '04 · Springs & Hardware',
-      name: 'Calibrated Torsion Springs & Hinges',
-      metric: '25,000+',
-      unit: 'HIGH-CYCLE',
-      specCode: 'OIL-TEMPERED // HIGH-TENSILE SPRING WIRE',
-      artType: 'hardware_kit' as const,
-      cycle: 'Precision Matched to Exact Door Weight',
-      href: '/garage-door-spring-estimator',
-      meters: [
-        { label: 'Oil-Tempered Wire Fatigue Rating', value: '25,000+ Cycles', pct: 96 },
-        { label: 'Crimp & Cable Breaking Strain', value: '7×19 Aircraft Wire', pct: 98 },
-        { label: 'Brand Hinge Compatibility', value: 'Steel Line · B&D · Gliderol', pct: 100 },
-      ],
-      specs: [
-        { code: '01', label: 'TORSION WIRE', val: 'High-Carbon Oil-Tempered Spring Steel' },
-        { code: '02', label: 'HINGE MATRIX', val: 'Numbered #1–#6 Galv & Nylon Rollers' },
-        { code: '03', label: 'CALIBRATION', val: 'Interactive Online Spring Estimator' },
-      ],
-    },
-  ];
-
-  const torqueSpecs = [
-    {
-      label: '800N',
-      forceNum: 800,
-      pct: 48,
-      maxWeight: '110 kg',
-      maxWidth: '3,400 mm',
-      driveType: 'Whisper Belt Drive',
-      cycleRating: 'Single Bay Sectional · Soft-Start',
-      application: 'Single residential sectional & tilt garage doors',
-      model: 'BD-MP-800N',
-      price: '$650 AUD',
-      href: '/product/motor-pack',
-    },
-    {
-      label: '1000N',
-      forceNum: 1000,
-      pct: 60,
-      maxWeight: '140 kg',
-      maxWidth: '5,000 mm',
-      driveType: 'Side Drum Opener',
-      cycleRating: 'Residential Roller · Dual Remote',
-      application: 'Single & double continuous steel roller doors',
-      model: 'BD-RDO-1000N',
-      price: '$590 AUD',
-      href: '/product/roller-door-opener',
-    },
-    {
-      label: '1200N',
-      forceNum: 1200,
-      pct: 74,
-      maxWeight: '175 kg',
-      maxWidth: '5,600 mm',
-      driveType: 'Smart WiFi Belt Drive',
-      cycleRating: 'Standard Double Bay · WiFi Ready',
-      application: 'Double insulated sectional & architectural doors',
-      model: 'BD-MP-1200N',
-      price: '$690 AUD',
-      href: '/product/motor-pack',
-    },
-    {
-      label: '1500N',
-      forceNum: 1500,
-      pct: 88,
-      maxWeight: '220 kg',
-      maxWidth: '6,200 mm',
-      driveType: 'Heavy-Duty Belt/Chain',
-      cycleRating: 'Oversized Double Bay · High Torque',
-      application: 'Custom timber, clad & oversized double sectional doors',
-      model: 'BD-MP-1500N',
-      price: '$730 AUD',
-      href: '/product/motor-pack',
-    },
-    {
-      label: '1800N',
-      forceNum: 1800,
-      pct: 100,
-      maxWeight: '280 kg',
-      maxWidth: '6,800 mm',
-      driveType: 'Industrial Side Drum',
-      cycleRating: 'Heavy Industrial · Continuous Duty',
-      application: 'Commercial roller shutters & high-cycle warehouses',
-      model: 'RDO-1800N PRO',
-      price: 'Trade Spec',
-      href: '/roller-door-opener-range',
-    },
-  ];
-
-  const driveComparisonTabs = [
-    {
-      id: 'panel-pack',
-      tabLabel: '01 · Panel Motor Pack',
-      sku: 'BD-MP-SERIES',
-      force: '800N – 1500N',
-      price: '$650 – $730 AUD',
-      warranty: '7-Year Motor Warranty',
-      href: '/product/motor-pack',
-      modules: [
-        { code: '01', title: 'Smart WiFi Drive Head', detail: '800N, 1200N or 1500N + Optional Camera' },
-        { code: '02', title: '3 × Handsets + Wall Switch', detail: '3 × Hopping-Code Remotes + Wireless Button' },
-        { code: '03', title: 'Infrared Safety Beams', detail: 'Auto-Reverse Optical Obstacle Protection' },
-        { code: '04', title: '7-Year Warranty', detail: 'Backed by Campbellfield VIC 3061 HQ' },
-      ],
-    },
-    {
-      id: 'roller-kit',
-      tabLabel: '02 · Roller Opener Kit',
-      sku: 'BD-RDO-1000N',
-      force: '1000N – 1800N',
-      price: '$590 AUD Complete',
-      warranty: '5-Year Drive Warranty',
-      href: '/product/roller-door-opener',
-      modules: [
-        { code: '01', title: 'High-Torque Drum Drive', detail: 'Slim Side-Room Fitment + LED Courtesy Light' },
-        { code: '02', title: '2 × Genuine P2011 Remotes', detail: 'Encrypted Rolling-Code RF Handsets' },
-        { code: '03', title: 'Wireless Wall Button', detail: 'Interior Garage Mount Push-Button Control' },
-        { code: '04', title: 'Soft-Start / Soft-Stop', detail: 'Reduced Curtain Wear & Whisper Operation' },
-      ],
-    },
-    {
-      id: 'gate-kit',
-      tabLabel: '03 · BETA & LIFE Gates',
-      sku: 'B600 / LIFE-HP4',
-      force: '600kg – 1500kg',
-      price: 'Custom Trade Spec',
-      warranty: 'Commercial Perimeter Rated',
-      href: '/gate-opener-brands',
-      modules: [
-        { code: '01', title: 'BETA & Italian LIFE Drives', detail: 'B600, B550, LIFE HP4, OP2, OP3–OP5, HP6' },
-        { code: '02', title: 'Sliding & Swing Configurations', detail: 'Heavy Rack & Pinion or Linear Articulated Arms' },
-        { code: '03', title: 'Dual Photocell Safety', detail: 'Perimeter Infrared Beam & Crush Prevention' },
-        { code: '04', title: 'Multi-User RF & Keypad', detail: 'Compatible with MINI2-RELAY-03 & P2011' },
-      ],
-    },
-  ];
-
-  const storefrontMatrixRows = [
-    {
-      idx: '01',
-      sku: 'BD-MP-800/1200/1500',
-      name: 'Panel Door Motor Pack (WiFi + Beams + 3 Remotes)',
-      spec: '800N · 1200N · 1500N Variants',
-      stock: '15 IN STOCK',
-      price: '$650 – $730 AUD',
-      pct: 96,
-      href: '/product/motor-pack',
-    },
-    {
-      idx: '02',
-      sku: 'BD-RDO-1000N',
-      name: 'Roller Door Opener Kit (2 × P2011 + Wall Switch)',
-      spec: '1000N–1800N Drum Drive',
-      stock: '22 IN STOCK',
-      price: '$590 AUD',
-      pct: 84,
-      href: '/product/roller-door-opener',
-    },
-    {
-      idx: '03',
-      sku: 'BD-REM-PACK4',
-      name: 'Universal Receiver & 3 × P2011 Remote Upgrade Pack',
-      spec: 'Plug-and-Play Multi-Brand Kit',
-      stock: '30 IN STOCK',
-      price: '$240 AUD',
-      pct: 64,
-      href: '/product/receiver-and-remote-pack',
-    },
-    {
-      idx: '04',
-      sku: 'MINI2-RELAY-03',
-      name: 'External 2-Channel Receiver (12–24V AC/DC)',
-      spec: 'Dual Independent Relay Channels',
-      stock: '40 IN STOCK',
-      price: '$85 AUD',
-      pct: 48,
-      href: '/product/external-2-channel-receiver-mini2-relay-03',
-    },
-    {
-      idx: '05',
-      sku: 'BD-REM-P2011',
-      name: 'Genuine BETA DOORS P2011 Remote Control',
-      spec: '4-Button Encrypted Hopping-Code',
-      stock: '85 IN STOCK',
-      price: '$60 AUD',
-      pct: 38,
-      href: '/product/remote',
-    },
-  ];
-
-  const selectedBlueprint =
-    architecturalBlueprints[activeBlueprintIdx] || architecturalBlueprints[0];
-  const selectedTorque = torqueSpecs[activeCylinderIdx] || torqueSpecs[2];
-  const selectedPack = driveComparisonTabs[activePackTab] || driveComparisonTabs[0];
-  const selectedStoreRow = storefrontMatrixRows[activeBarPage] || storefrontMatrixRows[0];
-
-  // Radial gauge circumference calculation (radius = 48 -> C = ~301.6)
-  const gaugeRadius = 48;
-  const gaugeCircumference = 2 * Math.PI * gaugeRadius;
-  const gaugeArcLength = gaugeCircumference * 0.75; // 270 degree sweep
-  const gaugeStrokeOffset =
-    gaugeArcLength - (gaugeArcLength * selectedTorque.pct) / 100;
+  const [selectedForceIdx, setSelectedForceIdx] = useState<number>(1);
+  const currentForce =
+    QUICK_FORCE_TIERS[selectedForceIdx] || QUICK_FORCE_TIERS[1];
 
   return (
     <section
-      data-cms-section="home-bento-telemetry"
-      data-cms-label="Architectural Engineering Bento Grid"
-      aria-labelledby="bento-insights-heading"
-      className="relative w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-14 overflow-hidden"
+      aria-label="محصولات برگزیده شرکت بتا"
+      className="w-full max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-8"
     >
-      <HudSectionRail
-        code="HUD.01"
-        sector="ARCHITECTURAL ENGINEERING // CAD SPECIFICATION MATRIX"
-        status="04 CORE SYSTEMS"
-      />
-
-      {/* Section Header */}
-      <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
-        <div className="space-y-2 max-w-2xl">
-          <div className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-[#ff7ac6]">
-            <Activity className="w-3.5 h-3.5 text-[#EC008C]" />
-            <span>Precision Door &amp; Gate Engineering</span>
-          </div>
-          <h2
-            id="bento-insights-heading"
-            style={{ textWrap: 'balance' }}
-            className="text-2xl sm:text-4xl font-semibold text-white tracking-tight"
+      {/* Apple.com 2x2 Visual Promo Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {APPLE_PROMO_TILES.map((tile, idx) => (
+          <motion.article
+            key={tile.id}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{
+              duration: 0.65,
+              delay: (idx % 2) * 0.1,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="apple-card group rounded-[32px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-7 sm:p-10 flex flex-col justify-between shadow-[0_8px_30px_rgba(0,0,0,0.03)] overflow-hidden"
           >
-            Meet Marvellous Engineering
-          </h2>
-        </div>
-        <p className="text-xs sm:text-sm text-slate-400 max-w-xl leading-relaxed">
-          BETA DOORS engineers insulated sectional doors, continuous steel roller doors, and whisper-quiet automation drives calibrated for Australian residential and commercial bays.
-        </p>
+            {/* Top Centered Apple Copy */}
+            <div className="text-center max-w-md mx-auto space-y-2.5 mb-7">
+              <div className="text-xs font-bold tracking-wide text-[#EC008C]">
+                {tile.eyebrow}
+              </div>
+              <h2 className="text-2xl sm:text-4xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight">
+                {tile.title}
+              </h2>
+              <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+                {tile.subtitle}
+              </p>
+
+              <div className="flex items-center justify-center gap-4 pt-2">
+                <Link
+                  href={tile.primaryHref}
+                  className="apple-pill-btn keep-white-text px-5 py-2 rounded-full bg-[#EC008C] hover:bg-[#d4007d] text-white text-sm font-bold"
+                >
+                  {tile.primaryLabel}
+                </Link>
+                <Link
+                  href={tile.secondaryHref}
+                  className="inline-flex items-center gap-1 text-sm font-bold text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-[#EC008C] dark:hover:text-[#EC008C] transition-colors"
+                >
+                  <span>{tile.secondaryLabel}</span>
+                  <ChevronLeft className="w-4 h-4 text-[#EC008C]" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Bottom Authentic beta.ir Studio Image */}
+            <Link
+              href={tile.primaryHref}
+              className="block aspect-video w-full rounded-2xl overflow-hidden bg-[#ECECEE] border border-black/[0.04]"
+            >
+              <ProductTechnicalArtwork
+                type={tile.artwork}
+                customImageUrl={tile.imageUrl}
+                title={tile.title}
+                className="w-full h-full"
+              />
+            </Link>
+          </motion.article>
+        ))}
       </div>
 
-      {/* 4-Card Asymmetric Professional HUD Bento Grid (0px Sharp Geometry) */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
-        {/* ===================================================================
-            CARD 01 (Col Span 7): Interactive Architectural System Visualizer
-           =================================================================== */}
-        <div className="lg:col-span-7 hud-corner-brackets brand-animated-border hud-technical-grid bg-[#0B0C10] border border-white/[0.09] rounded-none p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden">
-          {/* Top HUD Header Strip */}
-          <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-white/[0.08] text-[10px] font-mono uppercase tracking-widest">
-            <div className="inline-flex items-center gap-2 text-[#ff7ac6] font-bold">
-              <Layers className="w-3.5 h-3.5 text-[#EC008C]" />
-              <span>ARCH.BLUEPRINT // {selectedBlueprint.code}</span>
-            </div>
-            <span className="text-slate-400">{selectedBlueprint.specCode}</span>
+      {/* Minimal Single-Row Apple Motor Capacity Selector */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        className="rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-5 sm:p-6 shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col lg:flex-row items-center justify-between gap-4"
+      >
+        <div className="space-y-0.5 text-center lg:text-right shrink-0">
+          <div className="text-xs font-bold text-[#EC008C]">
+            انتخاب سریع موتور
           </div>
-
-          {/* Interactive 4-System Blueprint Selector Tabs with Smooth Framer Motion Highlight */}
-          <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-1.5 my-3.5">
-            {architecturalBlueprints.map((bp, idx) => {
-              const isActive = activeBlueprintIdx === idx;
-              return (
-                <button
-                  key={bp.code}
-                  type="button"
-                  onClick={() => setActiveBlueprintIdx(idx)}
-                  className={`relative px-3 py-2.5 rounded-none text-[10px] font-mono font-semibold text-left transition-colors cursor-pointer border overflow-hidden ${
-                    isActive
-                      ? 'border-[#EC008C] text-white keep-white-text'
-                      : 'bg-[#08090C] hover:bg-white/[0.05] border-white/[0.1] text-slate-300'
-                  }`}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="eng-blueprint-active-pill"
-                      transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-                      className="pointer-events-none absolute inset-0 bg-[#EC008C] z-0"
-                    />
-                  )}
-                  <span className="relative z-10 block truncate">{bp.tabLabel}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Center 16:9 Studio Visual + Calibrated Engineering Capacity Meters */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={selectedBlueprint.code}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.2 }}
-              className="relative z-10 grid grid-cols-1 sm:grid-cols-12 gap-4 items-stretch my-1"
-            >
-              {/* Left Column (5 Cols): Real 16:9 Studio Hardware Visual + Metric Callout */}
-              <div className="sm:col-span-5 flex flex-col justify-between bg-[#08090C] border border-white/[0.09] p-2.5 space-y-2.5">
-                <div className="relative aspect-video w-full overflow-hidden border border-white/[0.08] bg-[#12141A]">
-                  <ProductTechnicalArtwork
-                    type={selectedBlueprint.artType}
-                    title={selectedBlueprint.name}
-                    className="w-full h-full"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between gap-2 px-1 pt-0.5">
-                  <div>
-                    <div className="text-[9px] font-mono text-slate-400 uppercase tracking-wider">
-                      PRIMARY RATING
-                    </div>
-                    <div className="text-xl sm:text-2xl font-bold font-mono text-white tabular-nums leading-tight">
-                      {selectedBlueprint.metric}
-                    </div>
-                  </div>
-                  <span className="px-2 py-1 bg-[#EC008C]/15 border border-[#EC008C]/45 text-[9.5px] font-mono font-bold text-[#ff7ac6] shrink-0">
-                    {selectedBlueprint.unit}
-                  </span>
-                </div>
-              </div>
-
-              {/* Right Column (7 Cols): 3 Animated Engineering Meters + 3 Clean Spec Rows */}
-              <div className="sm:col-span-7 flex flex-col justify-between gap-2.5">
-                {/* 3 Horizontal Telemetry Meters */}
-                <div className="p-3 bg-[#08090C] border border-white/[0.09] space-y-2.5">
-                  {selectedBlueprint.meters.map((meter) => (
-                    <div key={meter.label} className="space-y-1">
-                      <div className="flex items-center justify-between text-[10px] font-mono">
-                        <span className="text-slate-300">{meter.label}</span>
-                        <span className="text-[#ff7ac6] font-bold tabular-nums">
-                          {meter.value}
-                        </span>
-                      </div>
-                      <div className="h-1.5 w-full bg-white/[0.07] overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${meter.pct}%` }}
-                          transition={{ duration: 0.45, ease: 'easeOut' }}
-                          className="h-full bg-gradient-to-r from-[#EC008C] to-[#ff7ac6]"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* 3 Non-Wrapping Specification Rows */}
-                <div className="grid grid-cols-1 gap-1.5">
-                  {selectedBlueprint.specs.map((row) => (
-                    <div
-                      key={row.code}
-                      className="flex items-center justify-between gap-3 px-3 py-1.5 bg-[#08090C] border border-white/[0.08] text-xs"
-                    >
-                      <span className="text-[10px] font-mono font-bold text-[#ff7ac6] shrink-0">
-                        [{row.code}] {row.label}
-                      </span>
-                      <span className="text-[11px] text-slate-200 font-medium text-right truncate">
-                        {row.val}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Bottom Title & Action */}
-          <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3.5 mt-3 border-t border-white/[0.08]">
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-white">
-                {selectedBlueprint.name}
-              </h3>
-              <p className="text-xs text-slate-400">
-                {selectedBlueprint.cycle} — engineered for smooth, low-noise architectural operation.
-              </p>
-            </div>
-            <Link
-              href={selectedBlueprint.href}
-              className="keep-white-text inline-flex items-center gap-1.5 px-4 py-2 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-xs font-mono font-bold text-white shrink-0 transition-colors"
-            >
-              <span>FULL TECHNICAL SHEET</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
+          <h3 className="text-base sm:text-lg font-bold text-[#1D1D1F] dark:text-[#F5F5F7] whitespace-nowrap">
+            وزن تقریبی درب:
+          </h3>
         </div>
 
-        {/* ===================================================================
-            CARD 02 (Col Span 5): Interactive Motor Torque & Bay Calibrator
-           =================================================================== */}
-        <div className="lg:col-span-5 hud-corner-brackets brand-animated-border hud-technical-grid bg-[#0B0C10] border border-white/[0.09] rounded-none p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden">
-          <div className="relative z-10 flex items-center justify-between pb-3 border-b border-white/[0.08] text-[10px] font-mono uppercase tracking-wider text-slate-400">
-            <span>TORQUE.CALIBRATOR // N-METRIC</span>
-            <span className="text-[#ff7ac6] font-bold">{selectedTorque.cycleRating}</span>
-          </div>
-
-          {/* 5 Interactive Torque Selector Tabs with Smooth Sliding Indicator */}
-          <div className="relative z-10 grid grid-cols-5 gap-1.5 my-3.5">
-            {torqueSpecs.map((item, idx) => {
-              const isSelected = activeCylinderIdx === idx;
-              return (
-                <button
-                  key={item.label}
-                  type="button"
-                  onClick={() => setActiveCylinderIdx(idx)}
-                  aria-label={`Inspect ${item.label} lifting force`}
-                  className={`relative py-2 rounded-none text-[11px] font-mono font-bold tabular-nums transition-colors cursor-pointer border overflow-hidden ${
-                    isSelected
-                      ? 'border-[#EC008C] text-white keep-white-text'
-                      : 'bg-[#08090C] hover:bg-white/[0.05] border-white/[0.1] text-slate-300'
-                  }`}
-                >
-                  {isSelected && (
-                    <motion.span
-                      layoutId="torque-selector-pill"
-                      transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-                      className="pointer-events-none absolute inset-0 bg-[#EC008C] z-0"
-                    />
-                  )}
-                  <span className="relative z-10">{item.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Center Precision SVG Radial Torque Gauge + 4-Cell Engineering Spec Readout */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={selectedTorque.label}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              transition={{ duration: 0.18 }}
-              className="relative z-10 grid grid-cols-1 sm:grid-cols-12 gap-3.5 items-center my-1"
+        <div className="flex flex-wrap sm:flex-nowrap items-center justify-center gap-2 shrink-0">
+          {QUICK_FORCE_TIERS.map((t, idx) => (
+            <button
+              key={t.force}
+              type="button"
+              onClick={() => setSelectedForceIdx(idx)}
+              className={`apple-pill-btn whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-bold cursor-pointer ${
+                selectedForceIdx === idx
+                  ? 'keep-white-text bg-[#EC008C] text-white shadow-sm'
+                  : 'bg-[#F5F5F7] dark:bg-[#1D1D1F] text-[#515154] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white'
+              }`}
             >
-              {/* Radial Tachometer SVG Gauge */}
-              <div className="sm:col-span-5 bg-[#08090C] border border-white/[0.09] p-3 flex flex-col items-center justify-center">
-                <div className="relative w-32 h-32 flex items-center justify-center">
-                  <svg viewBox="0 0 120 120" className="w-full h-full -rotate-[225deg]">
-                    {/* Background Track Arc (270 deg) */}
-                    <circle
-                      cx="60"
-                      cy="60"
-                      r={gaugeRadius}
-                      fill="none"
-                      stroke="rgba(148, 163, 184, 0.18)"
-                      strokeWidth="8"
-                      strokeDasharray={`${gaugeArcLength} ${gaugeCircumference}`}
-                      strokeLinecap="butt"
-                    />
-                    {/* Active Torque Arc */}
-                    <motion.circle
-                      cx="60"
-                      cy="60"
-                      r={gaugeRadius}
-                      fill="none"
-                      stroke="#EC008C"
-                      strokeWidth="8"
-                      strokeDasharray={`${gaugeArcLength} ${gaugeCircumference}`}
-                      initial={{ strokeDashoffset: gaugeArcLength }}
-                      animate={{ strokeDashoffset: gaugeStrokeOffset }}
-                      transition={{ duration: 0.45, ease: 'easeOut' }}
-                      strokeLinecap="butt"
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <span className="text-[9px] font-mono uppercase tracking-widest text-slate-400">
-                      FORCE
-                    </span>
-                    <span className="text-xl font-bold font-mono text-white tabular-nums">
-                      {selectedTorque.label}
-                    </span>
-                    <span className="text-[9.5px] font-mono text-[#ff7ac6] font-semibold">
-                      {selectedTorque.pct}% LOAD
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* 4-Cell Calibrated Readout Grid */}
-              <div className="sm:col-span-7 grid grid-cols-2 gap-2">
-                <div className="p-2.5 bg-[#08090C] border border-white/[0.08]">
-                  <div className="text-[9px] font-mono text-slate-400 uppercase">
-                    MAX DOOR MASS
-                  </div>
-                  <div className="text-sm font-bold font-mono text-white tabular-nums mt-0.5">
-                    {selectedTorque.maxWeight}
-                  </div>
-                </div>
-                <div className="p-2.5 bg-[#08090C] border border-white/[0.08]">
-                  <div className="text-[9px] font-mono text-slate-400 uppercase">
-                    MAX BAY WIDTH
-                  </div>
-                  <div className="text-sm font-bold font-mono text-white tabular-nums mt-0.5">
-                    {selectedTorque.maxWidth}
-                  </div>
-                </div>
-                <div className="p-2.5 bg-[#08090C] border border-white/[0.08]">
-                  <div className="text-[9px] font-mono text-slate-400 uppercase">
-                    DRIVE SYSTEM
-                  </div>
-                  <div className="text-xs font-semibold text-white truncate mt-0.5">
-                    {selectedTorque.driveType}
-                  </div>
-                </div>
-                <div className="p-2.5 bg-[#08090C] border border-white/[0.08]">
-                  <div className="text-[9px] font-mono text-slate-400 uppercase">
-                    MODEL &amp; PRICE
-                  </div>
-                  <div className="text-xs font-bold font-mono text-[#ff7ac6] truncate mt-0.5">
-                    {selectedTorque.price}
-                  </div>
-                </div>
-
-                <div className="col-span-2 px-3 py-2 bg-[#08090C] border border-white/[0.08] flex items-center justify-between gap-2 text-[11px]">
-                  <span className="text-slate-300 truncate">
-                    {selectedTorque.application}
-                  </span>
-                  <Link
-                    href={selectedTorque.href}
-                    className="text-[#ff7ac6] hover:text-white font-mono font-bold shrink-0 inline-flex items-center gap-0.5"
-                  >
-                    <span>SPEC</span>
-                    <ArrowUpRight className="w-3 h-3" />
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          <div className="relative z-10 text-left pt-3.5 mt-3 border-t border-white/[0.08] flex items-center justify-between gap-3">
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-white">
-                Lifting Force &amp; Torque Calibrator
-              </h3>
-              <p className="text-xs text-slate-400">
-                Select a Newton rating above to match door weight and bay width.
-              </p>
-            </div>
-            <span className="px-2.5 py-1 bg-[#08090C] border border-white/15 text-[10px] font-mono font-bold text-[#ff7ac6] shrink-0">
-              {selectedTorque.model}
-            </span>
-          </div>
+              {t.force}
+            </button>
+          ))}
         </div>
 
-        {/* ===================================================================
-            CARD 03 (Col Span 5): Complete Automation Kit Architecture
-           =================================================================== */}
-        <div className="lg:col-span-5 hud-corner-brackets brand-animated-border hud-technical-grid bg-[#0B0C10] border border-white/[0.09] rounded-none p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden">
-          <div className="space-y-3.5">
-            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08] text-[10px] font-mono uppercase tracking-wider text-slate-400">
-              <span>KIT.ARCHITECTURE // INCLUSIONS</span>
-              <span className="text-emerald-400 font-bold">{selectedPack.warranty}</span>
+        <div className="flex items-center justify-between gap-4 bg-[#F5F5F7] dark:bg-[#1D1D1F] px-5 py-3 rounded-2xl shrink-0">
+          <div className="text-right">
+            <div className="text-sm font-bold text-[#1D1D1F] dark:text-white whitespace-nowrap">
+              {currentForce.model} ·{' '}
+              <span className="text-[#EC008C] tabular-nums">
+                {currentForce.price}
+              </span>
             </div>
-
-            {/* Interactive 3-Tab Segmented Switcher with Sliding Pill */}
-            <div
-              role="tablist"
-              aria-label="Automation drive comparison tabs"
-              className="grid grid-cols-3 gap-1.5"
-            >
-              {driveComparisonTabs.map((tab, idx) => {
-                const isActive = activePackTab === idx;
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    onClick={() => setActivePackTab(idx)}
-                    className={`relative py-2 px-2 rounded-none text-[10px] font-mono font-semibold transition-colors cursor-pointer border overflow-hidden truncate ${
-                      isActive
-                        ? 'border-[#EC008C] text-white keep-white-text'
-                        : 'bg-[#08090C] hover:bg-white/[0.05] border-white/[0.1] text-slate-300'
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.span
-                        layoutId="kit-selector-pill"
-                        transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-                        className="pointer-events-none absolute inset-0 bg-[#EC008C] z-0"
-                      />
-                    )}
-                    <span className="relative z-10">{tab.tabLabel}</span>
-                  </button>
-                );
-              })}
+            <div className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] whitespace-nowrap">
+              {currentForce.desc}
             </div>
-
-            {/* Animated 2x2 Hardware Inclusion Matrix */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedPack.id}
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -5 }}
-                transition={{ duration: 0.18 }}
-                className="space-y-3"
-              >
-                <div className="p-3.5 bg-[#08090C] border border-white/[0.09] flex items-center justify-between gap-3">
-                  <div>
-                    <div className="text-[10px] font-mono text-slate-400">
-                      SKU // {selectedPack.sku}
-                    </div>
-                    <div className="text-xl sm:text-2xl font-bold font-mono text-white tabular-nums">
-                      {selectedPack.force}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs font-mono font-bold text-[#ff7ac6] tabular-nums">
-                      {selectedPack.price}
-                    </div>
-                    <Link
-                      href={selectedPack.href}
-                      className="keep-white-text mt-1 inline-flex items-center gap-1 px-3 py-1 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-white text-[10px] font-mono font-bold transition-colors"
-                    >
-                      <span>INSPECT KIT</span>
-                      <ArrowUpRight className="w-3 h-3" />
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {selectedPack.modules.map((mod) => (
-                    <div
-                      key={mod.code}
-                      className="p-2.5 bg-[#08090C] border border-white/[0.08] space-y-0.5"
-                    >
-                      <div className="text-[10px] font-mono font-bold text-[#ff7ac6]">
-                        [{mod.code}] {mod.title}
-                      </div>
-                      <div className="text-[11px] text-slate-300 leading-snug">
-                        {mod.detail}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            </AnimatePresence>
           </div>
-
-          <div className="text-left pt-3.5 mt-3 border-t border-white/[0.08] space-y-0.5">
-            <h3 className="text-base sm:text-lg font-semibold text-white">
-              Complete Automation Kit Architecture
-            </h3>
-            <p className="text-xs text-slate-400">
-              Every BETA DOORS drive kit includes matched remotes, safety protection, and Australian warranty support.
-            </p>
-          </div>
+          <Link
+            href={currentForce.href}
+            className="apple-pill-btn keep-white-text whitespace-nowrap px-4 py-2 rounded-full bg-[#EC008C] text-white text-xs font-bold shrink-0"
+          >
+            مشاهده
+          </Link>
         </div>
-
-        {/* ===================================================================
-            CARD 04 (Col Span 7): Direct Storefront 5-SKU Specification Matrix
-           =================================================================== */}
-        <div className="lg:col-span-7 hud-corner-brackets brand-animated-border hud-technical-grid bg-[#0B0C10] border border-white/[0.09] rounded-none p-5 sm:p-7 flex flex-col justify-between relative overflow-hidden">
-          <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-white/[0.08] text-[10px] font-mono uppercase tracking-wider">
-            <span className="text-[#ff7ac6] font-bold">
-              STOREFRONT.MATRIX // 05 VERIFIED SKUS
-            </span>
-            <span className="text-slate-400">
-              SERVER-VALIDATED AUD PRICING · GST INCLUSIVE
-            </span>
-          </div>
-
-          {/* 5-Row Interactive Storefront Telemetry Table */}
-          <div className="my-3 space-y-1.5">
-            {storefrontMatrixRows.map((row, idx) => {
-              const isSelected = activeBarPage === idx;
-              return (
-                <div
-                  key={row.sku}
-                  onMouseEnter={() => setActiveBarPage(idx)}
-                  onClick={() => setActiveBarPage(idx)}
-                  className={`relative p-2.5 sm:px-3.5 sm:py-2.5 border transition-colors cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 overflow-hidden ${
-                    isSelected
-                      ? 'border-[#EC008C] bg-[#EC008C]/[0.06] dark:bg-[#12151E]'
-                      : 'border-white/[0.08] bg-[#08090C] hover:border-[#EC008C]/45'
-                  }`}
-                >
-                  {isSelected && (
-                    <motion.span
-                      layoutId="storefront-row-highlight"
-                      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                      className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-[#EC008C]"
-                    />
-                  )}
-
-                  <div className="min-w-0 flex-1 space-y-1">
-                    <div className="flex items-center gap-2 text-xs">
-                      <span className="text-[10px] font-mono font-bold text-[#ff7ac6] shrink-0">
-                        [{row.idx}] {row.sku}
-                      </span>
-                      <span className="font-semibold text-white truncate">
-                        {row.name}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <div className="w-28 sm:w-36 h-1.5 bg-slate-200 dark:bg-white/[0.08] overflow-hidden shrink-0">
-                        <div
-                          style={{ width: `${row.pct}%` }}
-                          className="h-full bg-[#EC008C]"
-                        />
-                      </div>
-                      <span className="text-[10px] font-mono text-slate-400 truncate">
-                        {row.spec}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
-                    <span className="px-2 py-0.5 bg-emerald-950/60 border border-emerald-500/40 text-[9.5px] font-mono font-bold text-emerald-300">
-                      {row.stock}
-                    </span>
-                    <span className="text-xs sm:text-sm font-mono font-bold text-white tabular-nums min-w-[105px] text-right">
-                      {row.price}
-                    </span>
-                    <Link
-                      href={row.href}
-                      className="keep-white-text w-7 h-7 bg-[#EC008C] hover:bg-[#d4007d] text-white flex items-center justify-center transition-colors shrink-0"
-                      aria-label={`Inspect ${row.name}`}
-                    >
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-white/[0.08]">
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-white">
-                Direct Storefront Hardware Matrix
-              </h3>
-              <p className="text-xs text-slate-400">
-                Active selection: <strong className="text-white">{selectedStoreRow.name}</strong> ({selectedStoreRow.price})
-              </p>
-            </div>
-            <Link
-              href={selectedStoreRow.href}
-              className="keep-white-text inline-flex items-center gap-1.5 px-4 py-2 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-xs font-mono font-bold text-white shrink-0 transition-colors"
-            >
-              <span>BUY / INSPECT SKU</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
 
 /**
- * Product-Family Navigation Grid (6 Core Categories) with Interactive HUD Filter Tabs,
- * Wide Viewport Layout, Pure 0px Sharp HUD Geometry, and Clean Technical Headers
+ * 2. Complete Official beta.ir 11-Category & 370-Product Interactive Catalog Section
  */
 export function ProductFamilyGridSection() {
-  const { brand } = useBetaDoors();
-  const [activeCategoryFilter, setActiveCategoryFilter] = useState<
-    'all' | 'doors_openers' | 'gates' | 'accessories_hardware'
-  >('all');
+  const [viewMode, setViewMode] = useState<'categories' | 'all_products'>(
+    'categories'
+  );
+  const [selectedMainCatId, setSelectedMainCatId] = useState<string>(
+    BETA_OFFICIAL_CATEGORIES[0]?.id || 'attendance-uhf-rfid'
+  );
+  const [selectedSubCatId, setSelectedSubCatId] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [visibleLimit, setVisibleLimit] = useState<number>(20);
+  const [quickPreviewCat, setQuickPreviewCat] =
+    useState<BetaOfficialMainCategory | null>(null);
+  const [quickPreviewProd, setQuickPreviewProd] =
+    useState<BetaOfficialProductItem | null>(null);
 
-  const defaultFamilies = [
-    {
-      id: 'cat_01',
-      index: '01',
-      group: 'doors_openers' as const,
-      badge: 'Custom Australian Bays',
-      title: '01. Garage Door Range',
-      subtitle: 'Insulated Sectional · Single Skin · Roller Doors',
-      description:
-        'Architectural overhead sectional doors and durable continuous steel roller doors custom-sized for residential & commercial bays.',
-      href: '/garage-door-range/',
-      artType: 'sectional_door' as const,
-      customImageUrl: undefined as string | undefined,
-    },
-    {
-      id: 'cat_02',
-      index: '02',
-      group: 'doors_openers' as const,
-      badge: 'Aria 121 Series',
-      title: '02. Sectional & Tilt Openers',
-      subtitle: 'Featuring the Aria 121 Drive Presentation',
-      description:
-        'Quiet overhead belt/chain automation with soft-start travel profiling and infrared safety beam integration.',
-      href: '/sectional-and-tilt-door-opener-range/',
-      artType: 'aria_121' as const,
-      customImageUrl: undefined as string | undefined,
-    },
-    {
-      id: 'cat_03',
-      index: '03',
-      group: 'doors_openers' as const,
-      badge: '1000N · 1500N · 1800N',
-      title: '03. Roller Door Openers',
-      subtitle: 'Residential & Heavy-Duty Side Drum Drives',
-      description:
-        'High-torque side drum drives with dual P2011 handsets, courtesy LED lighting, and wireless wall button.',
-      href: '/roller-door-opener-range/',
-      artType: 'roller_opener' as const,
-      customImageUrl: undefined as string | undefined,
-    },
-    {
-      id: 'cat_04',
-      index: '04',
-      group: 'gates' as const,
-      badge: 'BETA & LIFE Italy',
-      title: '04. Gate Opener Brands (BETA & LIFE)',
-      subtitle: 'BETA B600/B550 · LIFE HP4, OP2, OP3-OP5, HP6',
-      description:
-        'Sliding and swing gate automation engineered for residential driveways and commercial security perimeters.',
-      href: '/gate-opener-brands',
-      artType: 'gate_opener' as const,
-      customImageUrl: undefined as string | undefined,
-    },
-    {
-      id: 'cat_05',
-      index: '05',
-      group: 'accessories_hardware' as const,
-      badge: 'P2011 & Smart WiFi',
-      title: '05. Smart Accessories & Remotes',
-      subtitle: 'Remotes · Wireless Keypad · WiFi Camera · Safety Beams',
-      description:
-        'Genuine P2011 handsets, Mini2-Relay-03 2-channel receivers, optical safety beams, and smart camera modules.',
-      href: '/accessories',
-      artType: 'keypad' as const,
-      customImageUrl: undefined as string | undefined,
-    },
-    {
-      id: 'cat_06',
-      index: '06',
-      group: 'accessories_hardware' as const,
-      badge: 'Springs, Hinges & Cables',
-      title: '06. Structural Hardware & Springs',
-      subtitle: 'Steel Line, B&D, Gliderol & Centurion Hinges',
-      description:
-        'Trade replacement hinges, side/middle bearing plates, calibrated torsion springs, and aircraft-grade lifting cables.',
-      href: '/hardware',
-      artType: 'hardware_kit' as const,
-      customImageUrl: undefined as string | undefined,
-    },
-  ];
-
-  const rawFamilies =
-    brand.categoryCards && brand.categoryCards.length === 6
-      ? brand.categoryCards.map((c, idx) => ({
-          ...c,
-          group:
-            idx < 3
-              ? ('doors_openers' as const)
-              : idx === 3
-                ? ('gates' as const)
-                : ('accessories_hardware' as const),
-        }))
-      : defaultFamilies;
-
-  const filteredFamilies = rawFamilies.filter((f) =>
-    activeCategoryFilter === 'all' ? true : f.group === activeCategoryFilter
+  const activeMainCat = useMemo(
+    () =>
+      BETA_OFFICIAL_CATEGORIES.find((c) => c.id === selectedMainCatId) ||
+      BETA_OFFICIAL_CATEGORIES[0],
+    [selectedMainCatId]
   );
 
-  const filterTabs = [
-    { id: 'all' as const, label: 'ALL 06 FAMILIES', count: 6 },
-    { id: 'doors_openers' as const, label: 'DOORS & OPENERS', count: 3 },
-    { id: 'gates' as const, label: 'GATE AUTOMATION', count: 1 },
-    { id: 'accessories_hardware' as const, label: 'REMOTES & HARDWARE', count: 2 },
-  ];
+  const matchingProducts = useMemo(() => {
+    return BETA_ALL_OFFICIAL_PRODUCTS.filter((p) => {
+      if (selectedMainCatId !== 'all' && p.categoryId !== selectedMainCatId) {
+        return false;
+      }
+      if (selectedSubCatId !== 'all' && p.subCategoryId !== selectedSubCatId) {
+        return false;
+      }
+      if (searchQuery.trim()) {
+        const q = searchQuery.trim().toLowerCase();
+        return (
+          p.title.toLowerCase().includes(q) ||
+          p.categoryTitle.toLowerCase().includes(q) ||
+          p.subCategoryTitle.toLowerCase().includes(q) ||
+          p.sku.toLowerCase().includes(q)
+        );
+      }
+      return true;
+    });
+  }, [selectedMainCatId, selectedSubCatId, searchQuery]);
+
+  const handleOpenCategoryProducts = (catId: string) => {
+    setSelectedMainCatId(catId);
+    setSelectedSubCatId('all');
+    setVisibleLimit(24);
+    setViewMode('all_products');
+  };
 
   return (
     <section
-      data-cms-section="home-product-families"
-      data-cms-label="06 Product & Automation Families Grid"
-      aria-labelledby="family-grid-heading"
-      className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-14"
+      aria-labelledby="product-families-heading"
+      className="w-full max-w-[1260px] mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 space-y-12"
     >
-      <HudSectionRail
-        code="HUD.02"
-        sector="PRODUCT & AUTOMATION CATALOGUE // 06 ENGINEERED FAMILIES"
-        status="16:9 STUDIO SPEC"
-      />
+      {/* Apple Centered Header + Mode Switcher */}
+      <div className="text-center max-w-3xl mx-auto space-y-4">
+        <div className="text-xs font-extrabold tracking-wide text-[#EC008C]">
+          کاتالوگ جامع وب‌سایت رسمی شرکت بتا (BETA.IR)
+        </div>
+        <h2
+          id="product-families-heading"
+          style={{ textWrap: 'balance' }}
+          className="text-3xl sm:text-5xl font-black text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight"
+        >
+          تمامی ۱۱ گروه و {BETA_ALL_OFFICIAL_PRODUCTS.length} محصول رسمی بتا.
+        </h2>
+        <p className="text-sm sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6]">
+          حضور و غیاب و UHF، ریموت کنترل، مدار کنترل، درب بازکن، سیستم‌های
+          امنیتی، موتور کرکره، راهبند، اپراتور شیشه برقی، آرام‌بند، قفل برقی و
+          برق اضطراری UPS با تصاویر اصلی محصولات.
+        </p>
 
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
-        <div className="space-y-1.5">
-          <div className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-[#ff7ac6]">
-            <Crosshair className="w-3.5 h-3.5 text-[#EC008C]" />
-            <span>06 Engineered Hardware &amp; Automation Families</span>
-          </div>
-          <h2
-            id="family-grid-heading"
-            className="text-2xl sm:text-4xl font-semibold text-white tracking-tight"
+        {/* Mode Switcher: 11 Main Categories vs Interactive 370-Product Browser */}
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => setViewMode('categories')}
+            className={`apple-pill-btn px-6 py-2.5 rounded-full text-sm font-extrabold cursor-pointer ${
+              viewMode === 'categories'
+                ? 'keep-white-text bg-[#EC008C] text-white shadow-md'
+                : 'bg-white dark:bg-[#161617] text-[#515154] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white border border-black/[0.06] dark:border-white/[0.1]'
+            }`}
           >
-            Complete Product &amp; Automation Families
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400">
-            Explore all 11 catalogue routes with unified 16:9 studio photography and verified technical specifications.
-          </p>
+            ۱۱ گروه اصلی محصولات بتا
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedMainCatId('all');
+              setSelectedSubCatId('all');
+              setVisibleLimit(24);
+              setViewMode('all_products');
+            }}
+            className={`apple-pill-btn px-6 py-2.5 rounded-full text-sm font-extrabold cursor-pointer ${
+              viewMode === 'all_products'
+                ? 'keep-white-text bg-[#EC008C] text-white shadow-md'
+                : 'bg-white dark:bg-[#161617] text-[#515154] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white border border-black/[0.06] dark:border-white/[0.1]'
+            }`}
+          >
+            مرور همه {BETA_ALL_OFFICIAL_PRODUCTS.length} محصول با تصاویر اصلی
+          </button>
+        </div>
+      </div>
+
+      {viewMode === 'categories' ? (
+        <div className="space-y-12">
+          {/* All 11 Official Main Categories Rendered with BetaReferenceProductCard & Official beta.ir Photos */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {BETA_OFFICIAL_CATEGORIES.map((cat, idx) => {
+              const totalCatProducts = cat.subCategories.reduce(
+                (acc, s) => acc + s.products.length,
+                0
+              );
+              const subTitles = cat.subCategories
+                .map((s) => s.title)
+                .join(' · ');
+
+              return (
+                <BetaReferenceProductCard
+                  key={cat.id}
+                  id={cat.id}
+                  sku={`${cat.skuPrefix} · ${totalCatProducts} PRODUCTS`}
+                  title={cat.title}
+                  priceText={`${totalCatProducts} محصول در ${cat.subCategories.length} زیرگروه`}
+                  description={`${cat.description} (${subTitles})`}
+                  href={`/products?cat=${cat.id}`}
+                  artworkType={cat.artwork}
+                  customImageUrl={cat.image}
+                  ctaMode="select_model"
+                  onQuickView={() => setQuickPreviewCat(cat)}
+                  index={idx}
+                />
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
+
+      {/* Interactive Multi-Level Browser for All 370 Official beta.ir Products (Always Visible Below or Expanded) */}
+      <div className="rounded-[36px] bg-white dark:bg-[#161617] border border-black/[0.06] dark:border-white/[0.1] p-5 sm:p-8 shadow-[0_18px_50px_rgba(15,23,42,0.06)] space-y-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-black/[0.06] dark:border-white/[0.08] pb-5">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-[#EC008C]">
+              <Layers className="w-4 h-4" />
+              <span>مرورگر مستقیم محصولات و زیرمجموعه‌های BETA.IR</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-black text-[#1D1D1F] dark:text-white mt-1">
+              مشاهده تک‌تک محصولات شرکت بتا به تفکیک گروه و زیرگروه
+            </h3>
+          </div>
+
+          <div className="relative w-full lg:w-80">
+            <Search className="w-4 h-4 text-[#86868B] absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setVisibleLimit(24);
+              }}
+              placeholder="جستجو در ۳۷۰ محصول بتا..."
+              aria-label="جستجوی محصول در کاتالوگ صفحه اصلی"
+              className="w-full pr-10 pl-4 py-2.5 rounded-full bg-[#F4F5F8] dark:bg-[#242731] border border-transparent focus:border-[#EC008C] text-xs sm:text-sm text-[#1D1D1F] dark:text-white focus:outline-none"
+            />
+          </div>
         </div>
 
-        {/* Interactive HUD Category Filter Bar (0px Sharp) */}
-        <div className="flex flex-wrap items-center gap-2">
-          <div
-            role="tablist"
-            aria-label="Filter product families"
-            className="inline-flex flex-wrap items-center gap-1 p-1 rounded-none bg-[#0B0C10] border border-white/[0.09]"
+        {/* Row 1: All 11 Main Categories Bar (With Smooth Sliding Pill Animation) */}
+        <div className="rounded-2xl bg-[#EDEDEE] dark:bg-[#1E2029] p-2 flex flex-wrap items-center gap-1.5 border-t-2 border-[#EC008C]">
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedMainCatId('all');
+              setSelectedSubCatId('all');
+              setVisibleLimit(24);
+            }}
+            className={`relative z-10 px-3.5 py-2 rounded-xl text-xs sm:text-[13px] font-extrabold transition-colors duration-200 cursor-pointer ${
+              selectedMainCatId === 'all'
+                ? 'keep-white-text text-white'
+                : 'text-[#3A3A3C] dark:text-[#D1D1D6] hover:text-[#EC008C]'
+            }`}
           >
-            {filterTabs.map((tab) => {
-              const isActive = activeCategoryFilter === tab.id;
+            {selectedMainCatId === 'all' && (
+              <motion.span
+                layoutId="home-catalog-main-pill"
+                transition={{ type: 'spring', stiffness: 480, damping: 35, mass: 0.55 }}
+                className="absolute inset-0 z-0 rounded-xl bg-[#EC008C] shadow-xs"
+              />
+            )}
+            <span className="relative z-10">
+              همه ۱۱ گروه ({BETA_ALL_OFFICIAL_PRODUCTS.length})
+            </span>
+          </button>
+          {BETA_OFFICIAL_CATEGORIES.map((cat) => {
+            const count = cat.subCategories.reduce(
+              (acc, s) => acc + s.products.length,
+              0
+            );
+            const active = selectedMainCatId === cat.id;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => {
+                  setSelectedMainCatId(cat.id);
+                  setSelectedSubCatId('all');
+                  setVisibleLimit(24);
+                }}
+                className={`relative px-3.5 py-2 rounded-xl text-xs sm:text-[13px] font-extrabold transition-colors duration-150 cursor-pointer ${
+                  active
+                    ? 'z-20 text-[#EC008C]'
+                    : 'z-10 text-[#3A3A3C] dark:text-[#D1D1D6] hover:text-[#EC008C]'
+                }`}
+              >
+                {active && (
+                  <motion.span
+                    layoutId="home-catalog-main-pill"
+                    transition={{ type: 'spring', stiffness: 480, damping: 35, mass: 0.55 }}
+                    className="absolute inset-0 z-0 rounded-xl bg-white dark:bg-[#2A2E3B] shadow-xs"
+                  />
+                )}
+                <span className="relative z-10">
+                  {cat.title} ({count})
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Row 2: Sub-Categories Bar for Selected Main Category (With 120fps Liquid Sliding Pill on Hover & Click: e.g. اکسس کنترل -> EM Reader) */}
+        {selectedMainCatId !== 'all' && activeMainCat && (
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <button
+              type="button"
+              onClick={() => setSelectedSubCatId('all')}
+              onMouseEnter={() => setSelectedSubCatId('all')}
+              className={`relative px-3.5 py-1.5 rounded-full text-xs font-extrabold transition-colors duration-150 cursor-pointer ${
+                selectedSubCatId === 'all'
+                  ? 'z-20 keep-white-text text-white'
+                  : 'z-10 bg-[#F4F5F8] dark:bg-[#242731] text-[#3A3A3C] dark:text-[#E5E5EA] hover:text-[#EC008C]'
+              }`}
+            >
+              {selectedSubCatId === 'all' && (
+                <motion.span
+                  layoutId={`home-catalog-sub-pill-${activeMainCat.id}`}
+                  transition={{ type: 'spring', stiffness: 480, damping: 35, mass: 0.55 }}
+                  className="absolute inset-0 z-0 rounded-full bg-[#EC008C] shadow-[0_6px_18px_rgba(236,0,140,0.32)]"
+                />
+              )}
+              <span className="relative z-10">
+                همه زیرگروه‌های {activeMainCat.title}
+              </span>
+            </button>
+            {activeMainCat.subCategories.map((sub) => {
+              const isSubActive = selectedSubCatId === sub.id;
               return (
                 <button
-                  key={tab.id}
+                  key={sub.id}
                   type="button"
-                  role="tab"
-                  aria-selected={isActive}
-                  onClick={() => setActiveCategoryFilter(tab.id)}
-                  className={`relative px-3 py-1.5 rounded-none text-[10px] font-mono font-semibold tracking-wider transition-colors cursor-pointer ${
-                    isActive
-                      ? 'bg-[#EC008C] text-white shadow-sm keep-white-text'
-                      : 'text-slate-400 hover:text-white'
+                  onClick={() => {
+                    setSelectedSubCatId(sub.id);
+                    setVisibleLimit(24);
+                  }}
+                  onMouseEnter={() => {
+                    setSelectedSubCatId(sub.id);
+                    setVisibleLimit(24);
+                  }}
+                  className={`relative px-3.5 py-1.5 rounded-full text-xs font-bold transition-colors duration-150 cursor-pointer ${
+                    isSubActive
+                      ? 'z-20 keep-white-text text-white font-extrabold'
+                      : 'z-10 bg-[#F4F5F8] dark:bg-[#242731] text-[#3A3A3C] dark:text-[#E5E5EA] hover:text-[#EC008C]'
                   }`}
                 >
-                  <span>{tab.label}</span>
-                  <span className="ml-1.5 opacity-75">[{tab.count}]</span>
+                  {isSubActive && (
+                    <motion.span
+                      layoutId={`home-catalog-sub-pill-${activeMainCat.id}`}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 480,
+                        damping: 35,
+                        mass: 0.55,
+                      }}
+                      className="absolute inset-0 z-0 rounded-full bg-[#EC008C] shadow-[0_6px_18px_rgba(236,0,140,0.32)]"
+                    />
+                  )}
+                  <span className="relative z-10">
+                    {sub.title} ({sub.products.length})
+                  </span>
                 </button>
               );
             })}
           </div>
+        )}
 
-          <Link
-            href="/products/"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-none bg-[#0B0C10] hover:bg-white/[0.08] border border-white/15 text-xs font-mono font-semibold text-white transition-all whitespace-nowrap"
+        {/* Row 3: Real beta.ir Products Grid with Authentic Product Photos & Smooth Transition */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${selectedMainCatId}-${selectedSubCatId}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 pt-2"
           >
-            <span>ALL CATEGORIES</span>
-            <ArrowRight className="w-3.5 h-3.5 text-[#EC008C]" />
+            {matchingProducts.slice(0, visibleLimit).map((prod) => (
+              <div
+                key={prod.id}
+                className="apple-card group rounded-[28px] bg-[#F8F9FB] dark:bg-[#1E2029] border border-black/[0.05] dark:border-white/[0.08] p-3 flex flex-col justify-between shadow-xs hover:border-[#EC008C]/40 transition-all"
+              >
+                <div>
+                  <div className="relative aspect-square w-full rounded-[22px] bg-[#ECECEE] overflow-hidden flex items-center justify-center p-4 mb-3">
+                    <span className="absolute top-2.5 right-3 text-[11px] font-extrabold text-[#1E293B] inline-flex items-center gap-1.5">
+                      <span>موجود</span>
+                      <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setQuickPreviewProd(prod)}
+                      className="absolute top-2.5 left-3 px-2.5 py-1 rounded-full bg-white text-[11px] font-extrabold text-[#1E293B] shadow-xs hover:scale-105 transition-transform cursor-pointer"
+                    >
+                      مشاهده سریع
+                    </button>
+                    <img
+                      src={prod.image}
+                      alt={prod.title}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-contain pt-5 mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+
+                  <div className="px-1.5 space-y-1 text-right">
+                    <div className="flex items-center justify-between text-[11px] text-[#64748B] dark:text-[#94A3B8]">
+                      <span className="truncate font-bold text-[#EC008C]">
+                        {prod.subCategoryTitle}
+                      </span>
+                      <span dir="ltr" className="font-mono font-bold">
+                        {prod.sku}
+                      </span>
+                    </div>
+                    <h4 className="text-sm sm:text-[15px] font-black text-[#0F172A] dark:text-white line-clamp-2 leading-snug">
+                      <Link
+                        href={`/products?cat=${prod.categoryId}&sub=${prod.subCategoryId}&q=${encodeURIComponent(prod.title)}`}
+                        className="hover:text-[#EC008C] transition-colors"
+                      >
+                        {prod.title}
+                      </Link>
+                    </h4>
+                  </div>
+                </div>
+
+                <div className="pt-3 mt-3 border-t border-black/[0.05] dark:border-white/[0.08] flex items-center justify-between gap-2 px-1">
+                  <Link
+                    href={`/products?cat=${prod.categoryId}&sub=${prod.subCategoryId}&q=${encodeURIComponent(prod.title)}`}
+                    className="keep-white-text flex-1 py-2 px-3 rounded-full bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs font-extrabold text-center transition-colors"
+                  >
+                    مشخصات و خرید
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Load More / View All Footer */}
+        <div className="pt-4 flex flex-wrap items-center justify-between gap-4 border-t border-black/[0.06] dark:border-white/[0.08]">
+          <div className="text-xs sm:text-sm font-bold text-[#6E6E73] dark:text-[#A1A1A6]">
+            نمایش{' '}
+            <strong className="text-[#1D1D1F] dark:text-white tabular-nums">
+              {Math.min(visibleLimit, matchingProducts.length)}
+            </strong>{' '}
+            از{' '}
+            <strong className="text-[#EC008C] tabular-nums">
+              {matchingProducts.length}
+            </strong>{' '}
+            محصول در این بخش
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            {visibleLimit < matchingProducts.length && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setVisibleLimit((v) => v + 24)}
+                  className="keep-white-text px-5 py-2.5 rounded-full bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs sm:text-sm font-extrabold cursor-pointer"
+                >
+                  نمایش ۲۴ محصول بیشتر
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setVisibleLimit(matchingProducts.length)}
+                  className="px-5 py-2.5 rounded-full bg-[#F4F5F8] dark:bg-[#242731] text-[#1D1D1F] dark:text-white text-xs sm:text-sm font-extrabold cursor-pointer"
+                >
+                  نمایش تمام {matchingProducts.length} محصول
+                </button>
+              </>
+            )}
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-1 text-xs sm:text-sm font-extrabold text-[#EC008C] hover:underline"
+            >
+              <span>ورود به صفحه کامل کاتالوگ</span>
+              <ChevronLeft className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Category Quick Preview Modal */}
+      {quickPreviewCat && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`مشاهده سریع ${quickPreviewCat.title}`}
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4"
+        >
+          <div className="w-full max-w-xl rounded-[32px] bg-white dark:bg-[#161617] border border-black/[0.08] dark:border-white/[0.12] p-6 sm:p-8 shadow-2xl space-y-5">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div
+                  className="text-xs font-bold text-[#64748B] uppercase"
+                  dir="ltr"
+                >
+                  {quickPreviewCat.skuPrefix}
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-[#1D1D1F] dark:text-white mt-1">
+                  {quickPreviewCat.title}
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setQuickPreviewCat(null)}
+                className="w-9 h-9 rounded-full bg-[#F5F5F7] dark:bg-[#242426] flex items-center justify-center text-[#1D1D1F] dark:text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="aspect-video w-full rounded-2xl overflow-hidden bg-[#ECECEE] border border-black/[0.04]">
+              <ProductTechnicalArtwork
+                type={quickPreviewCat.artwork}
+                customImageUrl={quickPreviewCat.image}
+                title={quickPreviewCat.title}
+                className="w-full h-full"
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-1.5">
+              {quickPreviewCat.subCategories.map((s) => (
+                <Link
+                  key={s.id}
+                  href={`/products?cat=${quickPreviewCat.id}&sub=${s.id}`}
+                  onClick={() => setQuickPreviewCat(null)}
+                  className="px-3 py-1 rounded-full bg-[#F4F5F8] dark:bg-[#242731] text-xs font-bold text-[#1D1D1F] dark:text-white hover:text-[#EC008C]"
+                >
+                  {s.title} ({s.products.length})
+                </Link>
+              ))}
+            </div>
+
+            <p className="text-sm text-[#64748B] dark:text-[#A1A1A6] leading-relaxed">
+              {quickPreviewCat.description}
+            </p>
+
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  const id = quickPreviewCat.id;
+                  setQuickPreviewCat(null);
+                  handleOpenCategoryProducts(id);
+                }}
+                className="apple-pill-btn keep-white-text flex-1 py-3.5 px-6 rounded-full bg-[#EC008C] hover:bg-[#d4007d] text-white text-sm font-bold text-center cursor-pointer"
+              >
+                مشاهده تمام محصولات این گروه
+              </button>
+              <button
+                type="button"
+                onClick={() => setQuickPreviewCat(null)}
+                className="px-5 py-3.5 rounded-full bg-[#F5F5F7] dark:bg-[#242426] text-sm font-bold text-[#1D1D1F] dark:text-white cursor-pointer"
+              >
+                بستن
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Individual Product Quick Preview Modal */}
+      {quickPreviewProd && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`مشاهده سریع ${quickPreviewProd.title}`}
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4"
+        >
+          <div className="w-full max-w-xl rounded-[32px] bg-white dark:bg-[#161617] border border-black/[0.08] dark:border-white/[0.12] p-6 sm:p-8 shadow-2xl space-y-5">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div
+                  className="text-xs font-bold text-[#64748B] uppercase"
+                  dir="ltr"
+                >
+                  {quickPreviewProd.sku}
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-[#1D1D1F] dark:text-white mt-1">
+                  {quickPreviewProd.title}
+                </h2>
+                <div className="text-xs font-bold text-[#EC008C] mt-1">
+                  {quickPreviewProd.categoryTitle} /{' '}
+                  {quickPreviewProd.subCategoryTitle}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setQuickPreviewProd(null)}
+                className="w-9 h-9 rounded-full bg-[#F5F5F7] dark:bg-[#242426] flex items-center justify-center text-[#1D1D1F] dark:text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="aspect-video w-full rounded-2xl overflow-hidden bg-[#ECECEE] border border-black/[0.04]">
+              <ProductTechnicalArtwork
+                type={quickPreviewProd.artwork}
+                customImageUrl={quickPreviewProd.image}
+                title={quickPreviewProd.title}
+                className="w-full h-full"
+              />
+            </div>
+
+            <div className="text-xl font-black text-[#EC008C] tabular-nums">
+              {quickPreviewProd.priceRange}
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              <Link
+                href={`/products?cat=${quickPreviewProd.categoryId}&sub=${quickPreviewProd.subCategoryId}&q=${encodeURIComponent(quickPreviewProd.title)}`}
+                onClick={() => setQuickPreviewProd(null)}
+                className="apple-pill-btn keep-white-text flex-1 py-3.5 px-6 rounded-full bg-[#EC008C] hover:bg-[#d4007d] text-white text-sm font-bold text-center"
+              >
+                مشاهده در کاتالوگ و سفارش
+              </Link>
+              <button
+                type="button"
+                onClick={() => setQuickPreviewProd(null)}
+                className="px-5 py-3.5 rounded-full bg-[#F5F5F7] dark:bg-[#242426] text-sm font-bold text-[#1D1D1F] dark:text-white cursor-pointer"
+              >
+                بستن
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/**
+ * 3. Storefront Direct Buy Shelf (Exact Reference Card Layout from image_d7b364e7.png)
+ */
+const SHORT_PRODUCT_TITLES: Record<string, { title: string; summary: string }> =
+  {
+    'motor-pack': {
+      title: 'پک جک پارکینگی بتا (F350)',
+      summary:
+        'پکیج کامل دو بازوی الکترومکانیکی (یا موتور ریلی)، مدار کنترل هوشمند، فتوسل، فلاشر و ۲ عدد ریموت بتا.',
+    },
+    'roller-door-opener': {
+      title: 'پک موتور کرکره ساید بتا UPS هوشمند',
+      summary:
+        'موتور کرکره برقی ساید (1000Kg) مجهز به برق اضطراری UPS، زنجیر خلاص‌کن، مرکز کنترل و ۲ ریموت.',
+    },
+    'remote-pack': {
+      title: 'پک دزدگیر اماکن سیم‌کارتی Z7-GSM Plus',
+      summary:
+        'پنل مرکزی دزدگیر سیم‌کارتی و خط ثابت بتا با اپلیکیشن فارسی موبایل، ۲ چشمی دیجیتال، آژیر و ۲ ریموت.',
+    },
+    receiver: {
+      title: 'پک مدار فرمان و رسیور سیم‌کارتی سیموت',
+      summary:
+        'تابلو فرمان دیجیتال به همراه رسیور سیم‌کارتی اسمارت سیموت، آنتن تقویتی، چشمی فتوسل و ۲ عدد ریموت بتا.',
+    },
+    remote: {
+      title: 'پک ریموت کنترل و فتوسل ایمنی فابریک بتا',
+      summary:
+        'مجموعه ۴ عدد ریموت استیل بتا، گیرنده رادیویی دیجیتال ۲ کاناله، چشمی فتوسل مادون قرمز و فلاشر LED.',
+    },
+    'sliding-gate-pack': {
+      title: 'پک موتور درب ریلی بتا (F-550M)',
+      summary:
+        'موتور گیربکس صنعتی درب کشویی تا ۱۵۰۰ کیلوگرم به همراه ریل فولادی دنده‌شانه‌ای، برد دیجیتال، فتوسل و ۲ ریموت.',
+    },
+  };
+
+export function FeaturedAriaAndShopSection() {
+  const { products, addToCart } = useBetaDoors();
+  const [quickStatus, setQuickStatus] = useState<Record<string, string>>({});
+  const [quickViewProduct, setQuickViewProduct] = useState<ShopProduct | null>(
+    null
+  );
+
+  const handleQuickAdd = (productSlug: string) => {
+    const prod = products.find((p) => p.slug === productSlug);
+    if (!prod) return;
+    const defaultVariant = prod.requiresVariant ? '1200N' : null;
+    const res = addToCart(prod, defaultVariant, 1);
+    if (res.ok) {
+      setQuickStatus((prev) => ({
+        ...prev,
+        [prod.id]: `به سبد خرید اضافه شد`,
+      }));
+      window.setTimeout(() => {
+        setQuickStatus((prev) => {
+          const copy = { ...prev };
+          delete copy[prod.id];
+          return copy;
+        });
+      }, 2800);
+    }
+  };
+
+  return (
+    <section
+      aria-labelledby="featured-aria-heading"
+      className="w-full max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-14"
+    >
+      {/* Storefront Product Shelf Matching Reference Card Design (2-Column Grid as in image_d7b364e7.png) */}
+      <div className="space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div className="space-y-1">
+            <div className="text-xs font-bold text-[#EC008C]">
+              فروشگاه آنلاین بتا
+            </div>
+            <h2
+              id="featured-aria-heading"
+              className="text-2xl sm:text-4xl font-bold text-[#1D1D1F] dark:text-white tracking-tight"
+            >
+              خرید مستقیم پکیج‌های آماده نصب.
+            </h2>
+          </div>
+          <Link
+            href="/shop"
+            className="inline-flex items-center gap-1 text-sm font-bold text-[#EC008C] hover:opacity-80"
+          >
+            <span>مشاهده فروشگاه</span>
+            <ChevronLeft className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {products.map((prod, idx) => {
+            const concise = SHORT_PRODUCT_TITLES[prod.slug] || {
+              title: prod.name,
+              summary: prod.shortDescription,
+            };
+            const formattedPrice =
+              prod.requiresVariant && prod.maxPriceCents
+                ? `${formatAudCents(prod.priceCents).replace(' تومان', '')} تا ${formatAudCents(prod.maxPriceCents)}`
+                : formatAudCents(prod.priceCents);
+
+            return (
+              <BetaReferenceProductCard
+                key={prod.id}
+                id={prod.id}
+                sku={prod.sku}
+                title={concise.title}
+                priceText={formattedPrice}
+                description={concise.summary}
+                href={prod.path}
+                artworkType={prod.imageSvgType}
+                customImageUrl={prod.customImageUrl}
+                ctaMode={prod.requiresVariant ? 'select_model' : 'direct_add'}
+                onQuickView={() => setQuickViewProduct(prod)}
+                onAddToCart={() => handleQuickAdd(prod.slug)}
+                addedFeedbackText={quickStatus[prod.id]}
+                index={idx}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Minimal 3-Card Apple Support & Utility Strip */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="apple-card rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-7 flex flex-col justify-between space-y-4 shadow-[0_8px_28px_rgba(0,0,0,0.03)]">
+          <div className="space-y-2">
+            <Calculator className="w-6 h-6 text-[#EC008C]" />
+            <h3 className="text-lg font-bold text-[#1D1D1F] dark:text-white">
+              محاسبه‌گر هوشمند موتور
+            </h3>
+            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6]">
+              پیشنهاد دقیق مدل جک یا موتور کرکره بر اساس ابعاد درب.
+            </p>
+          </div>
+          <Link
+            href="/garage-door-spring-estimator"
+            className="inline-flex items-center gap-1 text-sm font-bold text-[#EC008C]"
+          >
+            <span>ورود به محاسبه‌گر</span>
+            <ChevronLeft className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="apple-card rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-7 flex flex-col justify-between space-y-4 shadow-[0_8px_28px_rgba(0,0,0,0.03)]">
+          <div className="space-y-2">
+            <Wrench className="w-6 h-6 text-[#EC008C]" />
+            <h3 className="text-lg font-bold text-[#1D1D1F] dark:text-white">
+              گارانتی و خدمات پس از فروش
+            </h3>
+            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6]">
+              پشتیبانی فنی و تعمیرات تخصصی در واحد مرکزی تهران.
+            </p>
+          </div>
+          <div className="flex items-center gap-4 text-sm font-bold">
+            <Link
+              href="/services"
+              className="inline-flex items-center gap-1 text-[#EC008C]"
+            >
+              <span>شرایط خدمات</span>
+              <ChevronLeft className="w-4 h-4" />
+            </Link>
+            <a
+              href="tel:02188404407"
+              dir="ltr"
+              className="inline-flex items-center gap-1 text-[#1D1D1F] dark:text-white"
+            >
+              <Phone className="w-3.5 h-3.5 text-[#EC008C]" />
+              <span>021-88404407</span>
+            </a>
+          </div>
+        </div>
+
+        <div className="apple-card rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-7 flex flex-col justify-between space-y-4 shadow-[0_8px_28px_rgba(0,0,0,0.03)]">
+          <div className="space-y-2">
+            <FileText className="w-6 h-6 text-[#EC008C]" />
+            <h3 className="text-lg font-bold text-[#1D1D1F] dark:text-white">
+              اپلیکیشن‌ها و راهنمای نصب
+            </h3>
+            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6]">
+              دانلود اپ‌های سیموت و دزدگیر Z7-GSM به همراه نقشه سیم‌کشی بردها.
+            </p>
+          </div>
+          <Link
+            href="/beta-doors-manuals"
+            className="inline-flex items-center gap-1 text-sm font-bold text-[#EC008C]"
+          >
+            <span>دریافت فایل‌ها</span>
+            <ChevronLeft className="w-4 h-4" />
           </Link>
         </div>
       </div>
 
-      {/* Responsive Architectural Card Grid (0px Sharp HUD Geometry) */}
-      <motion.div
-        layout
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
-      >
-        <AnimatePresence mode="popLayout">
-          {filteredFamilies.map((fam) => (
-            <motion.div
-              layout
-              key={fam.id || fam.href}
-              initial={{ opacity: 0, scale: 0.97, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: -8 }}
-              transition={{ duration: 0.24, ease: 'easeOut' }}
-            >
-              <Link
-                href={fam.href}
-                className="group hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-none overflow-hidden flex flex-col h-full transition-all duration-300 hover:-translate-y-1"
-              >
-                {/* Top HUD Telemetry Bar */}
-                <div className="px-3.5 py-2 border-b border-white/[0.07] bg-[#08090C] flex items-center justify-between text-[10px] font-mono tracking-wider uppercase">
-                  <span className="text-[#ff7ac6] font-bold">
-                    SYS.CAT // [{fam.index}]
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 text-slate-400">
-                    <span className="w-1.5 h-1.5 bg-[#EC008C]" />
-                    <span>{fam.badge}</span>
-                  </span>
-                </div>
-
-                {/* 16:9 Studio Artwork Frame (0px Sharp) */}
-                <div className="p-2.5 pb-0">
-                  <div className="relative aspect-video w-full rounded-none border border-white/[0.08] overflow-hidden bg-[#12141A]">
-                    <div className="w-full h-full transition-transform duration-500 group-hover:scale-[1.04]">
-                      <ProductTechnicalArtwork
-                        type={fam.artType}
-                        customImageUrl={fam.customImageUrl}
-                        title={fam.title}
-                        className="w-full h-full"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Structured Architectural Card Body */}
-                <div className="p-5 pt-4 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    <div className="text-[10px] font-mono tracking-wider uppercase text-[#ff7ac6] font-medium truncate">
-                      {fam.subtitle}
-                    </div>
-
-                    <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-[#EC008C] transition-colors">
-                      {fam.title}
-                    </h3>
-                    <p className="text-xs text-slate-400 leading-relaxed">
-                      {fam.description}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-white/[0.07] flex items-center justify-between text-xs font-mono font-semibold text-white">
-                    <span className="group-hover:text-[#EC008C] transition-colors">
-                      INSPECT SPECIFICATION
-                    </span>
-                    <span className="w-7 h-7 rounded-none bg-[#08090C] group-hover:bg-[#EC008C] border border-white/15 flex items-center justify-center transition-colors">
-                      <ArrowUpRight className="w-3.5 h-3.5 text-white group-hover:keep-white-text" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </motion.div>
-    </section>
-  );
-}
-
-/**
- * Direct Storefront — 5 Verified Shop Products with Unobstructed 16:9 Studio Images,
- * Pure 0px Sharp HUD Geometry, and Interactive Filter Tabs
- */
-export function FeaturedAriaAndShopSection() {
-  const { products, addToCart } = useBetaDoors();
-  const [feedback, setFeedback] = useState<string | null>(null);
-  const [shopFilter, setShopFilter] = useState<'all' | 'motors' | 'remotes'>(
-    'all'
-  );
-
-  const handleQuickAdd = (slug: string) => {
-    const prod = products.find((p) => p.slug === slug);
-    if (!prod) return;
-    const defaultVar = prod.requiresVariant ? '1200N' : null;
-    const res = addToCart(prod, defaultVar, 1);
-    if (res.ok) {
-      setFeedback(
-        `Added ${prod.name}${defaultVar ? ` (${defaultVar})` : ''} to cart.`
-      );
-      window.setTimeout(() => setFeedback(null), 3500);
-    }
-  };
-
-  const filteredProducts = products.filter((p) => {
-    if (shopFilter === 'motors') {
-      return p.slug.includes('motor') || p.slug.includes('opener');
-    }
-    if (shopFilter === 'remotes') {
-      return p.slug.includes('remote') || p.slug.includes('receiver');
-    }
-    return true;
-  });
-
-  return (
-    <section
-      data-cms-section="home-shop-products"
-      data-cms-label="Direct Storefront (5 Shop Products)"
-      aria-labelledby="featured-aria-heading"
-      className="w-full max-w-[1760px] mx-auto px-3 sm:px-5 lg:px-7 py-14 space-y-8"
-    >
-      <HudSectionRail
-        code="HUD.03"
-        sector="DIRECT AUSTRALIAN STOREFRONT // 05 VERIFIED PRODUCTS"
-        status="GST INCLUSIVE · AUD"
-      />
-
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
-        <div className="space-y-1.5">
-          <div className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-[#ff7ac6]">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#EC008C]" />
-            <span>Direct Australian Storefront · Authoritative Inventory</span>
-          </div>
-          <h2
-            id="featured-aria-heading"
-            className="text-2xl sm:text-4xl font-semibold text-white tracking-tight"
-          >
-            Direct Storefront — 5 Verified Products
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400">
-            Authoritative WooCommerce-compatible pricing and live stock, editable in real time via the Admin CMS.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Interactive Storefront Filter Tabs (0px Sharp) */}
-          <div
-            role="tablist"
-            aria-label="Filter storefront products"
-            className="inline-flex items-center gap-1 p-1 rounded-none bg-[#0B0C10] border border-white/[0.09]"
-          >
-            {[
-              { id: 'all' as const, label: 'ALL [05]' },
-              { id: 'motors' as const, label: 'DRIVE MOTORS [02]' },
-              { id: 'remotes' as const, label: 'REMOTES & RF [03]' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={shopFilter === tab.id}
-                onClick={() => setShopFilter(tab.id)}
-                className={`px-3 py-1.5 rounded-none text-[10px] font-mono font-semibold tracking-wider transition-colors cursor-pointer ${
-                  shopFilter === tab.id
-                    ? 'bg-[#EC008C] text-white shadow-sm keep-white-text'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {feedback ? (
-            <div
-              role="status"
-              aria-live="polite"
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-none bg-emerald-950 border border-emerald-500/40 text-xs text-emerald-200 keep-white-text"
-            >
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>{feedback}</span>
-            </div>
-          ) : (
-            <Link
-              href="/shop/"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-none bg-[#0B0C10] hover:bg-white/[0.08] border border-white/15 text-xs font-mono font-semibold text-white transition-all"
-            >
-              <span>OPEN FULL SHOP</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#EC008C]" />
-            </Link>
-          )}
-        </div>
-      </div>
-
-      {/* 5-Column Responsive Architectural Product Grid — Pure 0px Sharp HUD Cards */}
-      <motion.div
-        layout
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
-      >
-        <AnimatePresence mode="popLayout">
-          {filteredProducts.map((prod, idx) => (
-            <motion.div
-              layout
-              key={prod.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.22, delay: idx * 0.03 }}
-              className="group hud-corner-brackets brand-animated-border bg-[#0B0C10] border border-white/[0.09] rounded-none overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1"
-            >
+      {/* Quick View Modal for Storefront Cards */}
+      {quickViewProduct && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`مشاهده سریع ${quickViewProduct.name}`}
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4"
+        >
+          <div className="w-full max-w-xl rounded-[32px] bg-white dark:bg-[#161617] border border-black/[0.08] dark:border-white/[0.12] p-6 sm:p-8 shadow-2xl space-y-5">
+            <div className="flex items-start justify-between gap-4">
               <div>
-                {/* Top HUD SKU + Stock Telemetry Header */}
-                <div className="px-3 py-1.5 border-b border-white/[0.07] bg-[#08090C] flex items-center justify-between gap-1.5 text-[9.5px] font-mono uppercase tracking-wider">
-                  <span className="text-slate-400 truncate" title={prod.sku}>
-                    [0{idx + 1}] {prod.sku}
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-emerald-400 font-bold shrink-0 whitespace-nowrap">
-                    <span className="w-1.5 h-1.5 bg-emerald-400 animate-pulse" />
-                    <span>{prod.stockCount} IN STOCK</span>
-                  </span>
-                </div>
-
-                {/* Clean 16:9 Studio Artwork (0px Sharp) */}
-                <div className="p-2 pb-0">
-                  <Link
-                    href={prod.path}
-                    className="relative block aspect-video w-full rounded-none border border-white/[0.08] overflow-hidden bg-[#12141A]"
-                  >
-                    <div className="w-full h-full transition-transform duration-500 group-hover:scale-[1.05]">
-                      <ProductTechnicalArtwork
-                        type={prod.imageSvgType}
-                        customImageUrl={prod.customImageUrl}
-                        title={prod.name}
-                        className="w-full h-full"
-                      />
-                    </div>
-                  </Link>
-                </div>
-
-                {/* Title + Description + Price */}
-                <div className="p-4 pt-3 space-y-2">
-                  <Link
-                    href={prod.path}
-                    className="block text-sm font-semibold text-white group-hover:text-[#EC008C] transition-colors line-clamp-1"
-                  >
-                    {prod.name}
-                  </Link>
-
-                  <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-2 min-h-[34px]">
-                    {prod.shortDescription}
-                  </p>
-
-                  <div className="pt-2 border-t border-white/[0.06] flex items-baseline justify-between gap-1.5">
-                    <span className="text-sm sm:text-[15px] font-bold text-white font-mono tabular-nums whitespace-nowrap">
-                      {prod.maxPriceCents
-                        ? `$${Math.round(prod.priceCents / 100)} – $${Math.round(prod.maxPriceCents / 100)} AUD`
-                        : formatAudCents(prod.priceCents)}
-                    </span>
-                    <span className="text-[9.5px] font-mono text-slate-500 whitespace-nowrap shrink-0">
-                      INC. GST
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 pt-0 flex items-center gap-2">
-                <Link
-                  href={prod.path}
-                  className="flex-1 text-center py-2 px-2.5 text-xs font-mono font-semibold rounded-none bg-[#08090C] hover:bg-white/[0.08] border border-white/15 text-slate-200 transition-colors whitespace-nowrap"
+                <div
+                  className="text-xs font-bold text-[#64748B] uppercase"
+                  dir="ltr"
                 >
-                  {prod.requiresVariant ? 'OPTIONS' : 'DETAILS'}
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => handleQuickAdd(prod.slug)}
-                  aria-label={`Quick add ${prod.name} to cart`}
-                  className="keep-white-text inline-flex items-center gap-1 py-2 px-3 text-xs font-mono font-bold rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-white shadow-[0_0_14px_rgba(236,0,140,0.35)] transition-colors whitespace-nowrap cursor-pointer"
-                >
-                  <ShoppingCart className="w-3 h-3" />
-                  <span>+ CART</span>
-                </button>
+                  {quickViewProduct.sku}
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-[#1D1D1F] dark:text-white mt-1">
+                  {quickViewProduct.name}
+                </h2>
               </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </motion.div>
+              <button
+                type="button"
+                onClick={() => setQuickViewProduct(null)}
+                className="w-9 h-9 rounded-full bg-[#F5F5F7] dark:bg-[#242426] flex items-center justify-center text-[#1D1D1F] dark:text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="aspect-video w-full rounded-2xl overflow-hidden bg-[#F5F5F7] border border-black/[0.04]">
+              <ProductTechnicalArtwork
+                type={quickViewProduct.imageSvgType}
+                customImageUrl={quickViewProduct.customImageUrl}
+                title={quickViewProduct.name}
+                className="w-full h-full"
+              />
+            </div>
+
+            <div className="text-2xl font-black text-[#EC008C] tabular-nums">
+              {quickViewProduct.requiresVariant && quickViewProduct.maxPriceCents
+                ? `${formatAudCents(quickViewProduct.priceCents).replace(' تومان', '')} تا ${formatAudCents(quickViewProduct.maxPriceCents)}`
+                : formatAudCents(quickViewProduct.priceCents)}
+            </div>
+
+            <p className="text-sm text-[#64748B] dark:text-[#A1A1A6] leading-relaxed">
+              {quickViewProduct.shortDescription}
+            </p>
+
+            <div className="flex items-center gap-3 pt-2">
+              <Link
+                href={quickViewProduct.path}
+                onClick={() => setQuickViewProduct(null)}
+                className="apple-pill-btn keep-white-text flex-1 py-3.5 px-6 rounded-full bg-[#EC008C] hover:bg-[#d4007d] text-white text-sm font-bold text-center"
+              >
+                مشاهده صفحه محصول و خرید
+              </Link>
+              <button
+                type="button"
+                onClick={() => setQuickViewProduct(null)}
+                className="px-5 py-3.5 rounded-full bg-[#F5F5F7] dark:bg-[#242426] text-sm font-bold text-[#1D1D1F] dark:text-white cursor-pointer"
+              >
+                بستن
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

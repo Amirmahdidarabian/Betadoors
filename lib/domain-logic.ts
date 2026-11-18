@@ -131,8 +131,8 @@ export function calculateCartTotals(items: CartItem[]): {
 }
 
 export function formatAudCents(cents: number): string {
-  const dollars = (cents / 100).toFixed(2);
-  return `$${dollars} AUD`;
+  const toman = Math.round(cents * 200);
+  return `${toman.toLocaleString('fa-IR')} تومان`;
 }
 
 /**
@@ -150,16 +150,16 @@ export function validateEnquiryInput(input: {
   const errors: Record<string, string> = {};
 
   if (!input.name || input.name.trim().length < 2) {
-    errors.name = 'Please enter your full name.';
+    errors.name = 'لطفاً نام و نام خانوادگی خود را وارد کنید.';
   }
   if (!input.suburb || input.suburb.trim().length < 2) {
-    errors.suburb = 'Please enter your suburb or location.';
+    errors.suburb = 'لطفاً نام شهر یا محله خود را وارد کنید.';
   }
   if (!input.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim())) {
-    errors.email = 'Please enter a valid email address.';
+    errors.email = 'لطفاً یک آدرس ایمیل معتبر وارد کنید.';
   }
-  if (!input.phone || !/^[0-9+\-\s()]{8,18}$/.test(input.phone.trim())) {
-    errors.phone = 'Please enter a valid Australian phone number.';
+  if (!input.phone || !/^[0-9+\-\s()۰-۹]{8,18}$/.test(input.phone.trim())) {
+    errors.phone = 'لطفاً یک شماره تماس معتبر وارد کنید.';
   }
   if (
     !input.serviceType ||
@@ -167,7 +167,7 @@ export function validateEnquiryInput(input: {
       input.serviceType as (typeof ALLOWED_ENQUIRY_SERVICES)[number]
     )
   ) {
-    errors.serviceType = 'Please select a service topic from the list.';
+    errors.serviceType = 'لطفاً موضوع درخواست یا نوع خدمات را از لیست انتخاب کنید.';
   }
 
   if (Object.keys(errors).length > 0) {

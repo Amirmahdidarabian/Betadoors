@@ -54,7 +54,7 @@ const DB_FILE_PATH = path.join(DATA_DIR, 'betadoors-cms-db.json');
 
 function createInitialDb(): PersistentDatabaseSchema {
   return {
-    version: '1.3.0',
+    version: '2.3.0-flatlay-cards',
     brand: structuredClone(INITIAL_BRAND_SETTINGS),
     pages: structuredClone(INITIAL_PAGES),
     products: structuredClone(INITIAL_SHOP_PRODUCTS),
@@ -86,21 +86,10 @@ export function readCmsDb(): PersistentDatabaseSchema {
       fs.writeFileSync(DB_FILE_PATH, JSON.stringify(fallback, null, 2), 'utf-8');
       return fallback;
     }
-    if (parsed.version !== '1.3.0') {
-      parsed.version = '1.3.0';
-      if (parsed.brand?.heroConfig) {
-        parsed.brand.heroConfig.videoUrl =
-          '/assets/aistudio/logo_motion_ec8a3dd9.mp4';
-      }
-      if (Array.isArray(parsed.products)) {
-        parsed.products = parsed.products.map((prod) => {
-          const seedMatch = INITIAL_SHOP_PRODUCTS.find((s) => s.id === prod.id);
-          return seedMatch
-            ? { ...prod, customImageUrl: seedMatch.customImageUrl }
-            : prod;
-        });
-      }
-      fs.writeFileSync(DB_FILE_PATH, JSON.stringify(parsed, null, 2), 'utf-8');
+    if (parsed.version !== '2.3.0-flatlay-cards') {
+      const freshIranDb = createInitialDb();
+      fs.writeFileSync(DB_FILE_PATH, JSON.stringify(freshIranDb, null, 2), 'utf-8');
+      return freshIranDb;
     }
     return parsed;
   } catch {

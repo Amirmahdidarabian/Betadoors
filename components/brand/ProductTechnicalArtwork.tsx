@@ -3,16 +3,41 @@
 import React, { useState } from 'react';
 
 const DEFAULT_PRODUCT_IMAGES: Record<string, string> = {
-  motor_pack: '/assets/products/shop_motor_pack_16x9_1794669608385.jpg',
-  aria_121: '/assets/products/cat_aria_121_opener_16x9_1794669517262.jpg',
-  roller_opener: '/assets/products/cat_roller_opener_16x9_1794669523562.jpg',
-  remote_pack: '/assets/products/shop_remote_pack_16x9_1794669534982.jpg',
-  receiver: '/assets/products/shop_receiver_16x9_1794669538614.jpg',
-  remote: '/assets/products/shop_remote_single_16x9_1794669538842.jpg',
-  sectional_door: '/assets/products/cat_sectional_door_16x9_1794669513770.jpg',
-  gate_opener: '/assets/products/cat_gate_opener_16x9_1794669526901.jpg',
-  keypad: '/assets/products/cat_smart_keypad_16x9_1794669528157.jpg',
-  hardware_kit: '/assets/products/cat_hardware_kit_16x9_1794669530976.jpg',
+  motor_pack: '/assets/products/apple_studio/beta_swing_gate_arms.jpg',
+  aria_121: '/assets/products/apple_studio/beta_control_simote_gsm.jpg',
+  roller_opener: '/assets/products/apple_studio/beta_shutter_side_motor.jpg',
+  remote_pack: '/assets/products/apple_studio/beta_z7_gsm_alarm_pack.jpg',
+  receiver: '/assets/products/apple_studio/beta_control_simote_gsm.jpg',
+  remote: '/assets/products/apple_studio/beta_remotes_collection.jpg',
+  sectional_door: '/assets/products/apple_studio/beta_sliding_gate_motor.jpg',
+  gate_opener: '/assets/products/apple_studio/beta_swing_gate_arms.jpg',
+  keypad: '/assets/products/apple_studio/beta_attendance_uhf_access.jpg',
+  hardware_kit: '/assets/products/apple_studio/beta_ups_magnetic_lock.jpg',
+};
+
+const UNIFORM_STUDIO_URL_MAP: Record<string, string> = {
+  '/assets/aistudio/cat_gate_openers.png':
+    '/assets/products/apple_studio/beta_swing_gate_arms.jpg',
+  '/assets/aistudio/cat_garage_doors.png':
+    '/assets/products/apple_studio/beta_sliding_gate_motor.jpg',
+  '/assets/aistudio/cat_door_openers.png':
+    '/assets/products/apple_studio/beta_control_simote_gsm.jpg',
+  '/assets/aistudio/cat_accessories.png':
+    '/assets/products/apple_studio/beta_attendance_uhf_access.jpg',
+  '/assets/aistudio/prod_remote.png':
+    '/assets/products/apple_studio/beta_remotes_collection.jpg',
+  '/assets/aistudio/prod_roller_opener.png':
+    '/assets/products/apple_studio/beta_shutter_side_motor.jpg',
+  '/assets/aistudio/cat_gates.png':
+    '/assets/products/apple_studio/beta_barrier_glass_operator.jpg',
+  '/assets/aistudio/prod_remote_pack.png':
+    '/assets/products/apple_studio/beta_z7_gsm_alarm_pack.jpg',
+  '/assets/aistudio/cat_hardware.png':
+    '/assets/products/apple_studio/beta_ups_magnetic_lock.jpg',
+  '/assets/aistudio/prod_motor_pack.png':
+    '/assets/products/apple_studio/beta_swing_gate_arms.jpg',
+  '/assets/aistudio/prod_receiver.png':
+    '/assets/products/apple_studio/beta_control_simote_gsm.jpg',
 };
 
 const LEGACY_IMAGE_OVERRIDES: Set<string> = new Set([
@@ -28,48 +53,58 @@ const LEGACY_IMAGE_OVERRIDES: Set<string> = new Set([
   '/assets/betadoors_ref/home_hardware_kit.png',
 ]);
 
+export type ProductTechnicalArtworkType =
+  | 'motor_pack'
+  | 'receiver'
+  | 'remote'
+  | 'remote_pack'
+  | 'roller_opener'
+  | 'aria_121'
+  | 'sectional_door'
+  | 'gate_opener'
+  | 'keypad'
+  | 'hardware_kit';
+
 export function ProductTechnicalArtwork({
   type,
   customImageUrl,
   title,
   className = 'w-full h-full',
 }: {
-  type:
-    | 'motor_pack'
-    | 'receiver'
-    | 'remote'
-    | 'remote_pack'
-    | 'roller_opener'
-    | 'aria_121'
-    | 'sectional_door'
-    | 'gate_opener'
-    | 'keypad'
-    | 'hardware_kit';
+  type: ProductTechnicalArtworkType;
   customImageUrl?: string;
   title: string;
   className?: string;
 }) {
   const [imgFailed, setImgFailed] = useState(false);
+
+  const mappedCustomUrl = customImageUrl
+    ? UNIFORM_STUDIO_URL_MAP[customImageUrl] || customImageUrl
+    : undefined;
+
   const resolvedImageUrl =
-    customImageUrl && !LEGACY_IMAGE_OVERRIDES.has(customImageUrl)
-      ? customImageUrl
+    mappedCustomUrl && !LEGACY_IMAGE_OVERRIDES.has(mappedCustomUrl)
+      ? mappedCustomUrl
       : DEFAULT_PRODUCT_IMAGES[type];
+
+  const isOfficialBetaAsset =
+    resolvedImageUrl?.startsWith('/assets/beta-official/') ?? false;
 
   if (resolvedImageUrl && !imgFailed) {
     return (
       <div
-        className={`studio-artwork-container relative overflow-hidden bg-[#12141A] ${className}`}
+        className={`studio-artwork-container relative overflow-hidden bg-[#ECECEE] flex items-center justify-center ${className}`}
       >
         <img
           src={resolvedImageUrl}
           alt={title}
           referrerPolicy="no-referrer"
           onError={() => setImgFailed(true)}
-          className="studio-artwork-img w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
-        />
-        <div
-          aria-hidden="true"
-          className="studio-artwork-vignette pointer-events-none absolute inset-0 bg-gradient-to-t from-[#08090C]/35 via-transparent to-transparent"
+          className={
+            isOfficialBetaAsset
+              ? 'studio-artwork-img w-full h-full object-contain object-center p-4 pt-9 mix-blend-multiply transition-transform duration-500 group-hover:scale-[1.05]'
+              : 'studio-artwork-img w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]'
+          }
         />
       </div>
     );
@@ -77,13 +112,13 @@ export function ProductTechnicalArtwork({
 
   return (
     <div
-      className={`relative overflow-hidden bg-slate-100 dark:bg-[#0D0F14] flex items-center justify-center ${className}`}
+      className={`relative overflow-hidden bg-[#F5F5F7] flex items-center justify-center ${className}`}
     >
       <div
         className="absolute inset-0 opacity-30"
         style={{
           backgroundImage:
-            'radial-gradient(circle at 75% 25%, rgba(236, 0, 140, 0.22), transparent 55%), radial-gradient(circle at 25% 80%, rgba(148, 163, 184, 0.15), transparent 50%)',
+            'radial-gradient(circle at 75% 25%, rgba(236, 0, 140, 0.16), transparent 55%), radial-gradient(circle at 25% 80%, rgba(148, 163, 184, 0.12), transparent 50%)',
         }}
       />
       <svg

@@ -4,31 +4,30 @@ import React, { useEffect, useMemo, Suspense } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import {
-  ArrowUpRight,
   Phone,
   MapPin,
   ShieldCheck,
   CheckCircle2,
-  Wrench,
   FileText,
-  Sparkles,
   Eye,
   Clock,
-  ChevronRight,
-  Sliders,
+  ChevronLeft,
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useBetaDoors } from '@/components/providers/BetaDoorsProvider';
 import { SiteShell } from '@/components/layout/SiteShell';
 import { EnquiryForm } from '@/components/forms/EnquiryForm';
 import { ProductTechnicalArtwork } from '@/components/brand/ProductTechnicalArtwork';
 import { formatAudCents } from '@/lib/domain-logic';
+import { BETA_OFFICIAL_CATEGORIES } from '@/lib/beta-official-catalog';
 
 function DynamicCmsPageContent() {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
   const previewToken = searchParams.get('previewToken');
-  const { brand, pages, redirects, products, manuals, isLoading } = useBetaDoors();
+  const { brand, pages, redirects, products, manuals, isLoading } =
+    useBetaDoors();
 
   const decodedPath = useMemo(() => {
     const rawSlugSegments = Array.isArray(params?.slug)
@@ -98,8 +97,8 @@ function DynamicCmsPageContent() {
   if (isLoading || matchedRedirect) {
     return (
       <SiteShell>
-        <div className="mx-auto max-w-[1760px] px-4 py-20 sm:px-8">
-          <div className="h-[460px] animate-pulse rounded-none border border-white/10 bg-[#0B0D11]" />
+        <div className="mx-auto max-w-[1320px] px-4 py-20 sm:px-8">
+          <div className="h-[360px] animate-pulse rounded-[32px] bg-white dark:bg-[#161617]" />
         </div>
       </SiteShell>
     );
@@ -108,34 +107,29 @@ function DynamicCmsPageContent() {
   if (!pageRecord) {
     return (
       <SiteShell>
-        <div className="mx-auto max-w-[1000px] px-4 py-24 text-center sm:px-8">
-          <div className="inline-flex items-center gap-2 rounded-none border border-white/10 bg-[#08090C] px-4 py-1.5 font-mono text-xs text-slate-300">
-            404 • ROUTE NOT FOUND IN CMS REGISTRY
-          </div>
-          <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-            Page Not Found
+        <div
+          dir="rtl"
+          className="mx-auto max-w-[840px] px-4 py-24 text-center sm:px-8"
+        >
+          <div className="text-sm font-bold text-[#EC008C]">خطای ۴۰۴</div>
+          <h1 className="mt-3 text-4xl font-bold tracking-tight text-[#1D1D1F] dark:text-white sm:text-5xl">
+            صفحه مورد نظر یافت نشد.
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-slate-400">
-            The requested path <code className="font-mono text-slate-200">{decodedPath}</code> could not be matched to an active BETA DOORS catalogue page, product, or service region.
+          <p className="mx-auto mt-4 max-w-lg text-base text-[#6E6E73] dark:text-[#A1A1A6]">
+            آدرس درخواستی در فهرست محصولات یا صفحات شرکت بتا موجود نیست.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/"
-              className="keep-white-text inline-flex items-center gap-2 rounded-none bg-[#EC008C] px-6 py-3 text-xs font-mono font-bold text-white transition hover:bg-[#d4007d]"
+              className="apple-pill-btn keep-white-text inline-flex items-center gap-2 rounded-full bg-[#EC008C] px-7 py-3 text-sm font-bold text-white hover:bg-[#d4007d]"
             >
-              RETURN HOME
+              بازگشت به صفحه اصلی
             </Link>
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 rounded-none border border-white/15 bg-[#08090C] px-6 py-3 text-xs font-mono font-semibold text-white transition hover:bg-white/[0.08]"
+              className="apple-pill-btn inline-flex items-center gap-2 rounded-full bg-white dark:bg-[#161617] border border-black/[0.08] dark:border-white/[0.12] px-7 py-3 text-sm font-bold text-[#1D1D1F] dark:text-white"
             >
-              BROWSE CATALOGUE
-            </Link>
-            <Link
-              href="/contact-us"
-              className="inline-flex items-center gap-2 rounded-none border border-white/15 bg-[#08090C] px-6 py-3 text-xs font-mono font-semibold text-white transition hover:bg-white/[0.08]"
-            >
-              CONTACT 1300 238 243
+              مشاهده کاتالوگ محصولات
             </Link>
           </div>
         </div>
@@ -145,12 +139,15 @@ function DynamicCmsPageContent() {
 
   const isPreviewActive =
     Boolean(previewToken) &&
-    Boolean(pageRecord.draftTitle || pageRecord.draftLeadDescription || pageRecord.draftSections);
+    Boolean(
+      pageRecord.draftTitle ||
+        pageRecord.draftLeadDescription ||
+        pageRecord.draftSections
+    );
 
   const cleanSlugKey = pageRecord.slug.replace(/\/$/, '') || '/';
   const savedHdr =
-    brand.pageHeaders?.[cleanSlugKey] ||
-    brand.pageHeaders?.[pageRecord.slug];
+    brand.pageHeaders?.[cleanSlugKey] || brand.pageHeaders?.[pageRecord.slug];
 
   const activeTitle =
     isPreviewActive && pageRecord.draftTitle
@@ -166,11 +163,11 @@ function DynamicCmsPageContent() {
     savedHdr?.badgeText ||
     pageRecord.headerBadge ||
     pageRecord.serviceType ||
-    `BETA DOORS • ${pageRecord.category.toUpperCase()}`;
+    'شرکت بتا · بتا صنعت ایلیا';
   const activePrimaryCtaLabel =
     savedHdr?.primaryCtaLabel ||
     pageRecord.headerPrimaryCtaLabel ||
-    'Request a Technical Quote';
+    'استعلام قیمت و مشاوره';
   const activePrimaryCtaHref =
     savedHdr?.primaryCtaHref ||
     pageRecord.headerPrimaryCtaHref ||
@@ -178,7 +175,7 @@ function DynamicCmsPageContent() {
   const activeSecondaryCtaLabel =
     savedHdr?.secondaryCtaLabel ||
     pageRecord.headerSecondaryCtaLabel ||
-    'Online Shop';
+    'فروشگاه آنلاین';
   const activeSecondaryCtaHref =
     savedHdr?.secondaryCtaHref ||
     pageRecord.headerSecondaryCtaHref ||
@@ -193,176 +190,216 @@ function DynamicCmsPageContent() {
   return (
     <SiteShell>
       {isPreviewActive && (
-        <div className="border-b border-amber-400/30 bg-amber-500/10 px-4 py-2.5 text-xs text-amber-200">
-          <div className="mx-auto flex max-w-[1760px] flex-wrap items-center justify-between gap-2">
+        <div
+          dir="rtl"
+          className="border-b border-amber-400/30 bg-amber-500/10 px-4 py-2.5 text-xs text-amber-800 dark:text-amber-200"
+        >
+          <div className="mx-auto flex max-w-[1320px] flex-wrap items-center justify-between gap-2">
             <span className="inline-flex items-center gap-2 font-medium">
-              <Eye className="h-4 w-4 text-amber-300" />
-              Scoped Draft Preview Active ({pageRecord.slug}) — Changes shown here are isolated from public visitors until published.
+              <Eye className="h-4 w-4 text-amber-500" />
+              پیش‌نمایش نسخه پیش‌نویس فعال است ({pageRecord.slug}).
             </span>
             <Link
               href="/admin"
-              className="rounded-none border border-amber-300/40 bg-amber-400/20 px-3 py-1 font-mono text-[11px] font-medium text-amber-100 hover:bg-amber-400/30"
+              className="rounded-full bg-amber-400/20 px-4 py-1 text-xs font-bold hover:bg-amber-400/30"
             >
-              Return to Admin Studio
+              بازگشت به پنل مدیریت
             </Link>
           </div>
         </div>
       )}
 
-      {/* Architectural HUD Stage Header (0px Sharp) */}
+      {/* Clean Apple.com Centered Page Header */}
       <section
+        dir="rtl"
         data-cms-custom-header="true"
         data-cms-label={`Page Header (${pageRecord.slug})`}
-        className="mx-auto max-w-[1760px] px-3 pt-2 sm:px-5 lg:px-7"
+        className="mx-auto max-w-[1320px] px-4 pt-12 pb-6 sm:px-6 lg:px-8"
       >
-        <div className="hud-corner-brackets brand-animated-border hud-technical-grid relative overflow-hidden rounded-none border border-white/[0.1] bg-[#0B0C10] px-6 py-10 sm:px-10 sm:py-14">
-          {/* Top Breadcrumb & Status Bar */}
-          <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-white/[0.08]">
-            <nav
-              aria-label="Breadcrumb"
-              className="inline-flex items-center gap-2 rounded-none border border-white/[0.12] bg-[#08090C] px-3.5 py-1.5 text-xs text-slate-300"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-3xl mx-auto text-center space-y-4"
+        >
+          {/* Breadcrumb */}
+          <nav
+            aria-label="مسیر صفحه"
+            className="inline-flex items-center gap-1.5 text-xs text-[#86868B]"
+          >
+            <Link
+              href="/"
+              className="hover:text-[#1D1D1F] dark:hover:text-white transition-colors"
             >
-              <Link href="/" className="text-slate-400 transition hover:text-white">
-                Home
-              </Link>
-              <ChevronRight className="h-3.5 w-3.5 text-slate-600" />
-              <span className="font-mono text-[11px] uppercase text-slate-400">
-                {pageRecord.category.replace(/_/g, ' ')}
-              </span>
-              <ChevronRight className="h-3.5 w-3.5 text-slate-600" />
-              <span className="font-medium text-white">{activeTitle}</span>
-            </nav>
+              صفحه اصلی
+            </Link>
+            <ChevronLeft className="h-3.5 w-3.5" />
+            <Link
+              href="/products"
+              className="hover:text-[#1D1D1F] dark:hover:text-white transition-colors"
+            >
+              محصولات بتا
+            </Link>
+            <ChevronLeft className="h-3.5 w-3.5" />
+            <span className="font-semibold text-[#EC008C]">{activeBadge}</span>
+          </nav>
 
-            <div className="inline-flex items-center gap-2 rounded-none border border-[#EC008C]/40 bg-[#EC008C]/15 px-3.5 py-1 font-mono text-[11px] text-[#ff7ac6]">
-              <Sparkles className="h-3.5 w-3.5 text-[#EC008C]" />
-              {suburbName
-                ? `MELBOURNE SERVICE • ${suburbName.toUpperCase()}`
-                : `SPECIFICATION • ${pageRecord.template.toUpperCase().replace(/_/g, ' ')}`}
-            </div>
+          <h1
+            style={{ textWrap: 'balance' }}
+            className="text-3xl sm:text-5xl font-bold tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7] leading-[1.2]"
+          >
+            <span>{activeTitle}</span>
+            {activeGradient ? (
+              <span className="text-[#EC008C]"> {activeGradient}</span>
+            ) : null}
+          </h1>
+
+          <p className="text-base sm:text-xl text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-relaxed">
+            {activeLead}
+          </p>
+
+          <div className="pt-3 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href={activePrimaryCtaHref}
+              className="apple-pill-btn keep-white-text inline-flex items-center gap-2 rounded-full bg-[#EC008C] px-7 py-3 text-base font-bold text-white shadow-[0_8px_24px_rgba(236,0,140,0.28)] hover:bg-[#d4007d]"
+            >
+              <span>{activePrimaryCtaLabel}</span>
+            </a>
+            <Link
+              href={activeSecondaryCtaHref}
+              className="apple-pill-btn inline-flex items-center gap-1.5 rounded-full bg-white dark:bg-[#1D1D1F] border border-black/[0.08] dark:border-white/[0.14] px-7 py-3 text-base font-bold text-[#1D1D1F] dark:text-white"
+            >
+              <span>{activeSecondaryCtaLabel}</span>
+              <ChevronLeft className="h-4 w-4 text-[#EC008C]" />
+            </Link>
           </div>
-
-          {/* Headline & Subtitle */}
-          <div className="relative z-10 mt-7 max-w-3xl">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#ff7ac6]">
-              {activeBadge}
-            </p>
-            <h1 className="mt-2 font-display text-3xl font-semibold tracking-[-0.03em] text-white sm:text-5xl lg:text-[50px] lg:leading-[1.08]">
-              <span>{activeTitle}</span>
-              {activeGradient ? (
-                <span className="text-[#EC008C]"> {activeGradient}</span>
-              ) : null}
-            </h1>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
-              {activeLead}
-            </p>
-
-            <div className="mt-7 flex flex-wrap items-center gap-3">
-              <a
-                href={activePrimaryCtaHref}
-                className="keep-white-text inline-flex items-center gap-2 rounded-none bg-[#EC008C] px-6 py-3 text-xs font-mono font-bold text-white shadow-[0_0_24px_rgba(236,0,140,0.35)] transition hover:bg-[#d4007d]"
-              >
-                <span>{activePrimaryCtaLabel}</span>
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </a>
-              <a
-                href="tel:1300238243"
-                className="inline-flex items-center gap-2 rounded-none border border-white/15 bg-[#08090C] px-5 py-3 text-xs font-mono font-semibold text-white transition hover:border-[#EC008C]/50"
-              >
-                <Phone className="h-3.5 w-3.5 text-[#EC008C]" />
-                <span>CALL 1300 238 243</span>
-              </a>
-              <Link
-                href={activeSecondaryCtaHref}
-                className="inline-flex items-center gap-2 rounded-none border border-white/15 bg-[#08090C] px-5 py-3 text-xs font-mono font-semibold text-slate-200 transition hover:border-[#EC008C]/50 hover:text-white"
-              >
-                <span>{activeSecondaryCtaLabel}</span>
-                <ArrowUpRight className="h-3.5 w-3.5 text-[#EC008C]" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Bottom Telemetry Bar */}
-          <div className="relative z-10 mt-10 grid grid-cols-2 gap-3 border-t border-white/[0.08] pt-6 sm:grid-cols-4">
-            <div className="rounded-none border border-white/[0.08] bg-[#08090C] p-3.5">
-              <div className="font-mono text-[10px] uppercase tracking-wider text-[#ff7ac6]">
-                [01] AUSTRALIAN STANDARDS
-              </div>
-              <div className="mt-1 font-mono text-sm font-bold text-white">
-                AS/NZS 60335-2-95
-              </div>
-            </div>
-            <div className="rounded-none border border-white/[0.08] bg-[#08090C] p-3.5">
-              <div className="font-mono text-[10px] uppercase tracking-wider text-[#ff7ac6]">
-                [02] DIRECT SUPPORT LINE
-              </div>
-              <div className="mt-1 font-mono text-sm font-bold text-white tabular-nums">
-                1300 238 243
-              </div>
-            </div>
-            <div className="rounded-none border border-white/[0.08] bg-[#08090C] p-3.5">
-              <div className="font-mono text-[10px] uppercase tracking-wider text-[#ff7ac6]">
-                [03] MELBOURNE COVERAGE
-              </div>
-              <div className="mt-1 font-display text-sm font-semibold text-white">
-                {suburbName ? `${suburbName} & Surrounds` : '11 Metropolitan Corridors'}
-              </div>
-            </div>
-            <div className="rounded-none border border-white/[0.08] bg-[#08090C] p-3.5">
-              <div className="font-mono text-[10px] uppercase tracking-wider text-[#ff7ac6]">
-                [04] CMS REVISION
-              </div>
-              <div className="mt-1 font-mono text-xs text-slate-300 tabular-nums">
-                Rev #{isPreviewActive ? pageRecord.draftRevision : pageRecord.publishedRevision} •{' '}
-                {isPreviewActive ? 'DRAFT' : 'PUBLISHED'}
-              </div>
-            </div>
-          </div>
-        </div>
+        </motion.div>
       </section>
 
-      {/* Structured CMS Content & Bento Insights */}
-      <section className="mx-auto max-w-[1760px] px-3 py-12 sm:px-5 lg:px-7">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-          <div className="space-y-6 lg:col-span-8">
-            {/* Key Highlights Card */}
+      {/* Clean Apple Content Grid */}
+      <section
+        dir="rtl"
+        className="mx-auto max-w-[1320px] px-4 py-10 sm:px-6 lg:px-8"
+      >
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div className="space-y-8 lg:col-span-8">
+            {/* Official beta.ir Category Products Showcase with Real Photos */}
+            {(() => {
+              const matchedCats = BETA_OFFICIAL_CATEGORIES.filter((c) => {
+                if (c.internalHref === cleanSlugKey) return true;
+                if (
+                  cleanSlugKey === '/insulated-sectional-garage-doors' ||
+                  cleanSlugKey === '/single-skin-sectional-garage-doors'
+                ) {
+                  return c.id === 'gate-openers';
+                }
+                return false;
+              });
+
+              if (matchedCats.length === 0) return null;
+
+              return matchedCats.map((cat) => (
+                <article
+                  key={cat.id}
+                  className="apple-card rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-6 sm:p-8 shadow-[0_8px_28px_rgba(0,0,0,0.03)] space-y-6"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/[0.06] dark:border-white/[0.08] pb-4">
+                    <div>
+                      <div className="text-xs font-extrabold text-[#EC008C]">
+                        کاتالوگ رسمی شرکت بتا (BETA.IR)
+                      </div>
+                      <h2 className="mt-1 text-xl sm:text-2xl font-black text-[#1D1D1F] dark:text-white">
+                        تمامی محصولات گروه {cat.title}
+                      </h2>
+                    </div>
+                    <Link
+                      href={`/products?cat=${cat.id}`}
+                      className="inline-flex items-center gap-1 text-xs font-extrabold text-[#EC008C] hover:underline"
+                    >
+                      <span>مشاهده در کاتالوگ جامع</span>
+                      <ChevronLeft className="h-4 w-4" />
+                    </Link>
+                  </div>
+
+                  {cat.subCategories.map((sub) => (
+                    <div key={sub.id} className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-sm sm:text-base font-extrabold text-[#EC008C]">
+                          {sub.title} ({sub.products.length} محصول)
+                        </h3>
+                      </div>
+
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
+                        {sub.products.map((prod) => (
+                          <Link
+                            key={prod.id}
+                            href={`/products?cat=${cat.id}&sub=${sub.id}&q=${encodeURIComponent(prod.title)}`}
+                            className="group rounded-2xl bg-[#F5F5F7] dark:bg-[#1E2029] border border-black/[0.04] dark:border-white/[0.06] hover:border-[#EC008C]/50 p-3 flex flex-col justify-between transition-all"
+                          >
+                            <div className="aspect-square w-full rounded-xl bg-[#ECECEE] overflow-hidden flex items-center justify-center p-3 mb-2.5">
+                              <img
+                                src={prod.image}
+                                alt={prod.title}
+                                referrerPolicy="no-referrer"
+                                className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
+                              />
+                            </div>
+                            <div>
+                              <div className="text-xs sm:text-[13px] font-black text-[#1D1D1F] dark:text-white group-hover:text-[#EC008C] line-clamp-2 leading-snug">
+                                {prod.title}
+                              </div>
+                              <div
+                                dir="ltr"
+                                className="text-[10px] font-mono font-bold text-[#86868B] mt-1"
+                              >
+                                {prod.sku}
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </article>
+              ));
+            })()}
+
+            {/* Key Highlights & Specs Card */}
             {pageRecord.highlights && pageRecord.highlights.length > 0 && (
-              <article className="hud-corner-brackets brand-animated-border relative overflow-hidden rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8">
-                <div className="flex items-center justify-between gap-4 pb-3 border-b border-white/[0.07]">
-                  <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-[#EC008C]">
-                    ENGINEERED HIGHLIGHTS
-                  </span>
-                  <span className="rounded-none border border-white/15 bg-[#08090C] px-3 py-0.5 font-mono text-[10px] text-slate-400">
-                    {pageRecord.slug}
-                  </span>
+              <article className="apple-card rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-7 sm:p-10 shadow-[0_8px_28px_rgba(0,0,0,0.03)]">
+                <div className="text-xs font-bold text-[#EC008C]">
+                  ویژگی‌های کلیدی
                 </div>
-                <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                  Key Capabilities &amp; Operational Scope
+                <h2 className="mt-1 text-2xl font-bold tracking-tight text-[#1D1D1F] dark:text-white sm:text-3xl">
+                  مشخصات و مزایای فنی
                 </h2>
-                <ul className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <ul className="mt-6 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
                   {pageRecord.highlights.map((bullet, idx) => (
                     <li
                       key={idx}
-                      className="flex items-start gap-2.5 rounded-none border border-white/[0.08] bg-[#08090C] p-3.5 text-xs text-slate-200"
+                      className="flex items-start gap-2.5 rounded-2xl bg-[#F5F5F7] dark:bg-[#1D1D1F] p-4 text-sm text-[#1D1D1F] dark:text-[#F5F5F7] leading-relaxed"
                     >
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                      <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-[#EC008C]" />
                       <span>{bullet}</span>
                     </li>
                   ))}
                 </ul>
 
                 {pageRecord.specs && pageRecord.specs.length > 0 && (
-                  <div className="mt-6 overflow-hidden rounded-none border border-white/[0.09] bg-[#08090C]">
-                    <div className="border-b border-white/[0.08] bg-[#0B0C10] px-4 py-2.5 font-mono text-[11px] font-bold uppercase tracking-wider text-[#ff7ac6]">
-                      Technical Specification Matrix
+                  <div className="mt-8 overflow-hidden rounded-2xl bg-[#F5F5F7] dark:bg-[#1D1D1F] p-5">
+                    <div className="pb-3 border-b border-black/[0.06] dark:border-white/[0.08] text-xs font-bold text-[#EC008C]">
+                      جدول مشخصات فنی
                     </div>
-                    <dl className="divide-y divide-white/[0.06]">
+                    <dl className="divide-y divide-black/[0.06] dark:divide-white/[0.08]">
                       {pageRecord.specs.map((spec, idx) => (
                         <div
                           key={idx}
-                          className="grid grid-cols-1 gap-1 px-4 py-3 text-xs sm:grid-cols-3 sm:gap-4"
+                          className="grid grid-cols-1 gap-1 py-3 text-sm sm:grid-cols-3 sm:gap-4"
                         >
-                          <dt className="font-mono text-slate-400">{spec.label}</dt>
-                          <dd className="font-mono font-semibold text-white sm:col-span-2 tabular-nums">
+                          <dt className="text-[#6E6E73] dark:text-[#A1A1A6]">
+                            {spec.label}
+                          </dt>
+                          <dd className="font-bold text-[#1D1D1F] dark:text-white sm:col-span-2 tabular-nums">
                             {spec.value} {spec.unit || ''}
                           </dd>
                         </div>
@@ -374,24 +411,15 @@ function DynamicCmsPageContent() {
             )}
 
             {/* Structured CMS Sections */}
-            {activeSections.map((section, index) => (
+            {activeSections.map((section) => (
               <article
                 key={section.id}
-                className="hud-corner-brackets brand-animated-border relative overflow-hidden rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8"
+                className="apple-card rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-7 sm:p-10 shadow-[0_8px_28px_rgba(0,0,0,0.03)]"
               >
-                <div className="flex items-center justify-between gap-4 pb-3 border-b border-white/[0.07]">
-                  <span className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-[#EC008C]">
-                    SECTION 0{index + 1} • {section.type.toUpperCase().replace(/_/g, ' ')}
-                  </span>
-                  <span className="rounded-none border border-white/15 bg-[#08090C] px-3 py-0.5 font-mono text-[10px] text-slate-400">
-                    {section.motionPreset}
-                  </span>
-                </div>
-
-                <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                <h2 className="text-2xl font-bold tracking-tight text-[#1D1D1F] dark:text-white sm:text-3xl">
                   {section.title}
                 </h2>
-                <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
+                <p className="mt-2.5 text-base leading-relaxed text-[#6E6E73] dark:text-[#A1A1A6]">
                   {section.subtitle}
                 </p>
 
@@ -400,24 +428,24 @@ function DynamicCmsPageContent() {
                     {section.items.map((item) => (
                       <div
                         key={item.id}
-                        className="rounded-none border border-white/[0.08] bg-[#08090C] p-4"
+                        className="rounded-2xl bg-[#F5F5F7] dark:bg-[#1D1D1F] p-5 space-y-1.5"
                       >
                         {item.tag && (
-                          <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#EC008C]">
+                          <span className="text-xs font-bold text-[#EC008C]">
                             {item.tag}
                           </span>
                         )}
-                        <div className="mt-1 flex items-baseline justify-between gap-2">
-                          <h3 className="font-display text-base font-semibold text-white">
+                        <div className="flex items-baseline justify-between gap-2">
+                          <h3 className="text-base font-bold text-[#1D1D1F] dark:text-white">
                             {item.title}
                           </h3>
                           {item.metric && (
-                            <span className="font-mono text-xs font-bold text-[#ff7ac6] tabular-nums">
+                            <span className="text-xs font-bold text-[#EC008C] tabular-nums">
                               {item.metric}
                             </span>
                           )}
                         </div>
-                        <p className="mt-1.5 text-xs leading-relaxed text-slate-400">
+                        <p className="text-sm leading-relaxed text-[#6E6E73] dark:text-[#A1A1A6]">
                           {item.description}
                         </p>
                       </div>
@@ -429,40 +457,34 @@ function DynamicCmsPageContent() {
 
             {/* Connected Category Ranges */}
             {relatedCatalogPages.length > 0 && (
-              <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8">
-                <div className="flex items-center justify-between pb-3 border-b border-white/[0.07]">
-                  <div>
-                    <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#ff7ac6]">
-                      Connected Ranges &amp; Sub-Categories
-                    </p>
-                    <h2 className="mt-1 font-display text-2xl font-semibold text-white">
-                      Explore Related BETA DOORS Pages
-                    </h2>
+              <div className="rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-7 sm:p-10 shadow-[0_8px_28px_rgba(0,0,0,0.03)]">
+                <div className="mb-6">
+                  <div className="text-xs font-bold text-[#EC008C]">
+                    سایر محصولات مرتبط
                   </div>
-                  <Sliders className="h-5 w-5 text-[#EC008C]" />
+                  <h2 className="mt-1 text-2xl font-bold text-[#1D1D1F] dark:text-white">
+                    صفحات و زیرمجموعه‌های مرتبط
+                  </h2>
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {relatedCatalogPages.map((child) => (
                     <Link
                       key={child.slug}
                       href={child.slug}
-                      className="group hud-corner-brackets flex flex-col justify-between rounded-none border border-white/[0.09] bg-[#08090C] p-5 transition hover:border-[#EC008C]/60"
+                      className="apple-card group flex flex-col justify-between rounded-2xl bg-[#F5F5F7] dark:bg-[#1D1D1F] p-5"
                     >
                       <div>
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#EC008C]">
-                          {child.category.replace(/_/g, ' ')}
-                        </span>
-                        <h3 className="mt-1.5 font-display text-lg font-semibold text-white group-hover:text-[#EC008C]">
+                        <h3 className="text-base font-bold text-[#1D1D1F] dark:text-white group-hover:text-[#EC008C] transition-colors">
                           {child.title}
                         </h3>
-                        <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-slate-400">
+                        <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-[#6E6E73] dark:text-[#A1A1A6]">
                           {child.leadDescription}
                         </p>
                       </div>
-                      <div className="mt-4 flex items-center justify-between border-t border-white/[0.07] pt-3 font-mono text-[11px] text-slate-300">
-                        <span>{child.slug}</span>
-                        <ArrowUpRight className="h-4 w-4 text-[#EC008C] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      <div className="mt-4 flex items-center gap-1 text-xs font-bold text-[#EC008C]">
+                        <span>مشاهده</span>
+                        <ChevronLeft className="h-3.5 w-3.5" />
                       </div>
                     </Link>
                   ))}
@@ -472,33 +494,33 @@ function DynamicCmsPageContent() {
 
             {/* Direct Online Shop Hardware Strip */}
             {pageRecord.category !== 'legal' && (
-              <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8">
-                <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/[0.07]">
+              <div className="rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-7 sm:p-10 shadow-[0_8px_28px_rgba(0,0,0,0.03)]">
+                <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
                   <div>
-                    <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#ff7ac6]">
-                      Single Commerce Authority • AUD GST Included
-                    </p>
-                    <h2 className="mt-1 font-display text-2xl font-semibold text-white">
-                      Compatible BETA Automation Hardware
+                    <div className="text-xs font-bold text-[#EC008C]">
+                      فروشگاه آنلاین بتا
+                    </div>
+                    <h2 className="mt-1 text-2xl font-bold text-[#1D1D1F] dark:text-white">
+                      پکیج‌های آماده سفارش
                     </h2>
                   </div>
                   <Link
                     href="/shop"
-                    className="inline-flex items-center gap-1.5 rounded-none border border-white/15 bg-[#08090C] px-4 py-2 text-xs font-mono font-semibold text-white transition hover:bg-white/[0.08]"
+                    className="inline-flex items-center gap-1 text-sm font-bold text-[#EC008C] hover:opacity-80"
                   >
-                    <span>VIEW ALL 5 SHOP PRODUCTS</span>
-                    <ArrowUpRight className="h-3.5 w-3.5 text-[#EC008C]" />
+                    <span>مشاهده فروشگاه</span>
+                    <ChevronLeft className="h-4 w-4" />
                   </Link>
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {products.slice(0, 4).map((product) => (
                     <Link
                       key={product.id}
                       href={product.path}
-                      className="group hud-corner-brackets flex flex-col justify-between rounded-none border border-white/[0.09] bg-[#08090C] p-4 transition hover:border-[#EC008C]/60"
+                      className="apple-card group flex flex-col justify-between rounded-2xl bg-[#F5F5F7] dark:bg-[#1D1D1F] p-4"
                     >
-                      <div className="aspect-video w-full overflow-hidden rounded-none border border-white/[0.08] bg-[#12141A]">
+                      <div className="aspect-video w-full overflow-hidden rounded-xl border border-black/[0.04] bg-[#F5F5F7]">
                         <ProductTechnicalArtwork
                           type={product.imageSvgType}
                           customImageUrl={product.customImageUrl}
@@ -506,23 +528,13 @@ function DynamicCmsPageContent() {
                           className="h-full w-full"
                         />
                       </div>
-                      <div className="mt-4">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="font-mono text-[10px] text-slate-400">
-                            SKU: {product.sku}
-                          </span>
-                          <span className="font-mono text-xs font-bold text-[#ff7ac6] tabular-nums">
-                            {product.maxPriceCents
-                              ? `${formatAudCents(product.priceCents)} – ${formatAudCents(product.maxPriceCents)}`
-                              : formatAudCents(product.priceCents)}
-                          </span>
+                      <div className="mt-4 space-y-1">
+                        <div className="text-xs font-bold text-[#EC008C] tabular-nums">
+                          {formatAudCents(product.priceCents)}
                         </div>
-                        <h3 className="mt-1 font-display text-base font-semibold text-white group-hover:text-[#EC008C]">
+                        <h3 className="text-base font-bold text-[#1D1D1F] dark:text-white group-hover:text-[#EC008C] transition-colors">
                           {product.name}
                         </h3>
-                        <p className="mt-1 line-clamp-2 text-xs text-slate-400">
-                          {product.shortDescription}
-                        </p>
                       </div>
                     </Link>
                   ))}
@@ -530,19 +542,16 @@ function DynamicCmsPageContent() {
               </div>
             )}
 
-            {/* Local Melbourne Suburb Directory */}
+            {/* Local Regional Hub Directory */}
             {(pageRecord.category === 'local_services' ||
               pageRecord.category === 'services') && (
-              <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6 sm:p-8">
-                <div className="flex items-center gap-2.5">
+              <div className="rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-7 sm:p-10 shadow-[0_8px_28px_rgba(0,0,0,0.03)]">
+                <div className="flex items-center gap-2">
                   <MapPin className="h-5 w-5 text-[#EC008C]" />
-                  <h2 className="font-display text-xl font-semibold text-white">
-                    Greater Melbourne Local Repair &amp; Automation Corridors (11 Suburbs)
+                  <h2 className="text-xl font-bold text-[#1D1D1F] dark:text-white">
+                    مراکز پخش و شعب خدمات شرکت بتا
                   </h2>
                 </div>
-                <p className="mt-2 text-xs text-slate-400">
-                  Every local service page retains its dedicated URL slug and direct technical booking workflow.
-                </p>
                 <div className="mt-5 grid grid-cols-1 gap-2.5 sm:grid-cols-2 md:grid-cols-3">
                   {siblingLocalPages.map((suburbPage) => {
                     const isCurrent = suburbPage.slug === pageRecord.slug;
@@ -550,16 +559,16 @@ function DynamicCmsPageContent() {
                       <Link
                         key={suburbPage.slug}
                         href={suburbPage.slug}
-                        className={`flex items-center justify-between rounded-none border px-3.5 py-2.5 text-xs transition ${
+                        className={`flex items-center justify-between rounded-2xl px-4 py-3 text-xs font-bold transition ${
                           isCurrent
-                            ? 'keep-white-text border-[#EC008C] bg-[#EC008C] font-semibold text-white'
-                            : 'border-white/[0.08] bg-[#08090C] text-slate-300 hover:border-[#EC008C]/50 hover:text-white'
+                            ? 'keep-white-text bg-[#EC008C] text-white'
+                            : 'bg-[#F5F5F7] dark:bg-[#1D1D1F] text-[#1D1D1F] dark:text-white hover:text-[#EC008C]'
                         }`}
                       >
                         <span className="truncate">
                           {suburbPage.location?.name || suburbPage.title}
                         </span>
-                        <ArrowUpRight className="h-3.5 w-3.5 shrink-0 opacity-70" />
+                        <ChevronLeft className="h-3.5 w-3.5 shrink-0 opacity-70" />
                       </Link>
                     );
                   })}
@@ -568,84 +577,86 @@ function DynamicCmsPageContent() {
             )}
           </div>
 
-          {/* Right Column: Contextual Enquiry / Booking Form + Manuals Quick Access */}
+          {/* Right Column: Contextual Enquiry Form + Manuals Quick Access */}
           <aside id="page-enquiry-desk" className="space-y-6 lg:col-span-4">
             <EnquiryForm
               sourcePagePath={pageRecord.slug}
               productContext={activeTitle}
               heading={
                 suburbName
-                  ? `Book ${suburbName} Door Repair or Quote`
-                  : 'Request Measure, Quote or Repair'
+                  ? `درخواست خدمات (${suburbName})`
+                  : 'استعلام قیمت و مشاوره'
               }
-              subheading="Direct routing to Campbellfield operations (1300 238 243). All submissions persist to the Admin Triage Queue."
+              subheading="ارتباط مستقیم با دفتر مرکزی شرکت بتا در تهران (۰۲۱-۸۸۴۰۴۴۰۷)."
             />
 
             {/* Downloadable Manuals Card */}
-            <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6">
-              <div className="flex items-center justify-between pb-2 border-b border-white/[0.07]">
-                <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#EC008C]">
-                  Technical PDF Library
+            <div className="rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-6 shadow-[0_8px_28px_rgba(0,0,0,0.03)]">
+              <div className="flex items-center justify-between pb-2">
+                <span className="text-xs font-bold text-[#EC008C]">
+                  راهنمای نصب و اپ‌ها
                 </span>
                 <FileText className="h-4 w-4 text-[#EC008C]" />
               </div>
-              <h3 className="mt-3 font-display text-lg font-semibold text-white">
-                Installation &amp; Programming Manuals
+              <h3 className="text-lg font-bold text-[#1D1D1F] dark:text-white">
+                کاتالوگ‌ها و نقشه‌های سیم‌کشی
               </h3>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-4 space-y-2">
                 {manuals.map((manual) => (
                   <li key={manual.id}>
                     <a
                       href={manual.localDownloadPath}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between rounded-none border border-white/[0.08] bg-[#08090C] px-3.5 py-2.5 text-xs text-slate-200 transition hover:border-[#EC008C]/60 hover:text-white"
+                      className="flex items-center justify-between rounded-2xl bg-[#F5F5F7] dark:bg-[#1D1D1F] px-4 py-3 text-xs font-medium text-[#1D1D1F] dark:text-white hover:text-[#EC008C] transition-colors"
                     >
-                      <span className="truncate pr-2">{manual.label}</span>
-                      <span className="shrink-0 font-mono text-[10px] text-[#ff7ac6]">
-                        {manual.version}
+                      <span className="truncate pl-2">{manual.label}</span>
+                      <span className="shrink-0 font-bold text-[#EC008C]">
+                        PDF
                       </span>
                     </a>
                   </li>
                 ))}
               </ul>
-              <div className="mt-4 flex flex-col gap-2 border-t border-white/[0.07] pt-4 text-xs font-mono">
+              <div className="mt-4 flex flex-col gap-2 border-t border-black/[0.06] dark:border-white/[0.08] pt-4 text-xs font-bold">
                 <Link
                   href="/warranty-registration"
-                  className="inline-flex items-center justify-between text-slate-300 hover:text-[#EC008C]"
+                  className="inline-flex items-center justify-between text-[#1D1D1F] dark:text-white hover:text-[#EC008C]"
                 >
-                  <span>REGISTER PRODUCT WARRANTY</span>
-                  <ArrowUpRight className="h-3.5 w-3.5" />
+                  <span>ثبت آنلاین گارانتی محصول</span>
+                  <ChevronLeft className="h-3.5 w-3.5" />
                 </Link>
                 <Link
                   href="/register-to-service"
-                  className="inline-flex items-center justify-between text-slate-300 hover:text-[#EC008C]"
+                  className="inline-flex items-center justify-between text-[#1D1D1F] dark:text-white hover:text-[#EC008C]"
                 >
-                  <span>SCHEDULE ANNUAL SERVICE</span>
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </Link>
-                <Link
-                  href="/garage-door-spring-estimator"
-                  className="inline-flex items-center justify-between text-slate-300 hover:text-[#EC008C]"
-                >
-                  <span>TORSION SPRING ESTIMATOR</span>
-                  <ArrowUpRight className="h-3.5 w-3.5" />
+                  <span>پذیرش تعمیر و خدمات پس از فروش</span>
+                  <ChevronLeft className="h-3.5 w-3.5" />
                 </Link>
               </div>
             </div>
 
-            {/* Australian Consumer Law & Safety Callout */}
-            <div className="hud-corner-brackets rounded-none border border-white/[0.09] bg-[#0B0C10] p-6">
-              <div className="flex items-center gap-2 text-xs font-semibold text-white">
-                <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                <span>Safety &amp; Australian Consumer Law</span>
+            {/* Safety & Warranty Callout */}
+            <div className="rounded-[28px] bg-white dark:bg-[#161617] border border-black/[0.05] dark:border-white/[0.08] p-6 shadow-[0_8px_28px_rgba(0,0,0,0.03)] space-y-2">
+              <div className="flex items-center gap-2 text-sm font-bold text-[#1D1D1F] dark:text-white">
+                <ShieldCheck className="h-4 w-4 text-emerald-500" />
+                <span>گارانتی رسمی شرکت بتا</span>
               </div>
-              <p className="mt-2 text-xs leading-relaxed text-slate-400">
-                High-tension garage door springs and 240V mains wiring must only be serviced by qualified technicians. All products come with guarantees that cannot be excluded under the Australian Consumer Law.
+              <p className="text-xs leading-relaxed text-[#6E6E73] dark:text-[#A1A1A6]">
+                کلیه محصولات اصلی دارای هولوگرام و خدمات پس از فروش ۲ الی ۷ روز
+                کاری در واحد مرکزی تهران می‌باشند.
               </p>
-              <div className="mt-3 flex items-center gap-2 font-mono text-[11px] text-slate-300">
+              <div className="pt-1 flex items-center gap-2 text-xs font-bold text-[#1D1D1F] dark:text-white">
                 <Clock className="h-3.5 w-3.5 text-[#EC008C]" />
-                <span>Mon–Fri 8:00am–5:30pm AEST • 1300 238 243</span>
+                <span>شنبه تا چهارشنبه ۸:۰۰ الی ۱۷:۳۰</span>
+                <a
+                  href="tel:02188404407"
+                  dir="ltr"
+                  className="text-[#EC008C] inline-flex items-center gap-1"
+                >
+                  <Phone className="h-3 w-3" />
+                  021-88404407
+                </a>
               </div>
             </div>
           </aside>
@@ -660,8 +671,8 @@ export default function DynamicCmsPage() {
     <Suspense
       fallback={
         <SiteShell>
-          <div className="mx-auto max-w-[1760px] px-4 py-20 sm:px-8">
-            <div className="h-[460px] animate-pulse rounded-none border border-white/10 bg-[#0B0D11]" />
+          <div className="mx-auto max-w-[1320px] px-4 py-20 sm:px-8">
+            <div className="h-[360px] animate-pulse rounded-[32px] bg-white dark:bg-[#161617]" />
           </div>
         </SiteShell>
       }

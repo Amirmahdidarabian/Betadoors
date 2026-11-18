@@ -28,9 +28,9 @@ export default function WarrantyRegistrationPage() {
   const [street, setStreet] = useState('');
   const [addressLine2, setAddressLine2] = useState('');
   const [suburb, setSuburb] = useState('');
-  const [state, setState] = useState('VIC');
+  const [state, setState] = useState('تهران');
   const [postcode, setPostcode] = useState('');
-  const [country, setCountry] = useState('Australia');
+  const [country, setCountry] = useState('ایران');
 
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -57,7 +57,7 @@ export default function WarrantyRegistrationPage() {
         country,
       });
       if (!res.ok) {
-        setError(String(res.error || 'Validation failed.'));
+        setError(String(res.error || 'خطا در اعتبارسنجی اطلاعات گارانتی.'));
       } else {
         setReferenceCode(String(res.referenceCode));
       }
@@ -70,103 +70,104 @@ export default function WarrantyRegistrationPage() {
     <SiteShell>
       {/* 1. DeFi 16:9 Atmospheric Hero Stage */}
       <DeFiPageHeroStage
-        ariaLabel="BETA DOORS Warranty Registration 16:9 Hero Stage"
-        badgeText="Official BETA DOORS Product Protection · Australian Consumer Law"
+        ariaLabel="پرتال ثبت گارانتی محصولات شرکت بتا"
+        badgeText="گارانتی و خدمات پس از فروش رسمی شرکت بتا · BETA.IR"
         badgeHref="#warranty-registration-form"
-        headlinePrimary="BETA DOORS Warranty"
-        headlineGradient="Registration Portal"
-        subheadline="Enjoy peace of mind with our 7-year warranty on Garage Door Openers and 5-year warranty on Roller Door Openers. Register your product serial number, dealer code, and installation date below."
-        primaryCtaLabel="Register Serial Number"
+        headlinePrimary="پرتال ثبت آنلاین گارانتی"
+        headlineGradient="محصولات شرکت بتا"
+        subheadline="جهت بهره‌مندی از خدمات گارانتی و وارانتی شرکت بتا (موتورهای کرکره برقی، جک‌های پارکینگی بازویی و ریلی، بردهای کنترل و چشم‌های الکترونیکی)، شماره سریال دستگاه و کد نمایندگی نصب را در سامانه ثبت نمایید."
+        primaryCtaLabel="ثبت شماره سریال محصول"
         primaryCtaHref="#warranty-registration-form"
-        secondaryCtaLabel="Register to Service"
+        secondaryCtaLabel="فرم پذیرش تعمیر و خدمات"
         secondaryCtaHref="/register-to-service"
         scrollTargetId="warranty-registration-form"
         topLeftNode={{
-          label: 'Sectional Openers',
-          metric: '7 Years Warranty',
-          href: '/sectional-and-tilt-door-opener-range',
+          label: 'موتورها و جک‌های بتا',
+          metric: 'گارانتی معتبر شرکتی',
+          href: '/products',
         }}
         topRightNode={{
-          label: 'Roller Openers',
-          metric: '5 Years Warranty',
-          href: '/roller-door-opener-range',
+          label: 'مدت زمان تعمیرات',
+          metric: '۲ الی ۷ روز کاری',
+          href: '/services',
         }}
         bottomLeftNode={{
-          label: 'Serial Validation',
-          metric: 'Dealer Verified',
+          label: 'استعلام اصالت کالا',
+          metric: 'تایید سریال و نماینده',
           href: '#warranty-registration-form',
         }}
         bottomRightNode={{
-          label: 'Annual Servicing',
-          metric: 'Proof Upload',
-          href: '/register-to-service',
+          label: 'تلفن واحد خدمات',
+          metric: '021-88404407',
+          href: 'tel:02188404407',
         }}
         horizonSlides={[
-          { label: '01/04 . Warranty Registration', tag: 'Serial Number & Dealer Code Verification' },
-          { label: '02/04 . 7-Year Opener Warranty', tag: 'Sectional & Tilt Door Openers (1000N–1500N)' },
-          { label: '03/04 . 5-Year RDO Warranty', tag: 'Roller Door Openers (1000N–1800N)' },
-          { label: '04/04 . Australian Consumer Law', tag: 'Campbellfield VIC Support Desk (1300 238 243)' },
+          { label: '01/04 . ثبت سریال گارانتی', tag: 'احراز اصالت موتورهای کرکره، جک‌های پارکینگی و بردهای بتا' },
+          { label: '02/04 . خدمات ۲ الی ۷ روز کاری', tag: 'تعمیر و سرویس تخصصی در واحد خدمات مرکزی تهران' },
+          { label: '03/04 . سقف تعمیر بدون هماهنگی', tag: 'تعمیر وارانتی تا سقف ۱,۰۰۰,۰۰۰ ریال بدون نیاز به تماس قبلی' },
+          { label: '04/04 . پشتیبانی فنی سراسری', tag: '۰۲۱-۸۸۴۰۴۴۰۷ الی ۴۰۹ · مسیل باختر، پلاک ۱۲' },
         ]}
       />
 
       {/* 2. DeFi Bento Warranty Coverage Strip + Interactive Registration Form */}
       <div
         id="warranty-registration-form"
+        dir="rtl"
         className="px-4 sm:px-8 lg:px-12 py-12 max-w-[1440px] mx-auto space-y-12"
       >
         {/* 3-Card DeFi Bento Coverage Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="rounded-[24px] bg-[#0B0C0F] border border-white/[0.08] p-6 space-y-3 shadow-[0_20px_50px_rgba(0,0,0,0.65)]">
+          <div className="hud-corner-brackets rounded-none bg-[#0B0C0F] border border-white/[0.08] p-6 space-y-3 shadow-[0_20px_50px_rgba(0,0,0,0.65)]">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-mono uppercase tracking-wider text-[#EC008C]">
-                GARAGE DOOR OPENERS
+                جک پارکینگی و موتور کرکره
               </span>
               <Award className="w-4 h-4 text-emerald-400" />
             </div>
-            <div className="text-3xl font-light text-white tabular-nums">7 Years Warranty</div>
+            <div className="text-2xl font-bold text-white">گارانتی رسمی شرکت بتا</div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Enjoy peace of mind with our 7-year warranty on BETA DOORS sectional and tilt garage door openers (1000N, 1200N, and 1500N models).
+              پوشش کامل گارانتی و تامین قطعات اورجینال برای کلیه جک‌های بازویی (B400/B500/B550)، جک ریلی (B600) و موتورهای کرکره ساید و توبولار بتا.
             </p>
           </div>
 
-          <div className="rounded-[24px] bg-[#0B0C0F] border border-white/[0.08] p-6 space-y-3 shadow-[0_20px_50px_rgba(0,0,0,0.65)]">
+          <div className="hud-corner-brackets rounded-none bg-[#0B0C0F] border border-white/[0.08] p-6 space-y-3 shadow-[0_20px_50px_rgba(0,0,0,0.65)]">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-mono uppercase tracking-wider text-[#EC008C]">
-                ROLLER DOOR OPENERS
+                ضوابط پذیرش خدمات
               </span>
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
             </div>
-            <div className="text-3xl font-light text-white tabular-nums">5 Years Warranty</div>
+            <div className="text-2xl font-bold text-white tabular-nums">۲ الی ۷ روز کاری</div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Backed by a 5-year warranty for long-term reliability across our 1000N to 1800N residential and heavy-duty roller door operators.
+              کلیه تعمیرات گارانتی و وارانتی در واحد خدمات پس از فروش تهران (مسیل باختر، پلاک ۱۲) بین ۲ الی ۷ روز کاری انجام و تست نهایی می‌شود.
             </p>
           </div>
 
-          <div className="rounded-[24px] bg-[#0B0C0F] border border-white/[0.08] p-6 space-y-3 shadow-[0_20px_50px_rgba(0,0,0,0.65)]">
+          <div className="hud-corner-brackets rounded-none bg-[#0B0C0F] border border-white/[0.08] p-6 space-y-3 shadow-[0_20px_50px_rgba(0,0,0,0.65)]">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
-                SERVICE &amp; MANUALS
+                پذیرش تعمیر و نقشه‌های فنی
               </span>
               <Wrench className="w-4 h-4 text-[#EC008C]" />
             </div>
-            <div className="text-xl font-semibold text-white">Need Service or Manuals?</div>
+            <div className="text-xl font-semibold text-white">نیاز به تعمیر یا کاتالوگ دارید؟</div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Upload purchase proof to book a service visit or download official PDF installation manuals.
+              جهت ارسال دستگاه به واحد تعمیرات یا دانلود دفترچه راهنمای بردها و نرم‌افزارهای موبایل از لینک‌های زیر استفاده کنید:
             </p>
             <div className="flex flex-wrap gap-2 pt-1">
               <Link
                 href="/register-to-service"
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-xs text-white"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-none bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-xs text-white"
               >
-                <span>Register to Service</span>
+                <span>فرم پذیرش تعمیر</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
               <Link
                 href="/beta-doors-manuals"
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-xs text-white"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-none bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-xs text-white"
               >
                 <FileText className="w-3.5 h-3.5 text-[#EC008C]" />
-                <span>PDF Manuals</span>
+                <span>اپلیکیشن‌ها و کاتالوگ PDF</span>
               </Link>
             </div>
           </div>
@@ -175,15 +176,15 @@ export default function WarrantyRegistrationPage() {
         {/* Registration Form Container */}
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="space-y-2 text-center">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono text-slate-300">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-none bg-white/[0.04] border border-white/10 text-[11px] font-mono text-slate-300">
               <Sparkles className="w-3.5 h-3.5 text-[#EC008C]" />
-              <span>OFFICIAL WARRANTY REGISTRATION FORM</span>
+              <span>BETA.IR · فرم رسمی ثبت گارانتی محصولات بتا</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-semibold text-white tracking-tight">
-              Register Your BETA DOORS Product
+              ثبت مشخصات محصول و فعال‌سازی گارانتی
             </h2>
             <p className="text-xs sm:text-sm text-slate-400 max-w-2xl mx-auto leading-relaxed">
-              Enter your BETA DOORS product serial number, authorised dealer code, and Australian installation date (<code className="font-mono text-slate-200">dd/mm/yyyy</code>).
+              شماره سریال درج‌شده روی بدنه محصول، کد نمایندگی مجاز و تاریخ نصب (<code className="font-mono text-slate-200">dd/mm/yyyy</code>) را وارد نمایید.
             </p>
           </div>
 
@@ -191,33 +192,33 @@ export default function WarrantyRegistrationPage() {
             <div
               role="status"
               aria-live="polite"
-              className="bg-emerald-950/60 border border-emerald-500/40 rounded-[26px] p-8 space-y-4 text-emerald-100 shadow-2xl"
+              className="bg-emerald-950/60 border border-emerald-500/40 rounded-none p-8 space-y-4 text-emerald-100 shadow-2xl"
             >
               <div className="flex items-center gap-2 text-lg font-bold text-white">
                 <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                <span>Warranty Registration Submitted · Reference {referenceCode}</span>
+                <span>ثبت گارانتی با موفقیت انجام شد · کد رهگیری: {referenceCode}</span>
               </div>
               <p className="text-xs sm:text-sm text-emerald-200/90">
-                Your registration has been recorded in state <code className="font-mono">submitted</code> for verification by our Campbellfield support staff in the Admin Workspace.
+                اطلاعات گارانتی دستگاه شما در سامانه مرکزی خدمات پس از فروش شرکت بتا ثبت گردید و پس از بررسی کارشناسان تایید نهایی خواهد شد.
               </p>
               <button
                 type="button"
                 onClick={() => setReferenceCode(null)}
-                className="px-5 py-2.5 rounded-full bg-white text-slate-950 text-xs font-semibold hover:bg-slate-200 transition-colors"
+                className="px-5 py-2.5 rounded-none bg-white text-slate-950 text-xs font-semibold hover:bg-slate-200 transition-colors"
               >
-                Register Another Unit
+                ثبت محصول جدید دیگر
               </button>
             </div>
           ) : (
             <form
               onSubmit={handleSubmit}
               noValidate
-              className="bg-[#0B0C0F] border border-white/[0.08] rounded-[28px] p-6 sm:p-10 space-y-7 shadow-[0_24px_70px_rgba(0,0,0,0.75)]"
+              className="hud-corner-brackets bg-[#0B0C0F] border border-white/[0.08] rounded-none p-6 sm:p-10 space-y-7 shadow-[0_24px_70px_rgba(0,0,0,0.75)]"
             >
               {error && (
                 <div
                   role="alert"
-                  className="p-4 rounded-2xl bg-rose-950/60 border border-rose-500/40 text-xs text-rose-200"
+                  className="p-4 rounded-none bg-rose-950/60 border border-rose-500/40 text-xs text-rose-200"
                 >
                   {error}
                 </div>
@@ -225,7 +226,7 @@ export default function WarrantyRegistrationPage() {
 
               <div className="space-y-4">
                 <h3 className="text-base font-semibold text-white">
-                  1. Installation &amp; Serial Details
+                  ۱. مشخصات فنی دستگاه و نصب
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
@@ -233,7 +234,7 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-serial"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      Product serial number *
+                      شماره سریال محصول *
                     </label>
                     <input
                       id="war-serial"
@@ -241,8 +242,8 @@ export default function WarrantyRegistrationPage() {
                       required
                       value={serialNumber}
                       onChange={(e) => setSerialNumber(e.target.value)}
-                      placeholder="e.g. BD-ARIA121-90510"
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      placeholder="مثلاً BETA-B500-90510"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     />
                   </div>
 
@@ -251,7 +252,7 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-dealer"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      Dealer code *
+                      کد نمایندگی یا نصاب *
                     </label>
                     <input
                       id="war-dealer"
@@ -259,8 +260,8 @@ export default function WarrantyRegistrationPage() {
                       required
                       value={dealerCode}
                       onChange={(e) => setDealerCode(e.target.value)}
-                      placeholder="e.g. VIC-DEALER-14"
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      placeholder="مثلاً TEH-DEALER-14"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     />
                   </div>
 
@@ -269,7 +270,7 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-date"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      Installation date (dd/mm/yyyy) *
+                      تاریخ نصب (dd/mm/yyyy) *
                     </label>
                     <input
                       id="war-date"
@@ -278,7 +279,7 @@ export default function WarrantyRegistrationPage() {
                       value={installationDate}
                       onChange={(e) => setInstallationDate(e.target.value)}
                       placeholder="14/11/2026"
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white font-mono"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white font-mono"
                     />
                   </div>
                 </div>
@@ -286,7 +287,7 @@ export default function WarrantyRegistrationPage() {
 
               <div className="space-y-4 pt-5 border-t border-white/[0.08]">
                 <h3 className="text-base font-semibold text-white">
-                  2. Customer &amp; Address Details
+                  ۲. مشخصات خریدار و نشانی محل نصب
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -294,7 +295,7 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-first"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      First Name *
+                      نام *
                     </label>
                     <input
                       id="war-first"
@@ -302,7 +303,7 @@ export default function WarrantyRegistrationPage() {
                       required
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     />
                   </div>
                   <div>
@@ -310,7 +311,7 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-last"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      Last Name *
+                      نام خانوادگی *
                     </label>
                     <input
                       id="war-last"
@@ -318,7 +319,7 @@ export default function WarrantyRegistrationPage() {
                       required
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     />
                   </div>
                   <div>
@@ -326,7 +327,7 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-email"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      Email *
+                      پست الکترونیک (ایمیل) *
                     </label>
                     <input
                       id="war-email"
@@ -334,7 +335,7 @@ export default function WarrantyRegistrationPage() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     />
                   </div>
                   <div>
@@ -342,7 +343,7 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-phone"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      Phone *
+                      شماره موبایل / تلفن تماس *
                     </label>
                     <input
                       id="war-phone"
@@ -350,7 +351,7 @@ export default function WarrantyRegistrationPage() {
                       required
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     />
                   </div>
                   <div className="sm:col-span-2">
@@ -358,7 +359,7 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-street"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      Street Address *
+                      نشانی دقیق محل نصب (خیابان، کوچه، پلاک) *
                     </label>
                     <input
                       id="war-street"
@@ -366,7 +367,7 @@ export default function WarrantyRegistrationPage() {
                       required
                       value={street}
                       onChange={(e) => setStreet(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     />
                   </div>
                   <div className="sm:col-span-2">
@@ -374,14 +375,14 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-line2"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      Address Line 2 (Optional)
+                      توضیحات تکمیلی آدرس / واحد (اختیاری)
                     </label>
                     <input
                       id="war-line2"
                       type="text"
                       value={addressLine2}
                       onChange={(e) => setAddressLine2(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     />
                   </div>
                   <div>
@@ -389,7 +390,7 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-suburb"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      Suburb / City *
+                      شهر / منطقه *
                     </label>
                     <input
                       id="war-suburb"
@@ -397,7 +398,7 @@ export default function WarrantyRegistrationPage() {
                       required
                       value={suburb}
                       onChange={(e) => setSuburb(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     />
                   </div>
                   <div>
@@ -405,7 +406,7 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-state"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      State / Province / Region *
+                      استان *
                     </label>
                     <input
                       id="war-state"
@@ -413,7 +414,7 @@ export default function WarrantyRegistrationPage() {
                       required
                       value={state}
                       onChange={(e) => setState(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     />
                   </div>
                   <div>
@@ -421,7 +422,7 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-postcode"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      Postcode / ZIP *
+                      کد پستی *
                     </label>
                     <input
                       id="war-postcode"
@@ -429,7 +430,7 @@ export default function WarrantyRegistrationPage() {
                       required
                       value={postcode}
                       onChange={(e) => setPostcode(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     />
                   </div>
                   <div>
@@ -437,16 +438,16 @@ export default function WarrantyRegistrationPage() {
                       htmlFor="war-country"
                       className="block text-xs font-medium text-slate-300 mb-1.5"
                     >
-                      Country *
+                      کشور *
                     </label>
                     <select
                       id="war-country"
                       value={country}
                       onChange={(e) => setCountry(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-xl text-white"
+                      className="w-full px-3.5 py-2.5 text-sm bg-[#060709] border border-white/15 rounded-none text-white"
                     >
-                      <option value="Australia">Australia</option>
-                      <option value="New Zealand">New Zealand</option>
+                      <option value="ایران">ایران (Iran)</option>
+                      <option value="Australia">استرالیا (Australia Branch)</option>
                     </select>
                   </div>
                 </div>
@@ -454,14 +455,14 @@ export default function WarrantyRegistrationPage() {
 
               <div className="flex flex-wrap items-center justify-between gap-4 pt-3">
                 <p className="text-xs text-slate-400">
-                  All products come with guarantees that cannot be excluded under the Australian Consumer Law.
+                  کلیه محصولات ثبت‌شده مشمول ضوابط رسمی گارانتی و خدمات پس از فروش شرکت بتا (۰۲۱-۸۸۴۰۴۴۰۷) می‌باشند.
                 </p>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-7 py-3 rounded-full bg-white hover:bg-slate-200 text-slate-950 text-xs sm:text-sm font-semibold shadow-[0_0_30px_rgba(255,255,255,0.22)] transition-colors"
+                  className="keep-white-text px-7 py-3 rounded-none bg-[#EC008C] hover:bg-[#d4007d] text-white text-xs sm:text-sm font-semibold shadow-[0_0_24px_rgba(236,0,140,0.35)] transition-colors cursor-pointer"
                 >
-                  {submitting ? 'Submitting Warranty...' : 'Submit Warranty Registration'}
+                  {submitting ? 'در حال ثبت گارانتی...' : 'ثبت نهایی گارانتی محصول'}
                 </button>
               </div>
             </form>

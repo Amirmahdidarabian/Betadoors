@@ -3,51 +3,176 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ============================================================================
+   Official Persian Typography: IRANSans & B Nazanin
+   Supports local system fonts (Windows/macOS) + CDN WOFF2 webfonts
+   ============================================================================ */
+@font-face {
+  font-family: "IRANSans";
+  src:
+    local("IRANSansX"),
+    local("IRANSans"),
+    local("IRANSansWeb"),
+    url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2")
+      format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IRANSans";
+  src:
+    local("IRANSansX Medium"),
+    local("IRANSans Medium"),
+    local("IRANSansWeb_Medium"),
+    url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Medium.woff2")
+      format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IRANSans";
+  src:
+    local("IRANSansX Bold"),
+    local("IRANSans Bold"),
+    local("IRANSansWeb_Bold"),
+    url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2")
+      format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IRANSans";
+  src:
+    local("IRANSansX ExtraBold"),
+    local("IRANSansX Black"),
+    local("IRANSans Black"),
+    url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-ExtraBold.woff2")
+      format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IRANSans";
+  src:
+    local("IRANSansX Black"),
+    local("IRANSansX Heavy"),
+    local("IRANSans Black"),
+    url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Black.woff2")
+      format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "B Nazanin";
+  src:
+    local("B Nazanin"),
+    local("BNazanin"),
+    local("B-Nazanin"),
+    url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2")
+      format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "B Nazanin";
+  src:
+    local("B Nazanin Bold"),
+    local("BNazanin Bold"),
+    local("BNazaninBd"),
+    url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2")
+      format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
-    --bg-canvas: #f4f6f9;
+    --font-iransans: "IRANSans", var(--font-vazirmatn), "Tahoma", sans-serif;
+    --font-bnazanin: "B Nazanin", "BNazanin", "IRANSans", var(--font-vazirmatn), serif;
+    --active-persian-font: var(--font-iransans);
+    font-size: 16px;
+
+    /* Apple.com Daylight Palette */
+    --bg-canvas: #f5f5f7;
     --bg-surface: #ffffff;
-    --bg-elevated: #edf1f7;
-    --border-subtle: #cbd5e1;
-    --border-strong: #94a3b8;
-    --text-primary: #0f172a;
-    --text-secondary: #334155;
-    --text-muted: #64748b;
+    --bg-elevated: #f5f5f7;
+    --border-subtle: rgba(0, 0, 0, 0.06);
+    --border-strong: rgba(0, 0, 0, 0.12);
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-muted: #86868b;
     --accent-magenta: #ec008c;
-    --accent-glow: rgba(236, 0, 140, 0.14);
+    --apple-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  html[data-font="bnazanin"] {
+    --active-persian-font: var(--font-iransans);
+    font-size: 16px;
+  }
+
+  html[data-font="iransans"] {
+    --active-persian-font: var(--font-iransans);
+    font-size: 16px;
   }
 
   .dark {
-    --bg-canvas: #040406;
-    --bg-surface: #0b0c10;
-    --bg-elevated: #12141a;
-    --border-subtle: rgba(255, 255, 255, 0.1);
-    --border-strong: rgba(255, 255, 255, 0.2);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
+    /* Apple.com Pro Dark Palette */
+    --bg-canvas: #000000;
+    --bg-surface: #161617;
+    --bg-elevated: #1d1d1f;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text-primary: #f5f5f7;
+    --text-secondary: #a1a1a6;
+    --text-muted: #86868b;
     --accent-magenta: #ec008c;
-    --accent-glow: rgba(236, 0, 140, 0.22);
   }
 
   html {
     background-color: var(--bg-canvas);
     color: var(--text-primary);
     scroll-behavior: smooth;
+    font-family: var(--active-persian-font) !important;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
+  body,
+  .font-display,
+  .font-sans,
+  .font-mono {
+    font-family: var(--active-persian-font) !important;
+  }
+
+  .text-\[10px\],
+  .text-\[11px\] {
+    font-size: 0.8125rem !important;
+    line-height: 1.6 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .text-xs {
+    font-size: 0.875rem !important;
+    line-height: 1.7 !important;
+  }
+
+  .text-sm {
+    font-size: 0.95rem !important;
+    line-height: 1.75 !important;
   }
 }
 
@@ -56,60 +181,178 @@
 }
 
 /* ============================================================================
-   Art Director Zero-Radius Architectural HUD Discipline
-   Ensures sharp 90-degree geometry across all cards, navbars, buttons & inputs
-   so HUD corner brackets and technical frames align with 0px precision.
+   Apple.com Signature CSS Animations & Micro-Interactions
    ============================================================================ */
-header nav,
-header a,
-header button,
-main section,
-main article,
-main a,
-main button,
-main input,
-main select,
-main textarea,
-footer a,
-footer select,
-.hud-corner-brackets,
-.brand-animated-border,
-.crystal-glass-panel,
-.crystal-glass-pill,
-.studio-floating-badge {
-  border-radius: 0px !important;
+@keyframes appleRevealUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes appleFloatSubtle {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+.apple-reveal {
+  animation: appleRevealUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.apple-reveal-delay-1 {
+  animation: appleRevealUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.apple-reveal-delay-2 {
+  animation: appleRevealUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.apple-reveal-delay-3 {
+  animation: appleRevealUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+/* Apple Store Card & Promo Tile Transitions */
+.apple-card {
+  border-radius: 28px;
+  transition:
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.apple-card:hover {
+  transform: translate3d(0, -4px, 0) scale(1.005);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.08);
+}
+
+.dark .apple-card:hover {
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.55);
+}
+
+.studio-artwork-img {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.apple-card:hover .studio-artwork-img,
+.group:hover .studio-artwork-img {
+  transform: scale(1.04) !important;
+}
+
+.apple-pill-btn {
+  border-radius: 9999px;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.25s ease,
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-pill-btn:hover {
+  transform: scale(1.02);
+}
+
+.apple-pill-btn:active {
+  transform: scale(0.98);
 }
 
 /* ============================================================================
-   Architectural Daylight (Light Theme) Surface & Typography Adaptation
-   Applies whenever html does NOT have `.dark`
+   Apple.com Clean Card Geometry & Soft Elevation
+   Replaces legacy 0px HUD classes with Apple 28px squircle cards
+   ============================================================================ */
+.hud-corner-brackets {
+  position: relative;
+  border-radius: 1.75rem !important; /* 28px Apple squircle */
+}
+
+.hud-corner-brackets::before,
+.hud-corner-brackets::after {
+  display: none !important;
+}
+
+.hud-technical-grid {
+  background-image: none !important;
+}
+
+.brand-animated-border {
+  border-radius: 1.75rem !important;
+  background-image: none !important;
+  animation: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: #161617 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.brand-animated-border:hover {
+  transform: translate3d(0, -4px, 0);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.4) !important;
+}
+
+main .rounded-none,
+header .rounded-none,
+footer .rounded-none {
+  border-radius: 1.25rem !important;
+}
+
+main button.rounded-none,
+main a.rounded-none,
+header button.rounded-none,
+header a.rounded-none {
+  border-radius: 9999px !important;
+}
+
+main input.rounded-none,
+main select.rounded-none,
+main textarea.rounded-none {
+  border-radius: 0.875rem !important;
+}
+
+/* ============================================================================
+   Apple.com Daylight Mode (Light Theme) Surface & Typography Adaptation
    ============================================================================ */
 html:not(.dark) {
-  /* Page & Section Canvases */
+  .brand-outer-ambient-frame,
   .bg-\[\#040406\]:not([data-testid="hero-16x9-container"]),
   .bg-\[\#050608\] {
-    background-color: #f4f6f9 !important;
+    background-color: #f5f5f7 !important;
   }
 
-  /* Primary Bento & Content Cards across Home & Inner Pages */
-  .bg-\[\#0B0C10\]:not([data-testid="hero-16x9-container"] *),
-  .bg-\[\#0B0C0F\]:not([data-testid="hero-16x9-container"] *),
-  .bg-\[\#0B0D10\]:not([data-testid="hero-16x9-container"] *),
-  .bg-\[\#0B0D11\]:not([data-testid="hero-16x9-container"] *),
-  .bg-\[\#0D0E12\]:not([data-testid="hero-16x9-container"] *),
-  .bg-\[\#0F1117\]:not([data-testid="hero-16x9-container"] *),
-  .bg-\[\#08090D\]:not([data-testid="hero-16x9-container"] *),
-  .bg-\[\#07080A\]:not([data-testid="hero-16x9-container"]),
-  .bg-\[\#060709\]:not([data-testid="hero-16x9-container"]) {
+  .brand-animated-border {
     background-color: #ffffff !important;
-    border-color: #cbd5e1 !important;
-    box-shadow:
-      0 10px 28px -8px rgba(15, 23, 42, 0.06),
-      0 2px 6px -1px rgba(15, 23, 42, 0.04) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04) !important;
   }
 
-  /* Secondary / Inner Sub-Cards, Inputs & Technical Wells */
-  .bg-\[\#08090C\]:not([data-testid="hero-16x9-container"] *),
+  .brand-animated-border:hover {
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .bg-\[\#0B0C10\]:not([data-testid="hero-16x9-container"] *):not(.apple-dark-tile),
+  .bg-\[\#0B0C0F\]:not([data-testid="hero-16x9-container"] *):not(.apple-dark-tile),
+  .bg-\[\#0B0D10\]:not([data-testid="hero-16x9-container"] *):not(.apple-dark-tile),
+  .bg-\[\#0B0D11\]:not([data-testid="hero-16x9-container"] *):not(.apple-dark-tile),
+  .bg-\[\#0D0E12\]:not([data-testid="hero-16x9-container"] *):not(.apple-dark-tile),
+  .bg-\[\#0F1117\]:not([data-testid="hero-16x9-container"] *):not(.apple-dark-tile),
+  .bg-\[\#08090D\]:not([data-testid="hero-16x9-container"] *):not(.apple-dark-tile),
+  .bg-\[\#07080A\]:not([data-testid="hero-16x9-container"]):not(.apple-dark-tile),
+  .bg-\[\#060709\]:not([data-testid="hero-16x9-container"]):not(.apple-dark-tile),
+  .bg-\[\#161617\]:not([data-testid="hero-16x9-container"] *):not(.apple-dark-tile) {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  .bg-\[\#08090C\]:not([data-testid="hero-16x9-container"] *):not(.apple-dark-tile),
   .bg-\[\#08090C\]\/90:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#08090C\]\/80:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#08090C\]\/70:not([data-testid="hero-16x9-container"] *),
@@ -120,40 +363,17 @@ html:not(.dark) {
   .bg-\[\#0D0F14\]:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#101217\]\/95:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#111216\]:not([data-testid="hero-16x9-container"] *),
-  .bg-\[\#111216\]\/90:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#111318\]:not([data-testid="hero-16x9-container"] *),
-  .bg-\[\#111318\]\/85:not([data-testid="hero-16x9-container"] *),
-  .bg-\[\#111318\]\/90:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#12141A\]:not(.studio-artwork-frame):not([data-testid="hero-16x9-container"] *),
   .bg-\[\#13151B\]:not([data-testid="hero-16x9-container"] *),
-  .bg-\[\#13151B\]\/90:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#151821\]:not([data-testid="hero-16x9-container"] *),
   .bg-\[\#181B24\]:not([data-testid="hero-16x9-container"] *),
-  .bg-black\/40:not([data-testid="hero-16x9-container"] *),
-  .bg-black\/50:not([data-testid="hero-16x9-container"] *),
-  .bg-black\/65:not([data-testid="hero-16x9-container"] *) {
-    background-color: #f8fafc !important;
-    border-color: #cbd5e1 !important;
-    color: #0f172a !important;
+  .bg-\[\#1D1D1F\]:not(.beta-logo-mark-badge):not(.apple-dark-tile):not([data-testid="hero-16x9-container"] *) {
+    background-color: #f5f5f7 !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+    color: #1d1d1f !important;
   }
 
-  /* Translucent Glass Surfaces on Light Cards (exclude dark 16:9 hero stage) */
-  .bg-white\/\[0\.02\]:not([data-testid="hero-16x9-container"] *),
-  .bg-white\/\[0\.03\]:not([data-testid="hero-16x9-container"] *),
-  .bg-white\/\[0\.04\]:not([data-testid="hero-16x9-container"] *),
-  .bg-white\/\[0\.05\]:not([data-testid="hero-16x9-container"] *),
-  .bg-white\/\[0\.06\]:not([data-testid="hero-16x9-container"] *),
-  .bg-white\/\[0\.07\]:not([data-testid="hero-16x9-container"] *),
-  .bg-white\/\[0\.08\]:not([data-testid="hero-16x9-container"] *),
-  .bg-white\/\[0\.1\]:not([data-testid="hero-16x9-container"] *),
-  .bg-white\/\[0\.12\]:not([data-testid="hero-16x9-container"] *),
-  .bg-white\/5:not([data-testid="hero-16x9-container"] *),
-  .bg-white\/10:not([data-testid="hero-16x9-container"] *) {
-    background-color: #f1f5f9 !important;
-    border-color: #cbd5e1 !important;
-  }
-
-  /* Subtle Structural Hairline Borders in Light Mode (exclude dark 16:9 hero stage) */
   .border-white\/\[0\.05\]:not([data-testid="hero-16x9-container"] *),
   .border-white\/\[0\.06\]:not([data-testid="hero-16x9-container"] *),
   .border-white\/\[0\.07\]:not([data-testid="hero-16x9-container"] *),
@@ -166,41 +386,13 @@ html:not(.dark) {
   .border-white\/15:not([data-testid="hero-16x9-container"] *),
   .border-white\/20:not([data-testid="hero-16x9-container"] *),
   .border-white\/25:not([data-testid="hero-16x9-container"] *) {
-    border-color: #cbd5e1 !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
   }
 
   .divide-white\/\[0\.06\] > :not([hidden]) ~ :not([hidden]) {
-    border-color: #e2e8f0 !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
   }
 
-  /* Primary CTA Buttons that were white-on-dark become Dark Obsidian-on-White */
-  .bg-white.text-slate-950,
-  .bg-white.text-black,
-  .bg-white.text-\[\#050608\] {
-    background-color: #0f172a !important;
-    color: #ffffff !important;
-    border: 1px solid #0f172a !important;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15) !important;
-  }
-  .bg-white.text-slate-950:hover,
-  .bg-white.text-black:hover,
-  .bg-white.text-\[\#050608\]:hover {
-    background-color: #ec008c !important;
-    border-color: #ec008c !important;
-    color: #ffffff !important;
-  }
-
-  /* Quick View & Overlay Buttons */
-  .bg-black\/80 {
-    background-color: rgba(15, 23, 42, 0.9) !important;
-    color: #ffffff !important;
-    border-color: rgba(255, 255, 255, 0.25) !important;
-  }
-  .bg-black\/80 * {
-    color: #ffffff !important;
-  }
-
-  /* Status Alert Banners (Emerald / Rose / Amber) */
   .bg-emerald-950,
   .bg-emerald-950\/70,
   .bg-emerald-950\/60,
@@ -212,7 +404,6 @@ html:not(.dark) {
   }
   .text-emerald-100,
   .text-emerald-200,
-  .text-emerald-200\/90,
   .text-emerald-300,
   .text-emerald-400 {
     color: #047857 !important;
@@ -230,424 +421,162 @@ html:not(.dark) {
     color: #be123c !important;
   }
 
-  /* Typography Polarity Mapping in Light Mode (exclude dark 16:9 hero stage) */
-  .text-white:not(.keep-white-text):not([data-testid="hero-16x9-container"] *):not(.bg-\[\#EC008C\]):not(.bg-slate-900):not(.bg-slate-950) {
-    color: #0f172a !important;
+  .text-white:not(.keep-white-text):not(.apple-dark-tile *):not([data-testid="hero-16x9-container"] *):not(.bg-\[\#EC008C\]):not(.bg-slate-900):not(.bg-slate-950) {
+    color: #1d1d1f !important;
   }
 
-  /* Fix gradient text that used from-white so it stays crisp and dark in Light Mode */
-  .from-white.bg-clip-text.text-transparent {
-    background-image: linear-gradient(90deg, #0f172a 0%, #334155 60%, #ec008c 100%) !important;
+  .text-slate-100:not(.apple-dark-tile *):not([data-testid="hero-16x9-container"] *),
+  .text-slate-200:not(.apple-dark-tile *):not([data-testid="hero-16x9-container"] *) {
+    color: #1d1d1f !important;
+  }
+  .text-slate-300:not(.apple-dark-tile *):not([data-testid="hero-16x9-container"] *),
+  .text-slate-300\/90:not(.apple-dark-tile *):not([data-testid="hero-16x9-container"] *) {
+    color: #424245 !important;
+  }
+  .text-slate-400:not(.apple-dark-tile *):not([data-testid="hero-16x9-container"] *),
+  .text-slate-500:not(.apple-dark-tile *):not([data-testid="hero-16x9-container"] *) {
+    color: #6e6e73 !important;
   }
 
-  .text-slate-100:not([data-testid="hero-16x9-container"] *),
-  .text-slate-200:not([data-testid="hero-16x9-container"] *) {
-    color: #1e293b !important;
-  }
-  .text-slate-300:not([data-testid="hero-16x9-container"] *),
-  .text-slate-300\/90:not([data-testid="hero-16x9-container"] *),
-  .text-slate-300\/85:not([data-testid="hero-16x9-container"] *) {
-    color: #334155 !important;
-  }
-  .text-slate-400:not([data-testid="hero-16x9-container"] *) {
-    color: #475569 !important;
-  }
-  .text-slate-500:not([data-testid="hero-16x9-container"] *) {
-    color: #64748b !important;
-  }
-
-  /* High-contrast deep magenta for mono subtitles on white Light Mode cards */
   .text-\[\#ff7ac6\]:not(.keep-white-text):not([data-testid="hero-16x9-container"] *) {
     color: #c80076 !important;
   }
 
-  /* Ensure keep-white-text, Admin Modal, and Hero Video Crystal Glass HUD always stay crisp white in Light Mode */
   .keep-white-text,
   .keep-white-text *,
   [data-admin-editor-ui="true"] *,
-  [data-testid="hero-16x9-container"] .crystal-glass-panel,
-  [data-testid="hero-16x9-container"] .crystal-glass-panel *,
-  [data-testid="hero-16x9-container"] .crystal-glass-pill,
-  [data-testid="hero-16x9-container"] .crystal-glass-pill *,
   .bg-\[\#EC008C\],
   .bg-\[\#EC008C\] * {
     color: #ffffff !important;
-  }
-
-  [data-testid="hero-16x9-container"] .crystal-glass-panel button {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    border-color: rgba(255, 255, 255, 0.24) !important;
-    color: #ffffff !important;
-  }
-  [data-testid="hero-16x9-container"] .crystal-glass-panel button:hover {
-    background-color: #ec008c !important;
-    border-color: #ec008c !important;
-  }
-
-  [data-admin-editor-ui="true"] .bg-\[\#0F1117\],
-  [data-admin-editor-ui="true"] .bg-\[\#0B0C10\]\/95 {
-    background-color: #0b0c10 !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
-  }
-  [data-admin-editor-ui="true"] .bg-\[\#08090C\],
-  [data-admin-editor-ui="true"] .bg-\[\#111318\],
-  [data-admin-editor-ui="true"] .bg-\[\#181B24\] {
-    background-color: #141720 !important;
-    border-color: rgba(255, 255, 255, 0.18) !important;
-    color: #ffffff !important;
-  }
-
-  /* Light Mode Studio Product & Category Artwork Optimization */
-  .studio-artwork-container {
-    background: linear-gradient(180deg, #1b202b 0%, #0f131a 100%) !important;
-    box-shadow:
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
-      0 8px 20px -6px rgba(15, 23, 42, 0.12) !important;
-  }
-
-  .studio-artwork-img {
-    filter: brightness(1.16) contrast(1.04) saturate(1.05);
-  }
-
-  .studio-artwork-vignette {
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.06) 0%,
-      transparent 45%,
-      rgba(15, 23, 42, 0.22) 100%
-    ) !important;
-  }
-
-  /* Compact Architectural Micro-Tag over Product & Category Studio Photos in Light Mode */
-  .studio-floating-badge {
-    background: rgba(15, 23, 42, 0.88) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.22) !important;
-    color: #f8fafc !important;
-  }
-  .studio-floating-badge * {
-    color: #f8fafc !important;
-  }
-  .studio-floating-badge .studio-badge-dot {
-    background-color: #ec008c !important;
-  }
-
-  /* SVG HUD Lines inside Cards in Light Mode (exclude Hero 16:9 dark video stage) */
-  *:not([data-testid="hero-16x9-container"]) > svg line[stroke*="rgba(255,255,255"],
-  *:not([data-testid="hero-16x9-container"]) > svg ellipse[stroke*="rgba(255,255,255"],
-  *:not([data-testid="hero-16x9-container"]) > svg path[stroke*="rgba(255,255,255"],
-  *:not([data-testid="hero-16x9-container"]) > svg circle[stroke*="rgba(255,255,255"] {
-    stroke: rgba(15, 23, 42, 0.22) !important;
-  }
-  svg rect[fill="#181A20"],
-  svg rect[fill="#14161C"],
-  svg rect[fill="#151821"] {
-    fill: #0f172a !important;
-    stroke: #ec008c !important;
-  }
-}
-
-/* ============================================================================
-   Ultra-Transparent Crystal Glass HUD System (Hero 16:9 Video Overlays)
-   Engineered with 0px sharp architectural borders
-   ============================================================================ */
-.crystal-glass-panel {
-  background: linear-gradient(
-    135deg,
-    rgba(8, 10, 15, 0.68) 0%,
-    rgba(5, 7, 12, 0.82) 75%,
-    rgba(236, 0, 140, 0.09) 100%
-  ) !important;
-  backdrop-filter: blur(14px) saturate(140%) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.16),
-    0 16px 38px -10px rgba(0, 0, 0, 0.65) !important;
-}
-
-.crystal-glass-panel:hover {
-  border-color: rgba(236, 0, 140, 0.65) !important;
-}
-
-.crystal-glass-pill {
-  background: linear-gradient(
-    135deg,
-    rgba(14, 17, 26, 0.78) 0%,
-    rgba(8, 10, 16, 0.9) 100%
-  ) !important;
-  backdrop-filter: blur(10px) saturate(140%) !important;
-  -webkit-backdrop-filter: blur(10px) saturate(140%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.24) !important;
-}
-
-.crystal-glass-pill:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(236, 0, 140, 0.85) 0%,
-    rgba(180, 0, 108, 0.92) 100%
-  ) !important;
-  border-color: #ec008c !important;
-}
-
-/* ============================================================================
-   Animated HUD Telemetry Lines, Travelling Laser Pulses & Flush 90° Corner Reticles
-   ============================================================================ */
-@keyframes hud-dash-flow {
-  0% {
-    stroke-dashoffset: 240;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes hud-dash-flow-reverse {
-  0% {
-    stroke-dashoffset: -240;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes hud-reticle-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.hud-animated-trace {
-  stroke-dasharray: 22 218;
-  animation: hud-dash-flow 3.6s linear infinite;
-}
-
-.hud-animated-trace-fast {
-  stroke-dasharray: 32 188;
-  animation: hud-dash-flow 2.4s linear infinite;
-}
-
-.hud-animated-trace-reverse {
-  stroke-dasharray: 22 200;
-  animation: hud-dash-flow-reverse 3.2s linear infinite;
-}
-
-.hud-rail-dashed {
-  stroke-dasharray: 4 5;
-}
-
-.hud-reticle-ring {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: hud-reticle-spin 16s linear infinite;
-}
-
-/* Flush 90-Degree HUD Corner Brackets (0px radius aligned) */
-.hud-corner-brackets {
-  position: relative;
-  border-radius: 0px !important;
-}
-
-.hud-corner-brackets::before,
-.hud-corner-brackets::after {
-  content: "";
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  pointer-events: none;
-  z-index: 25;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  opacity: 0.85;
-}
-
-.hud-corner-brackets::before {
-  top: 0px;
-  left: 0px;
-  border-top: 1.5px solid #ec008c;
-  border-left: 1.5px solid #ec008c;
-}
-
-.hud-corner-brackets::after {
-  bottom: 0px;
-  right: 0px;
-  border-bottom: 1.5px solid #ec008c;
-  border-right: 1.5px solid #ec008c;
-}
-
-.hud-corner-brackets:hover::before,
-.hud-corner-brackets:hover::after {
-  width: 16px;
-  height: 16px;
-  opacity: 1;
-}
-
-/* Smooth Matte Architectural HUD Surface (No Amateurish Checkerboard Grid Lines) */
-.hud-technical-grid {
-  background-image: radial-gradient(
-    120% 90% at 50% 0%,
-    rgba(236, 0, 140, 0.055) 0%,
-    rgba(15, 23, 42, 0.02) 45%,
-    transparent 100%
-  );
-}
-
-html:not(.dark) .hud-technical-grid {
-  background-image: radial-gradient(
-    120% 90% at 50% 0%,
-    rgba(236, 0, 140, 0.035) 0%,
-    rgba(241, 245, 249, 0.6) 55%,
-    transparent 100%
-  );
-}
-
-/* ============================================================================
-   Professional Architectural HUD Card Surface & Specular Border System (0px Sharp)
-   ============================================================================ */
-@property --border-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
-@keyframes brand-border-spin {
-  0% {
-    --border-angle: 0deg;
-  }
-  100% {
-    --border-angle: 360deg;
-  }
-}
-
-.brand-animated-border {
-  --card-fill-top: #0f1219;
-  --card-fill-bottom: #080a0f;
-  border-radius: 0px !important;
-  border: 1px solid transparent !important;
-  background-origin: border-box !important;
-  background-clip: padding-box, border-box !important;
-  background-image:
-    linear-gradient(165deg, var(--card-fill-top) 0%, var(--card-fill-bottom) 100%),
-    conic-gradient(
-      from var(--border-angle, 0deg),
-      rgba(255, 255, 255, 0.14) 0%,
-      rgba(15, 23, 42, 0.9) 25%,
-      rgba(236, 0, 140, 0.35) 44%,
-      #ec008c 50%,
-      rgba(236, 0, 140, 0.35) 56%,
-      rgba(15, 23, 42, 0.9) 75%,
-      rgba(255, 255, 255, 0.14) 100%
-    ) !important;
-  animation: brand-border-spin 24s linear infinite !important;
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
-    0 18px 40px -14px rgba(0, 0, 0, 0.85) !important;
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-}
-
-.brand-animated-border:hover {
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.16),
-    0 22px 48px -12px rgba(0, 0, 0, 0.92),
-    0 0 24px -6px rgba(236, 0, 140, 0.28) !important;
-}
-
-html:not(.dark) .brand-animated-border {
-  --card-fill-top: #ffffff;
-  --card-fill-bottom: #f8fafc;
-  border: 1px solid transparent !important;
-  background-origin: border-box !important;
-  background-clip: padding-box, border-box !important;
-  background-image:
-    linear-gradient(165deg, var(--card-fill-top) 0%, var(--card-fill-bottom) 100%),
-    conic-gradient(
-      from var(--border-angle, 0deg),
-      #cbd5e1 0%,
-      #94a3b8 30%,
-      rgba(236, 0, 140, 0.48) 45%,
-      #ec008c 50%,
-      rgba(236, 0, 140, 0.48) 55%,
-      #94a3b8 70%,
-      #cbd5e1 100%
-    ) !important;
-  box-shadow:
-    inset 0 1px 0 0 #ffffff,
-    0 12px 28px -8px rgba(15, 23, 42, 0.07),
-    0 2px 6px -1px rgba(15, 23, 42, 0.04) !important;
-}
-
-html:not(.dark) [data-testid="hero-16x9-container"].brand-animated-border {
-  --card-fill-top: #ffffff;
-  --card-fill-bottom: #fdf8fb;
-}
-
-/* ============================================================================
-   High-Craft Dark & Daylight Ambient Backdrop
-   ============================================================================ */
-@keyframes beta-aurora-drift-primary {
-  0% {
-    transform: translate3d(-4%, -3%, 0) scale(1) rotate(0deg);
-  }
-  50% {
-    transform: translate3d(4%, 3%, 0) scale(1.06) rotate(2deg);
-  }
-  100% {
-    transform: translate3d(-2%, 4%, 0) scale(0.97) rotate(-2deg);
-  }
-}
-
-@keyframes beta-aurora-drift-secondary {
-  0% {
-    transform: translate3d(3%, 4%, 0) scale(1) rotate(0deg);
-  }
-  50% {
-    transform: translate3d(-4%, -2%, 0) scale(1.05) rotate(-3deg);
-  }
-  100% {
-    transform: translate3d(2%, -4%, 0) scale(0.96) rotate(2deg);
-  }
-}
-
-@keyframes beta-raycast-sweep {
-  0% {
-    background-position: 200% 0%;
-  }
-  100% {
-    background-position: -200% 0%;
   }
 }
 
 .brand-outer-ambient-frame {
   position: relative;
-  background-color: #040406 !important;
+  background-color: var(--bg-canvas) !important;
 }
 
-html:not(.dark) .brand-outer-ambient-frame {
-  background-color: #f4f6f9 !important;
+.beta-logo-mark-badge {
+  background-color: #18181b !important;
 }
 
-.beta-aurora-orb-primary {
-  animation: beta-aurora-drift-primary 30s ease-in-out infinite alternate;
-  will-change: transform;
+/* ============================================================================
+   Architectural Landing Hero Layers & Typography (120fps GPU Day/Night Blend)
+   ============================================================================ */
+.hero-bg-layer-light {
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
-.beta-aurora-orb-secondary {
-  animation: beta-aurora-drift-secondary 36s ease-in-out infinite alternate;
-  will-change: transform;
+.hero-bg-layer-dark {
+  will-change: opacity;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 720ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.beta-raycast-beams {
-  background: linear-gradient(
-    115deg,
-    transparent 28%,
-    rgba(255, 255, 255, 0.012) 38%,
-    rgba(236, 0, 140, 0.045) 43%,
-    rgba(255, 255, 255, 0.01) 48%,
-    transparent 58%
-  );
-  background-size: 220% 220%;
-  animation: beta-raycast-sweep 32s linear infinite;
+.hero-charcoal-text {
+  color: #141519 !important;
+  text-shadow: 0 2px 22px rgba(255, 255, 255, 0.75);
+  transition:
+    color 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    text-shadow 680ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+.dark .hero-charcoal-text {
+  color: #f8fafc !important;
+  text-shadow: 0 8px 32px rgba(0, 0, 0, 0.65);
+}
+
+.hero-magenta-text {
+  color: #e6007e !important;
+  text-shadow: 0 0 22px rgba(230, 0, 126, 0.24);
+  transition:
+    color 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    text-shadow 680ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dark .hero-magenta-text {
+  color: #ff1a9c !important;
+  text-shadow: 0 0 28px rgba(236, 0, 140, 0.55);
+}
+
+.hero-slate-text {
+  color: #2e323b !important;
+  text-shadow: 0 1px 14px rgba(255, 255, 255, 0.8);
+  transition:
+    color 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    text-shadow 680ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dark .hero-slate-text {
+  color: #e2e8f0 !important;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+}
+
+.hero-eyebrow-text {
+  color: #475569 !important;
+  transition: color 680ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dark .hero-eyebrow-text {
+  color: #cbd5e1 !important;
+}
+
+.hero-white-pill {
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+  transition:
+    background-color 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-white-pill span {
+  color: #1d1d1f !important;
+  transition: color 680ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dark .hero-white-pill {
+  background-color: rgba(255, 255, 255, 0.14) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(12px);
+}
+
+.dark .hero-white-pill span {
+  color: #ffffff !important;
+}
+
+.hero-white-pill svg {
+  color: #ec008c !important;
+}
+
+.quick-view-pill {
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+}
+
+.quick-view-pill span,
+.quick-view-pill svg {
+  color: #1d1d1f !important;
+}
+
+/* ============================================================================
+   Scrollbar Suppression Utility (Keeps Scroll Functionality, Hides Track/Thumb)
+   ============================================================================ */
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+
+
+
